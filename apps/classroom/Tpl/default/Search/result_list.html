@@ -1,0 +1,34 @@
+			<?php foreach($search_result as $vo):?>
+			<div class="plr20 mt20 clearfix">
+				<div class="pos_r w276 fl">
+					<php>if($vo['type']==2){</php><span class="sj_r"></span><php>}</php>
+					<a href="<php>if($vo['type'] == 2){</php>{:U('classroom/Album/view',array('id'=>$vo['id']))}<php>} else {</php>{:U('classroom/Video/view',array('id'=>$vo['id']))}<php>}</php>">
+						<img src="{:getImageUrlByAttachId($vo['middle_ids'])}" alt="{$vo['title']}" width="276" height="137" />
+					</a>
+				</div>
+				<div class="txt_box_index fl">
+					<div class="clearfix">
+						<a href="<php>if($vo['type'] == 2){</php>{:U('classroom/Album/view',array('id'=>$vo['id']))}<php>} else {</php>{:U('classroom/Video/view',array('id'=>$vo['id']))}<php>}</php>" class="fl">{:mb_substr($vo['title'],0,25,'utf-8')}</a>
+					</div>
+					<p>简介：{:mb_substr($vo['intro'],0,15,'utf-8')}</p>
+					<div class="clearfix mt10">
+						<span class="fl">评分：</span>
+						<ul class="clearfix">
+							<li class="<if condition=" $vo.score GT 0 ">star<else />star_down</if>">star</li> 
+								<li class="<if condition=" $vo.score GT 1 ">star<else />star_down</if>">star</li>
+								<li class="<if condition=" $vo.score GT 2 ">star<else />star_down</if>">star</li>
+								<li class="<if condition=" $vo.score GT 3 ">star<else />star_down</if>">star</li>
+								<li class="<if condition=" $vo.score GT 4 ">star<else />star_down</if>">star</li>
+						</ul>
+						<div class="go_onmousebtn clearfix mt10">
+							<if condition=" $vo['isGetResource']['upload'] "><a href="javascript:;" class="book"><span class="talk">含课件</span></a></if>
+							<if condition=" $vo['isGetResource']['note'] "><a href="javascript:;" class="light"><span class="talk">含开开放笔记</span></a></if>
+							<if condition=" $vo['isGetResource']['question'] "><a href="javascript:;" class="discuss"><span class="talk">含开放讨论</span></a></if>
+						</div>
+						<a class="fr look mt10" href="{:U('order/Index/play_mathfirst',array('cid'=>1))}" target="_blank"></a>
+					</div>
+					<p class="fl">来自  <em class="green_txt">{:getUserName($vo['uid'])}</em>  创建的<eq name="vo['type']" value="1">课程<else/>专辑</eq></p> 
+					<span class="fr ml30">{$vo['collection']}人收藏</span>  
+				</div>
+			</div>
+			<?php endforeach; ?>

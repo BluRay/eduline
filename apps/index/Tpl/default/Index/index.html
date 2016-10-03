@@ -1,0 +1,390 @@
+<include file="__THEME__/public_header" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+<script>
+window.onload=function()
+{
+	 //公用库
+	higher_common();
+	  //首页轮播图
+	 (function(){
+		 Figure();	   
+	 })();
+	 //首页几组选项卡
+	 (function(){
+		var oXueba=getByClass(document,'xueba');
+		for(var i=0; i<oXueba.length; i++)
+		{
+			zubox(oXueba[i]);
+		}
+	 })();
+};
+</script>
+</div>
+<div id="content">
+   <div id="bannerbg">
+        <ul class="bannerc">
+            <li class="banner1" style="opacity:1; filter:alpha(opacity:100); z-index:10;">
+            <!--<a class="video_a" href="javascript:;"></a>-->
+            <a href="javascript:;"></a>
+            </li>
+            <li class="banner2">
+             <a href="{:U('order/Index/play_mathfirst',array('cid'=>1))}" target="_blank"><img src="__THEME__/images/banner1.jpg" alt="广告二" /></a>
+            </li>
+            <li class="banner3">
+             <a href="{:U('order/Index/play_mathfirst',array('cid'=>6))}" target="_blank"><img src="__THEME__/images/banner3.jpg" alt="广告三" /></a>
+            </li>
+            <li class="banner4">
+            <a href="{:U('order/Index/play_mathfirst',array('cid'=>2))}" target="_blank"><img src="__THEME__/images/banner4.jpg" alt="广告一" /></a>
+            </li>
+            <li class="banner5">
+            <a href="javascript:;"><img src="__THEME__/images/banner5.jpg" alt="广告三" /></a>
+            </li>
+        </ul>
+        <div class="bannermenu">
+           <ul class="main">
+                <li class="on">
+                    <span class=""></span>
+                    <img src="__THEME__/images/sm_b1.jpg">
+                </li>
+                <li> 
+                    <span class="main_span"></span>     
+                    <img src="__THEME__/images/sm_b2.jpg">
+                </li>
+                <li>
+                 <span class="main_span"></span>
+                <img src="__THEME__/images/sm_b3.jpg">
+                </li>
+                <li>
+                <span class="main_span"></span>
+                <img src="__THEME__/images/sm_b4.jpg">
+                </li>
+               <li>
+                 <span class="main_span"></span>
+                <img src="__THEME__/images/sm_b5.jpg">
+                </li>
+                <!--<li><img src="__APP__/images/sm_b5.jpg"></li>-->
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="main mt35">
+    <div class="main_box_index ptb30lr50 clearfix">
+        <a class="box_img1 mr55 mb30" href="javascript:;"></a>
+        <a class="box_img2 mb30" href="javascript:;"></a>
+        <a class="box_img3 mr55" href="javascript:;"></a>
+        <a class="box_img4" href="javascript:;"></a>
+    </div>
+</div>
+<div class="main mt35">
+    <div class="main_box_index ptb30lr20">
+        <div class="m0auto15 xueba clearfix">
+            <h3 class="fl">最新排行榜</h3> 
+            <ul class="course_sort_in fl">
+                <li class="course_ch_in">
+                    <a href="javascript:;">畅销榜单</a>
+                </li>
+                <li>
+                    <a href="javascript:;">每日上新</a>
+                </li>
+                <li>
+                    <a href="javascript:;">学霸争霸赛</a>
+                </li>            
+            </ul>
+            <a href="javascript:;" class="more fr">查看更多></a>
+        </div>
+        <div class="zu_content">
+           <div class="zu_box clearfix" style="display:block;">
+            
+            <div class="box_mainb fl w276">
+                <a href="#" target="_blank">
+                	<span class="img_zz"></span>
+                                    <p class="sj_r">专辑</p>
+                	<img src="__THEME__/images/link.jpg" >
+                </a>
+                 
+                <div class="txt_box_index">
+                    <em class="yellow">公共课</em>
+                    <h4><a target="_blank">考研英语核心词汇专辑</a></h4>
+                    <p><a target="_blank">考研英语核心词汇专辑</a></p>
+                    <div class="star_box mt22 clearfix">
+                        <div class="fl">
+                            <ul class="clearfix">
+                                        <li title="评分1" class="star">star</li> 
+                                        <li title="评分2" class="star">star</li>
+                                        <li title="评分3" class="star">star</li>
+                                        <li title="评分4" class="star_down">star</li>
+                                        <li title="评分5" class="star_down">star</li>
+                                                             
+                                </ul>
+                            <div class="go_onmousebtn clearfix mt10">
+                                <a href="javascript:;" class="book"><span class="talk">含课程视频</span></a> 
+                                <a href="javascript:;" class="light"><span class="talk">含可下载PPT</span></a>
+                                <a href="javascript:;" class="discuss"><span class="talk">含开放讨论</span></a>
+                            </div>
+                        </div>
+                        <a class="fr look mt10" href="{:U('order/Index/play_mathfirst',array('cid'=>$vo['id']))}" target="_blank"></a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+            <div class="zu_box clearfix">
+                
+                <div class="box_mainb fl w276">
+                    <img src="__APP__/images/max.jpg">
+                    <div class="txt_box_index">
+                        <em class="yellow">公共课</em>
+                        <h4><a href="#" target="_blank">考研英语核心词汇专辑</a></h4>
+                        <p><a href="#" target="_blank">考研英语核心词汇专辑</a></p>
+                        <div class="star_box mt22 clearfix">
+                            <div class="fl">
+                                <ul class="clearfix">
+                                   			<li title="评分1" class="star">star</li> 
+                                            <li title="评分2" class="star_down">star</li>
+                                            <li title="评分3" class="star_down">star</li>
+                                            <li title="评分4" class="star_down">star</li>
+                                            <li title="评分5" class="star_down">star</li>
+                                                                  
+                             	</ul>
+                                <div class="go_onmousebtn clearfix mt10">
+                                    <a href="javascript:;" class="book"><span class="talk">含课程视频</span></a> 
+                                    <a href="javascript:;" class="light"><span class="talk">含可下载PPT</span></a>
+                                    <a href="javascript:;" class="discuss"><span class="talk">含开放讨论</span></a>
+                                </div>
+                            </div>
+                            <a class="fr look mt10" href="{:U('order/Index/play_mathfirst',array('cid'=>$vo['id']))}" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="zu_box clearfix">
+                
+                <div class="box_mainb fl w276">
+                    <img src="__APP__/images/img_contentb_index4.jpg">
+                    <div class="txt_box_index">
+                        <em class="yellow">公共课</em>
+                        <h4><a href="#" target="_blank">非统考专业课(北京地区)</a></h4>
+                        <p><a href="#" target="_blank">非统考专业课(北京地区)</a></p>
+                        <div class="star_box mt22 clearfix">
+                            <div class="fl">
+                                <ul class="clearfix">
+                                            <li title="评分1" class="star_down">star</li> 
+                                            <li title="评分2" class="star_down">star</li>
+                                            <li title="评分3" class="star_down">star</li>
+                                            <li title="评分4" class="star_down">star</li>
+                                            <li title="评分5" class="star_down">star</li>
+                                                                 
+                             	</ul>
+                                <div class="go_onmousebtn clearfix mt10">
+                                    <a href="javascript:;" class="book"><span class="talk">含课程视频</span></a> 
+                                    <a href="javascript:;" class="light"><span class="talk">含可下载PPT</span></a>
+                                    <a href="javascript:;" class="discuss"><span class="talk">含开放讨论</span></a>
+                                </div>
+                            </div>
+                            <a class="fr look mt10" href="#" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="m30auto15 xueba clearfix">
+            <h3 class="fl">个人中心</h3>
+            <ul class="course_sort_in fl">
+                <li class="course_ch_in">
+                    <a href="javascript:;">为我推荐</a>
+                </li>
+                <li>
+                    <a href="javascript:;">观看记录</a>
+                </li>
+                <li>
+                    <a href="javascript:;">我的收藏</a>
+                </li>
+                <!-- <li>
+                    <a href="javascript:;">会员专享</a>
+                </li>  -->                   
+            </ul>
+            <a href="{:U('home/Index/index')}" class="more fr">查看更多>></a>
+        </div>
+        <div class="zu_content">
+            <div class="clearfix zu_box" style="display:block;">
+                 
+                <div class="box_mainb fl w276">
+                	 
+                    <a href="{:U('order/Index/play_mathfirst',array('cid'=>$vo['id']))}" target="_blank">
+                    <span class="img_zz"></span>
+                    <img src="__APP__/images/max.jpg">
+                    
+                    <div class="txt_box_index">
+                    	
+                        <em class="yellow">公共课</em>
+                       
+                        <h4><a href="#" target="_blank">非统考专业课(北京地区)</a></h4>
+                        
+                        <p><a href="#" target="_blank">非统考专业课(北京地区)</a></p><div class="star_box mt22 clearfix">
+                            <div class="fl">
+                                <ul class="clearfix">
+                                       
+                    <li title="评分1" class="star_down">star</li> 
+                    <li title="评分2" class="star_down">star</li>
+                    <li title="评分3" class="star_down">star</li>
+                    <li title="评分4" class="star_down">star</li>
+                    <li title="评分5" class="star_down">star</li>
+                                     
+                                </ul>
+                                <div class="go_onmousebtn clearfix mt10">
+                                    <a href="javascript:;" class="book"><span class="talk">含课程视频</span></a> 
+                                    <a href="javascript:;" class="light"><span class="talk">含可下载PPT</span></a>
+                                    <a href="javascript:;" class="discuss"><span class="talk">含开放讨论</span></a>
+                                </div>
+                            </div>
+                            <a class="fr look mt10" href="#" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="clearfix zu_box">
+                
+                <div class="box_mainb fl w276">
+                    <div class="txt_box_index">
+                        <em class="yellow">公共课</em>
+                        <h4><a href="#" target="_blank">考研英语大纲核心词汇5</a></h4>
+                        <p><a href="#" target="_blank">考研英语大纲核心词汇5</a></p><div class="star_box mt22 clearfix">
+                            <div class="fl">
+                                <ul class="clearfix">
+                                  
+                    <li title="评分1" class="star">star</li> 
+                    <li title="评分2" class="star">star</li>
+                    <li title="评分3" class="star_down">star</li>
+                    <li title="评分4" class="star_down">star</li>
+                    <li title="评分5" class="star_down">star</li>
+                                         
+                                </ul>
+                                <div class="go_onmousebtn clearfix mt10">
+                                    <a href="javascript:;" class="book"><span class="talk">含课程视频</span></a> 
+                                    <a href="javascript:;" class="light"><span class="talk">含可下载PPT</span></a>
+                                    <a href="javascript:;" class="discuss"><span class="talk">含开放讨论</span></a>
+                                </div>
+                            </div>
+                            <a class="fr look mt10" href="#" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="clearfix zu_box">
+                
+                <div class="box_mainb fl w276">
+                    <div class="txt_box_index">
+                        <em class="yellow">公共课</em>
+                        <h4><a href="{:U('order/Index/play_mathfirst',array('cid'=>$vo['id']))}" target="_blank">{$vo.title}</a></h4>
+                        <p><a href="{:U('order/Index/play_mathfirst',array('cid'=>$vo['id']))}" target="_blank">{$vo.ftitle}</a></p><div class="star_box mt22 clearfix">
+                            <div class="fl">
+                                <ul class="clearfix">
+                         
+            
+                            <li title="评分1" class="star">star</li> 
+                            <li title="评分2" class="star">star</li>
+                            <li title="评分3" class="star_down">star</li>
+                            <li title="评分4" class="star_down">star</li>
+                            <li title="评分5" class="star_down">star</li>
+                                                 
+                                </ul>
+                                <div class="go_onmousebtn clearfix mt10">
+                                    <a href="javascript:;" class="book"><span class="talk">含课程视频</span></a> 
+                                    <a href="javascript:;" class="light"><span class="talk">含可下载PPT</span></a>
+                                    <a href="javascript:;" class="discuss"><span class="talk">含开放讨论</span></a>
+                                </div>
+                            </div>
+                            <a class="fr look mt10" href="{:U('order/Index/play_mathfirst',array('cid'=>$vo['id']))}" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+                 
+            </div>
+             
+        </div>
+        <div class="m30auto15 xueba clearfix">
+            <h3 class="fl">编辑最爱</h3>
+            <ul class="course_sort_in fl">
+                <li class="course_ch_in">
+                    <a href="javascript:;">最佳原创</a>
+                </li>
+                <li><a href="javascript:;">编辑精选</a></li>    
+            </ul>
+            <a href="javascript:;" class="more fr">查看更多></a>
+        </div>
+        <div class="zu_content">
+            <div class="clearfix zu_box" style="display:block;">
+                
+                <div class="box_mainb fl w276">
+                     
+                    <a href="#" target="_blank">
+                    <span class="img_zz"></span><img src="__THEME__/images/pt/gjw6.jpg" ></a>
+                    
+                    <div class="txt_box_index">
+                       
+                        <em class="yellow">公共课</em>
+                        
+                        <h4><a href="#" target="_blank">考研英语核心词汇专辑</a></h4>
+                        <p><a href="#" target="_blank">考研英语核心词汇专辑</a></p><div class="star_box mt22 clearfix">
+                            <div class="fl">
+                                <ul class="clearfix">
+          
+                 
+                    <li title="评分1" class="star">star</li> 
+                    <li title="评分2" class="star">star</li>
+                    <li title="评分3" class="star_down">star</li>
+                    <li title="评分4" class="star_down">star</li>
+                    <li title="评分5" class="star_down">star</li>
+                                          
+                                </ul>
+                                <div class="go_onmousebtn clearfix mt10">
+                                    <a href="javascript:;" class="book"><span class="talk">含课程视频</span></a> 
+                                    <a href="javascript:;" class="light"><span class="talk">含可下载PPT</span></a>
+                                    <a href="javascript:;" class="discuss"><span class="talk">含开放讨论</span></a>
+                                </div>
+                            </div>
+                            <a class="fr look mt10" href="#" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="clearfix zu_box">
+                
+                <div class="box_mainb fl w276">
+                    <img src="__APP__/images/img_contentb_index4.jpg">
+                    <div class="txt_box_index">
+                        <em class="yellow">公共课</em>
+                        <h4><a href="#" target="_blank">非统考专业课(北京地区)</a></h4>
+                        <p><a href="#" target="_blank">非统考专业课(北京地区)</a></p><div class="star_box mt22 clearfix">
+                            <div class="fl">
+                                <ul class="clearfix">
+                                
+                    <li title="评分1" class="star">star</li> 
+                    <li title="评分2" class="star">star</li>
+                    <li title="评分3" class="star_down">star</li>
+                    <li title="评分4" class="star_down">star</li>
+                    <li title="评分5" class="star_down">star</li>
+                                         
+                                </ul>
+                                <div class="go_onmousebtn clearfix mt10">
+                                    <a href="javascript:;" class="book"><span class="talk">含课程视频</span></a> 
+                                    <a href="javascript:;" class="light"><span class="talk">含可下载PPT</span></a>
+                                    <a href="javascript:;" class="discuss"><span class="talk">含开放讨论</span></a>
+                                </div>
+                            </div>
+                            <a class="fr look mt10" href="#" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

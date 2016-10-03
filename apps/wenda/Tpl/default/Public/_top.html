@@ -1,0 +1,8 @@
+<div class="newpost">
+    <a href="{:U('wenda/Index/index',array('wdtype'=>$wdtype))}" <php>if(ACTION_NAME=="index"){echo "class='quealltab  onactive'";}else{echo "class='quealltab'";}</php>>最新</a>
+    <!--  <a href="/wenda/0/2" class="quealltab " >最新回答</a> -->
+    <a href="{:U('wenda/Index/classifywd',array('type'=>1,'tpid'=>$wdtype,'wdtype'=>$wdtype))}"<php>if(ACTION_NAME=="classifywd" && $_GET['type']==1){echo "class='quealltab  onactive'";}else{echo "class='quealltab'";}</php>>热门</a>
+    <php>if($wdtype!=3){</php>
+    <a href="{:U('wenda/Index/classifywd',array('type'=>2,'tpid'=>$wdtype,'wdtype'=>$wdtype))}" <php>if(ACTION_NAME=="classifywd" && $_GET['type']==2){echo "class='quealltab  onactive'";}else{echo "class='quealltab'";}</php>>等待回复</a>
+    <php>}</php>
+</div>

@@ -1,0 +1,174 @@
+<include file="__THEME__/public_header" />
+<link href="__ROOT__/apps/exam/_static/css/exam.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+  #bg{ display: none; position: absolute; top: 0%; left: 0%; width: 100%; height: 100%; background-color: #8e9091; z-index:1001; -moz-opacity: 0.7; opacity:.70; filter: alpha(opacity=70);}
+  #show{display: none; position: absolute; top: 30%; left: 35%; width: 30%; height: 30%; padding: 8px; z-index:1002; }
+  .fixed{position:fixed; top:20px;}
+  .fixed{_position:absolute; _top:expression((20+(noValue = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop))+'px');}
+  </style>
+  <script src="__ROOT__/apps/exam/_static/js/exam.js"></script>
+<script>
+//倒计时
+var test_time=0;
+window.onload=function(){ 
+  var time=<?php echo $exam_info["exam_total_time"]; ?>;
+  if(time>0){
+    test_time=time*60;
+    var t=window.setInterval(time_djs, 1000);
+  }
+}
+</script>
+<div class="breadcrumb"> <a href="/">首页</a>><a href="{:U('exam/Index/index')}">考试系统</a>><a href="#">{$exam_info.exam_name}</a></div>
+<div class="worap-con">
+<div class="es-section testpaper-heading">
+    <div class="testpaper-description">
+      <p>{$exam_info.exam_describe}</p>
+      <p>{$exam_info.paper_describe}</p>
+  </div>
+<div class="testpaper-metas">共 {$data.count} 题，总分 {$data.score} 分，及格 {$exam_info.exam_passing_grade} 分</div>
+  <div id="testpaper-navbar" class="testpaper-navbar" data-spy="affix" data-offset-top="200">
+    <ul class="nav nav-pills clearfix">
+      <volist name="question_type" id="vo">
+        <li><a class="btn" style="line-height:10px;" href="#{$vo.question_type_id}">{$vo.question_type_title}</a></li>
+      </volist>
+    </ul>
+  </div>
+</div>
+<form method="POST" action="{:U('exam/Index/doExam')}" id="detail_form" name="detail_form" onsubmit="return j_validateCallback(this,checkForm,post_callback)">
+<div class="row">
+    <div class="col-md-3">
+    <div id="float_box" style="width:280px;">
+        <div class="testpaper-card">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <span class="testpaper-card-timer">
+                <small class="text-muted" style="font-size:14px;">考试时间：
+                <?php 
+                  if($exam_info['exam_total_time']==0){ 
+                    echo "不受限制";
+                  }else{ 
+                    echo $exam_info['exam_total_time']."分钟";
+                    echo "
+                      <div class='testpaper-card-timer'>
+                        <small class='text-muted' style='font-size:14px;'>考试剩余时间：
+                          <span id='time_go' style='color:#000000;'></span>
+                        </small>
+                      </div>
+                    ";
+                  } ?>
+                </small>
+              </span>
+            
+        </div>
+        <div class="panel-body">
+          <volist name="data.question_list" id="vo">
+            <a id="num{$key+1}" href="#question{$key+1}" class="btn btn-default btn-index pull-left ">{$key+1}</a>
+          </volist>
+          <div class="clearfix mtm mbm"></div>
+        </div>
+        <div class="panel-footer">
+          <input type="hidden" id="sum" value="{$sum}"/>
+          <input type="submit" class="btn" style="height:30px;border:0;" id="form_submit" value="我要交卷"/>
+        </div>
+      </div>  
+    </div>
+    </div>
+    &nbsp;
+  </div>
+<div class="col-md-9">
+  <div class="testpaper-body">
+   <volist name="question_type" id="v">
+    <?php 
+      $num=0;
+     foreach ($question_type as $v) {
+    ?>
+    <div class="panel panel-default testpaper-question-block" id="{$v.question_type_id}">
+      <div class="panel-heading">
+        <strong class="">{$v.question_type_title}</strong>
+        <small class="text-muted">共{$v.sum}题，共{$v.score}分</small>
+      </div>
+      <volist name="data.question_list" id="vo" key="key"> 
+      <?php 
+       foreach ($data["question_list"] as $k=> $vo) {
+        if($vo['question_type']==$v['question_type_id']){
+          $num++;
+      ?>
+        <div class="panel-body" id="question{$num}">
+          <div>
+            <div class="testpaper-question-body">
+              <div class="testpaper-question-stem-wrap clearfix">
+                <div class="testpaper-question-seq-wrap">
+                  <div class="testpaper-question-seq">{$num}</div>
+                  <div class="testpaper-question-score">{$vo.paper_content_point}分</div>
+                </div>
+              <div class="testpaper-question-stem">{$vo.question_content}</div>
+            </div>
+            <?php if($vo["question_type"]!=3){ ?>
+              <ol class="testpaper-question-choices" type="A">
+                <?php foreach ($vo["option_list"] as $l=> $list) {
+                  echo "<li>".$subscript[$l]."：".$list['option_content']."</li>";
+                } ?>
+              </ol>
+            <?php } ?>
+          </div>
+          <div class="testpaper-question-footer clearfix">
+            <div class="testpaper-question-choice-inputs">
+            <?php
+              
+                for ($i=0; $i<$vo['question_option_count']; $i++) { 
+                  if($vo["question_type"]==1 || $vo["question_type"]==4){ ?>
+                      <label class='radio-inline '>
+                        <input type='radio' name='user_question{$num}' value='{$subscript[$i]}' onclick='selected({$num})'>{$subscript[$i]}
+                      </label>
+                  <?php }else if($vo["question_type"]==2){ ?>
+                      <label class='radio-inline '>
+                        <input type='checkbox' style='margin-bottom:5px;' name='user_question{$num}' value='{$subscript[$i]}' onclick='selected({$num})'>&nbsp;&nbsp;{$subscript[$i]}
+                      </label> 
+                  <?php }else if($vo["question_type"]==3){ ?>
+                      <label class='radio-inline '>
+                        <input type='text' name='user_question{$num}' id="user_question{$num}" style="border:1px solid #ececec;height:25px;padding-left:5px;" onblur="inputtext({$num})">
+                      </label>
+            <?php } }  ?>
+                <input type='hidden' name='answer{$num}' value='{$vo.question_answer}'>
+                <input type='hidden' name='question_id{$num}' value='{$vo.question_id}'>
+                <input type='hidden' name='question_type{$num}' value='{$vo.question_type}'>
+                <input type='hidden' name='point{$num}' value='{$vo.paper_content_point}'>
+            </div>
+          </div>
+        </div>  
+      </div>
+    <?php } } ?>
+  </div>
+  <?php } ?>
+    <input type='hidden' name="begin_time" value='{$begin_time}'/>
+    <input type='hidden' id='user_score' name="user_score">
+    <input type='hidden' id='errorcount' name="errorcount">
+    <input type='hidden' id='rightcount' name="rightcount">
+    <input type='hidden' id='question_list' name="question_list">
+    <input type='hidden' id='exam_id' name='exam_id'value="{$exam_info.exam_id}">
+    <input type='hidden' id='paper_id' name='paper_id'value="{$exam_info.paper_id}">
+  </form>
+    </div>
+  </div>
+</div>
+</div>
+<input type='hidden' id='time' value='1'>
+<input type='hidden' id='tm_mode' value='{$exam_info.exam_publish_result_tm_mode}'/>
+<input type='hidden' id='result_tm' value='{$exam_info.exam_publish_result_tm}'/>
+<div id="bg"></div>
+<div class="col-md-9" id="show">
+  <div class="panel panel-default testpaper-question-block" style="width:500px;height:200px;border:1px solid #ececec;">
+      <div class="panel-heading">
+        <strong>考试结束</strong>
+      </div>
+        <div class="panel-body">
+          <div style="margin-bottom:20px;" id="result"></div>
+          <div id="divbox1" style="display:none;">
+            <a href="{:U('exam/UserExam/exam_info','exam_id='.$exam_info['exam_id'].'&paper_id='.$exam_info['paper_id'])}"class="btn" style="margin-left:30%;">去看看</a>
+            <a href="{:U('exam/Index/index')}" class="btn">算了,以后再看</a>
+          </div>
+          <div id="divbox2" style="display:none;"><a href="{:U('exam/Index/index')}" class="btn" style="margin-left:30%;">我知道了</a></div>
+      </div>
+  </div>
+</div>
+<include file="__THEME__/public_footer" />

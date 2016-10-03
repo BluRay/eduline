@@ -1,0 +1,154 @@
+<include file="__THEME__/public_header" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+<script>
+window.onload=function()
+{
+	//公用库
+	higher_common();
+}
+</script>
+<div class="main mt35 clearfix">
+	<div class="plr40 pt20 main_box_index clearfix">
+        <div class="fl cent_l_box cent_l_box_a">
+            <h3 class="tit_list tit_list_a">榜单导航</h3>
+            <ul>
+                <li class="sel_cent"><a href="{:U('classroom/Ranking/index')}">榜单家族</a></li>
+                <li><a href="{:U('classroom/Ranking/video')}">畅销榜单(视频)</a></li>
+                <li><a href="{:U('classroom/Ranking/album')}">畅销榜单(专辑)</a></li>
+                <li><a href="{:U('classroom/Ranking/day_list')}">每日上新</a></li>
+                <li><a href="{:U('classroom/Ranking/yuanchuang')}">原创榜</a></li>
+                <li><a href="{:U('classroom/Ranking/jingxuan')}">精选榜</a></li>
+                <!--<li><a href="{:U('classroom/Ranking/index')}">争霸赛榜单</a></li>-->
+            </ul>
+        </div>
+        <div class="box_list_r clearfix">
+        	<div class="ritm">
+                <div class="u_ttl bor_b clearfix">
+                    <h3 class="fl bor_l_lan">畅销榜单(视频)</h3>
+                    <div class="fr">
+                        <a class="green_txt" href="{:U('classroom/Ranking/video')}">更多</a>
+                    </div>
+                </div>
+                <ul>
+			<volist name="video['data']" id="vo">
+				<li class="itm">
+					<em class="hot">{$key+1}.</em>
+					<a class="title" target="_blank" hidefocus="hidefocus" title="{$vo['video_title']}" href="{:U('classroom/Video/view',array('id'=>$vo['id']))}">{$vo['video_title']}</a>
+					<p class="u_author">
+					<span>{:getUserName($vo['uid'])}</span>
+					</p>
+			  </li>
+			</volist>
+                </ul>
+            </div>
+            <div class="ritm">
+                <div class="u_ttl bor_b clearfix">
+                    <h3 class="fl bor_l_lan">畅销榜单(专辑)</h3>
+                    <div class="fr">
+                        <a class="green_txt" href="{:U('classroom/Ranking/album')}">更多</a>
+                    </div>
+                </div>
+                <ul>
+                   <volist name="album['data']" id="vo">
+				<li class="itm">
+					<em class="hot">{$key+1}.</em>
+					<a class="title" target="_blank" hidefocus="hidefocus" title="{$vo['album_title']}" href="{:U('classroom/Album/view',array('id'=>$vo['id']))}">{$vo['album_title']}</a>
+					<p class="u_author">
+					<span>{:getUserName($vo['uid'])}</span>
+					</p>
+			  </li>
+			</volist>
+                </ul>
+            </div>
+            <div class="ritm">
+                <div class="u_ttl bor_b clearfix">
+                    <h3 class="fl bor_l_lan">每日上新</h3>
+                    <div class="fr">
+                        <a class="green_txt" href="{:U('classroom/Ranking/day_list')}">更多</a>
+                    </div>
+                </div>
+                <ul>
+                    <volist name="day_list.data" id="vo">
+				<li class="itm">
+					<em class="hot">{$key+1}.</em>
+					<php>if($vo['type'] == 1){</php>
+						<a class="title" target="_blank" hidefocus="hidefocus" title="{$vo['title']}" href="{:U('classroom/Video/view',array('id'=>$vo['id']))}">{$vo['title']}</a>
+					<php>} else {</php>
+						<a class="title" target="_blank" hidefocus="hidefocus" title="{$vo['title']}" href="{:U('classroom/Album/view',array('id'=>$vo['id']))}">{$vo['title']}</a>
+					<php>} </php>
+					<p class="u_author">
+					<span>{:getUserName($vo['uid'])}</span>
+					</p>
+			  </li>
+			</volist>
+                </ul>
+            </div>
+            <div class="ritm">
+                <div class="u_ttl bor_b clearfix">
+                    <h3 class="fl bor_l_lan">原创榜</h3>
+                    <div class="fr">
+                        <a class="green_txt" href="{:U('classroom/Ranking/yuanchuang')}">更多</a>
+                    </div>
+                </div>
+                <ul>
+                    <volist name="yuanchuang.data" id="vo">
+				<li class="itm">
+					<em class="hot">{$key+1}.</em>
+					<php>if($vo['type'] == 1){</php>
+						<a class="title" target="_blank" hidefocus="hidefocus" title="{$vo['title']}" href="{:U('classroom/Video/view',array('id'=>$vo['id']))}">{$vo['title']}</a>
+					<php>} else {</php>
+						<a class="title" target="_blank" hidefocus="hidefocus" title="{$vo['title']}" href="{:U('classroom/Album/view',array('id'=>$vo['id']))}">{$vo['title']}</a>
+					<php>} </php>
+					<p class="u_author">
+					<span>{:getUserName($vo['uid'])}</span>
+					</p>
+			  </li>
+			</volist>
+                </ul>
+            </div>
+            <div class="ritm">
+                <div class="u_ttl bor_b clearfix">
+                    <h3 class="fl bor_l_lan">精选榜</h3>
+                    <div class="fr">
+                        <a class="green_txt" href="{:U('classroom/Ranking/jingxuan')}">更多</a>
+                    </div>
+                </div>
+                <ul>
+                    <volist name="jingxuan.data" id="vo">
+				<li class="itm">
+					<em class="hot">{$key+1}.</em>
+					<php>if($vo['type'] == 1){</php>
+						<a class="title" target="_blank" hidefocus="hidefocus" title="{$vo['title']}" href="{:U('classroom/Video/view',array('id'=>$vo['id']))}">{$vo['title']}</a>
+					<php>} else {</php>
+						<a class="title" target="_blank" hidefocus="hidefocus" title="{$vo['title']}" href="{:U('classroom/Album/view',array('id'=>$vo['id']))}">{$vo['title']}</a>
+					<php>} </php>
+					<p class="u_author">
+						<span>{:getUserName($vo['uid'])}</span>
+					</p>
+			  </li>
+			</volist>
+                </ul>
+            </div>
+            <!--<div class="ritm">
+                <div class="u_ttl bor_b clearfix">
+                    <h3 class="fl bor_l_lan">学霸争霸赛作品榜单</h3>
+                    <div class="fr">
+                        <a class="green_txt" href="list_zb.shtml">更多</a>
+                    </div>
+                </div>
+                <ul>
+                    <li class="itm">
+                        <em class="hot">1.</em>
+                        <a class="title" target="_blank" hidefocus="hidefocus" title="三体（全三册）" href="/book/10517">考研英语核心词汇第5讲</a>
+                        <p class="u_author">
+                        <span>刘慈欣</span>
+                        </p>
+                  </li>
+                </ul>
+            </div>-->
+    	</div>
+    </div>
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

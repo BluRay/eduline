@@ -1,0 +1,237 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/css/teacher.css" rel="stylesheet" type="text/css" />
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <link rel="stylesheet" href="__THEME__/js/swfupload/css/default.css">
+    <script type="text/javascript" src = "__THEME__/js/swfupload/js/fileprogress.js"></script>
+    <script type="text/javascript" src = "__THEME__/js/swfupload/js/handlers.js"></script>
+    <script type="text/javascript" src = "__THEME__/js/swfupload/swfupload/swfupload.js"></script>
+    <script type="text/javascript" src = "__THEME__/js/swfupload/js/swfupload.queue.js"></script>
+    <style type="text/css">
+    .ico_top, .ico_btm {
+        background: url("__THEME__/admin/image/ico_top_btm.gif") no-repeat scroll 0 0 transparent;
+        height: 14px;
+        width: 12px;
+    }
+    .ico_top, .ico_btm { display: inline-block; vertical-align: middle;
+    }
+    .ico_top { background-position: -12px 0;}
+    .ico_btm {background-position: -24px 0;}
+    .ico_top:hover { background-position: 0 0;}
+    .ico_btm:hover { background-position: -35px 0;}
+  </style>
+    <div class="user-con fl user-pbottom">
+      <div class="user-con-title">
+        <a onclick="navClick(this,'uploadvideo')" href="#">我的教师信息</a>
+      </div>
+      <form method="POST" action="{:U('classroom/User/doteacherDeatil')}" id="detail_form" name="detail_form" onsubmit="return j_validateCallback(this,checkForm,post_callback)">
+      <div class="form2" style="margin-top:30px;">
+        <ul class="user-set-sz">
+          <li>
+            <label class="label1"><em>*</em> 姓名：</label>
+           <input type="text" name="name" id="name" value="{$teacher_info.name}">
+          </li>
+          <li>
+            <label class="label1"><em>*</em> 职称：</label>
+           <input type="text" name="title" id="title" value="{$teacher_info.title}">
+          </li>
+          <li>
+            <label class="label1"><em>*</em> 教龄：</label>
+           <input type="text" name="teacher_age" id="teacher_age" value="{$teacher_info.teacher_age}"> <font color="999999">年</font>
+          </li>
+          <li>
+            <label class="label1"><em>*</em> 最高学历：</label>
+           <input type="text" name="high_school" id="high_school" value="{$teacher_info.high_school}">
+          </li>
+          <li>
+            <label class="label1"><em>*</em> 毕业院校：</label>
+           <input type="text" name="graduate_school" id="graduate_school" value="{$teacher_info.graduate_school}">
+          </li>
+          <li>
+            <label class="label1"><em>*</em> 授课方式：</label>
+             <select name="teach_way" id="teach_way">
+              <if condition="$teacher_info.label eq 1">
+                <option value="1">在线授课</option>
+                <option value="2">线下授课</option>
+                <option value="3">线上/线下均可</option>
+              <elseif condition="$teacher_info.label eq 2"/>
+                <option value="2">线下授课</option>
+                <option value="1">在线授课</option>9/
+                <option value="3">线上/线下均可</option>
+              <elseif condition="$teacher_info.label eq 3"/>
+                <option value="3">线上/线下均可</option>
+                <option value="1">在线授课</option>
+                <option value="2">线下授课</option>
+              <else/>
+                <option value="1">在线授课</option>
+                <option value="2">线下授课</option>
+                <option value="3">线上/线下均可</option>
+              </if>
+              </select>
+          </li>
+          <li>
+            <label class="label1"><em>*</em> 我的标签：</label>
+           <input type="text" class="user-width" name="label" id="label" value="{$teacher_info.label}">
+          </li>
+          <li>
+            <label class="label1"><em>*</em> 授课地区：</label>
+           <input type="text" class="user-width" name="Teach_areas" id="Teach_areas" value="{$teacher_info.Teach_areas}">
+          </li>
+          <li>
+            <label class="label1"><em>*</em> 我的简介：</label>
+            <textarea id="inro" class="user-textarea" name="inro">{$teacher_info.inro}</textarea>
+          </li>
+          <li>
+            <label class="label1"><em>*</em> 教学特点：</label>
+            <textarea id="teach_evaluation" class="user-textarea" name="teach_evaluation">{$teacher_info.teach_evaluation}</textarea>
+          </li>
+          <div class="v-introduce-content-1" id="v-introduce-content-2">
+            <p style="margin-bottom:10px;">
+            <font color="#373737" size="4">一周授课时间</font>
+            </p>
+            <table width="100%" border="0" cellspacing="1" cellpadding="0">
+              <tr>
+                <foreach name="teacher_schedule" item="ld">
+                    <th class="td" style="font-size:16px;">{$ld.title}</th>
+                </foreach>
+              </tr>
+              <foreach name="teacher_level" item="ld">
+                <tr>
+                  <foreach name="ld" item="val">
+                      <td 
+                      <?php 
+                        if(in_array($val["id"],$teacher_info["teacher_schedule"])){
+                           echo "class='td-1'";
+                        }else{
+                          echo "class='td'";
+                        }
+                      ?>
+                      style='font-size:14px;' onclick="selectschedule(this,{$val.id});">{$val.title}
+                      </td>
+                  </foreach>
+                </tr>
+                </foreach>
+            </table>
+          </div>
+          <li style="margin-top:15px;">
+            <label class="label1">&nbsp;</label>
+            <input type="hidden" name="id" id="teacher_id" value="{$teacher_info.id}">
+            <input type="hidden" name="teacher_schedule" id="teacher_schedule" value="{$teacherschedule}">
+            <input  class="user-submit" type="submit"  value="保 存">
+          </li>
+        <ul>
+      </div>   
+      </form>
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+ <script type="text/javascript">
+  function j_validateCallback(form,call,callback) {
+    var $form = $(form);
+    if(typeof call != 'undefined' && call instanceof Function){    
+      $i = call($form);
+      if(!$i){
+        return false;
+      }
+    }
+    var _submitFn = function(){
+      $.ajax({
+        type: form.method || 'POST',
+        url:$form.attr("action"),
+        data:$form.serializeArray(),
+        dataType:"json",
+        cache: false,
+        success: function(xMLHttpRequest, textStatus, errorThrown){
+          if(typeof callback != 'undefined' && callback instanceof Function){   
+            callback($form,xMLHttpRequest);
+          }  
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+          ui.error("未知错误!");
+        }
+      });
+    }
+    _submitFn();
+    return false;
+  }
+  function checkForm(form){
+    if($("#name").val()==""){
+      ui.error("请输入名称!");
+      return false;
+    }
+    if($("#title").val()==""){
+      ui.error("请输入职称!");
+      return false;
+    }
+    if($("#teacher_age").val()==""){
+      ui.error("请输入教龄!");
+      return false;
+    }
+    if($("#high_school").val()==""){
+      ui.error("请输入最高学历!");
+      return false;
+    }
+    if($("#graduate_school").val()==""){
+      ui.error("请输入毕业院校!");
+      return false;
+    }
+    if($("#label").val()==""){
+      ui.error("请输入标签!");
+      return false;
+    }
+    if($("#inro").val()==""){
+      ui.error("请输入简介!");
+      return false;
+    }
+    if($("#teach_evaluation").val()==""){
+      ui.error("请输入教学特点!");
+      return false;
+    }
+    return true;
+  }
+  function post_callback(_form,data){
+    if(data.status != undefined){
+      if(data.status == '0'){
+        ui.error(data.info);
+      } else {
+        ui.success(data.info);
+        window.location.href = U('classroom/User/teacherDeatil');
+      }
+    }
+  }
+  function callback(data){
+    $("#"+data.input_id+"_cover").remove();
+    $("#image_"+data.input_id).append(
+      '<div id='+data.input_id+'_cover>'
+      +'<img style="max-width:100px;padding:2px; border:1px solid #ccc" src='+UPLOAD_URL+'/'+data.src+' />'
+      +'</div>'
+    ).find('input:file').val('');
+    $("#"+data.input_id+"_ids").val(data.attach_id);
+  }
+  function selectschedule(schedule,schedule_id){
+    var id=$("#teacher_schedule").val();
+    if($(schedule).attr("class")=="td"){
+      $(schedule).attr("class","td-1");
+      if(id){
+        id=id+","+schedule_id;
+      }else{
+        id=schedule_id;
+      }
+      $("#teacher_schedule").val(id);
+    }else{
+      if(id.indexOf(","+schedule_id)!=-1){
+        id=id.replace(","+schedule_id,'');
+      }else if(id.indexOf(schedule_id+",")!=-1){
+        id=id.replace(schedule_id+",",'');
+      }else{
+        id=id.replace(schedule_id,'');
+      }
+      $("#teacher_schedule").val(id);
+      $(schedule).attr("class","td");
+    }
+  }
+  </script>
+<include file="__THEME__/public_footer" />

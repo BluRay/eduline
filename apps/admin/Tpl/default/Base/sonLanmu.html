@@ -1,0 +1,15 @@
+<center>
+<volist name="columns" id="column" key="m">	
+	<td><a href="javascript:void(0);" onclick="sonColumn({$column['typeid']},2)">查看子菜单</a>&nbsp;&nbsp;&nbsp;&nbsp;<B>|</B>&nbsp;&nbsp;&nbsp;&nbsp;{$column[name]}<td>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<if condition="$column['status'] eq 0">
+		<td>审核中...</td>
+		<elseif condition="$column['status'] eq 1"/>
+		<td>通过</td>
+		<elseif condition="$column['status'] eq 2"/>
+		<td>未通过</td>
+		</if>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td><a href="{:U('admin/base/addColumn',array('topid'=>$column['topid'],'reid'=>$column['typeid']))}">添加子栏目</a>&nbsp;&nbsp;<B>|</B><td><a href="{:U('admin/base/editColumn',array('id'=>$column['typeid']))}">编辑</a>&nbsp;&nbsp;<B>|</B>&nbsp;&nbsp;<a href="javascript:viod(0);" onclick="delColumn({$column['typeid']});">删除</a>&nbsp;&nbsp;<B>|</B>&nbsp;&nbsp;</td>
+	</br>
+</volist>
+</center>

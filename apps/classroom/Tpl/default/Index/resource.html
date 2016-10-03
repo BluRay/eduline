@@ -1,0 +1,615 @@
+<include file="__THEME__/public_header" />
+<link  href="__APP__/editor/themes/default/default.css" rel="stylesheet" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+<script>
+window.onload=function()
+{
+	//公用库
+	higher_common();
+	//关注
+	(function(){
+	   var oCollect= document.getElementById('mzkecCollect');
+	   collect_a(oCollect,'收藏','已收藏','bg_hui sel_w','sel_w');
+	})();
+	 //分享
+	(function(){
+		 Share_r('ds_show');
+     })();
+	//部分收起
+	(function(){
+		limt_show();
+    })();
+	
+  //写答案 		
+	(function(){
+      answer();
+	})();
+  
+     //最热  最新
+	(function(){
+		hottest();
+     })();
+	 
+	 
+}
+var qstAndNoteLoad = function(){
+	//每条评论回复
+	(function(){
+		var oCommentList=getByClass(document,'cmts_list')[0];
+		
+		var oCommentLi=oCommentList.children;
+		for(var i=0;i<oCommentLi.length;i++)
+		{
+		   eachomment(oCommentLi[i],function(e){
+				var reviewid = $(e).find('input[name="reviewid"]').val();
+				//清除上一次的分页数据
+				$(e).find('ul.pagination').remove();
+				//获取点评的评论信息
+				getMyHuiFu(e,reviewid);
+		   });
+		}
+		
+		var oCommentList=getByClass(document,'cmts_list')[1];
+		
+		var oCommentLi=oCommentList.children;
+		for(var i=0;i<oCommentLi.length;i++)
+		{
+		   eachomment(oCommentLi[i],function(e){
+				var reviewid = $(e).find('input[name="reviewid"]').val();
+				//清除上一次的分页数据
+				$(e).find('ul.pagination').remove();
+				//获取点评的评论信息
+				getMyHuiFu(e,reviewid);
+		   });
+		}
+		
+		
+		
+	})();
+	//视频页 评论回复部分
+	(function(){
+		var oEditwrap1=getByClass(document, 'editwrap1');
+		
+		for(var i=0; i<oEditwrap1.length; i++)
+		{
+			textarea_box1(oEditwrap1[i]);
+			tabtj(oEditwrap1[i],'评论内容不得包含敏感词!','请输入评论内容!', '你已提交成功!','xq_transparent');
+		}	
+    })();
+	//点赞----------------------------------------------------------------------
+	function Goodpoint(oZan)
+	{
+		oZan.onclick=function()
+		{
+			if(this.innerHTML=='取消投票' || this.className=='zan zan1')
+			{
+				mzAjaxTouPiao(this,1);
+				this.innerHTML='投票';
+				this.className='zan zan2';
+				this.style.color='#99CC66';
+			}
+			else
+			{
+				mzAjaxTouPiao(this,0);
+				this.innerHTML='取消投票';
+				this.className='zan zan1';
+				this.style.color='#999';
+			}
+		}
+	}
+	//赞
+	(function(){
+		var oZan=getByClass(document,'zan');
+		now=0;
+		for(var i=0; i<oZan.length; i++)
+		{
+			Goodpoint(oZan[i]);
+		}
+	})();
+};
+
+
+
+
+
+var theTopHotObj = theTopNewObj = dianPingHuiFuObj = null;
+var filetype = '{$type}';
+var fileparentid = '{$data.id}';
+$(function(){ 
+	//异步加载最热的
+	$('#txtultophot').mzpagination({
+		url:U('classroom/Index/getTopHot'),
+		ispage:true,//是否分页
+		data:{
+			limit:6,
+			type:filetype,
+			pid:fileparentid
+		}
+	},function(d){
+		return createWenTiHtml(d);
+	},function(fun){
+		theTopHotObj = fun;
+	},function(){
+		qstAndNoteLoad();
+	});
+	//异步加载最新的
+	$('#txtultopnew').mzpagination({
+		url:U('classroom/Index/getTopNew'),
+		ispage:true,//是否分页
+		data:{
+			limit:6,
+			type:filetype,
+			pid:fileparentid
+		}
+	},function(d){
+		return createWenTiHtml(d);
+	},function(fun){
+		theTopNewObj = fun;
+	},function(){
+		qstAndNoteLoad();
+	});
+	//同问点击事件
+	$('.help_bor').click(function(){
+		$.ajax({
+			url : U('classroom/Index/tongwen'),
+			type : 'POST',
+			data : {type:filetype,rid:fileparentid},
+			timeout: 5000,
+			dataType : 'json',
+			success:function(xMLHttpRequest, textStatus, errorThrown){
+				try{
+					if(xMLHttpRequest.status == 1){
+						$('#txtmzspantwcount').html(parseInt($('#txtmzspantwcount').html())+1);
+						return;
+					}
+					mzgaojiaowang.ajaxDone(xMLHttpRequest, textStatus, errorThrown);
+				}catch(e){}
+			},
+			error : function(xhr, ajaxOptions, thrownError) {
+				mzgaojiaowang.ajaxError(xhr, ajaxOptions, thrownError);
+			}
+		});
+	});
+	
+	
+	
+	//如果是他自己的就显示编辑和删除
+	$('#txtmzeditordel').bind('mouseover',function(){
+		$(this).find('a.my').show();
+	}).bind('mouseout',function(){
+		$(this).find('a.my').hide();
+	});
+	
+});
+
+
+var createWenTiHtml = function($data){
+	var html ='';
+	$.each($data,function(i,k){
+		html += '<li class="comment_li">';
+		html += '<input name="reviewid" type="hidden" value="'+k.id+'" />';
+		html += '<div class="pb20 clearfix pinlun">';
+		html += '<em class="ls fl">'+k.username+'</em>';
+		html += '<em class="ls ml15">'+k.strtime+'</em>';
+		html += '<p class="mb10 mt10">'+k.content+'</p>';
+		html += '<em class="ls">来自'+k.source+'</em>';
+		html += '<div class="fr"> ';
+		
+		if(k.isvote){
+			html += '<span class="zan zan1">取消投票</span>';
+		}else{
+			html += '<span class="zan zan2">投票</span>';
+		}
+		
+		html += '<span class="pl ml5"><em class="zan_zoe mzzan_zoe">'+k.comment_count+'</em></span>';
+		html += '</div>';
+		html += '</div>';
+		html += '<div class="cmt_list_rep bg_qianhui" style="display: none;">';
+		html += '<div class="clearfix">';
+		html += '<div class="editwrap1_box w484 fl mt10 ml20">';
+		html += '<div class="editwrap1" style="height:65px;">';
+		html += '<textarea id="auto-id-8N8gGtRpum9CBbFZ" class="j-edittxt edittxt" name="edittxt"></textarea>';
+		html += '<label id="auto-id-drt6TisVISpRhnQa" class="j-hint hint" for="edittxt" style="display: block;">在此记录你的想法...</label>';
+		html += '<a class="btn_tag btn_tag_a sel_w fl mt20 ml20" href="javascript:;">发表回复</a>';
+		html += '</div>';
+		html += '</div>';
+		html += '</div>';
+		html += '<h4 class="lh30 ml20 mt20">"共<span class="mzdianphuifu">'+k.comment_count+'</span>条回复</h4>';
+		html += '<div style="height:auto;overflow: hidden;"><ul class="cmts-list m20 clearfix">';
+		html += '</ul></div>';
+		html += '</div>';
+		html += '</li>';	
+	});
+	return html;
+};
+//处理投票
+var mzAjaxTouPiao = function(_this,$type){
+	var mz_kzid = $(_this).closest('li.comment_li').find('input[name="reviewid"]').val();
+	$.ajax({
+		url : U('classroom/Public/doreviewvote'),
+		type : 'POST',
+		data : {kztype:filetype,kzid:mz_kzid,type:$type},
+		timeout: 5000,
+		dataType : 'json',
+		success:function(xMLHttpRequest, textStatus, errorThrown){
+			//console.log(xMLHttpRequest);	
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			mzgaojiaowang.ajaxError(xhr, ajaxOptions, thrownError);
+		}
+	});
+};
+//获取问题、笔记的评论回复
+var getMyHuiFu = function(e,pid){
+	$(e).find('ul.cmts-list').mzpagination({
+		url:U('classroom/Index/getListForId'),
+		ispage:true,//是否分页
+		data:{
+			limit:4,
+			pid:pid,
+			type:filetype
+		}
+	},function(d){
+		return createDPHuiFuHtml(d);
+	},function(fun){
+		dianPingHuiFuObj = fun;
+	});
+};
+
+//创建评论回复
+var createDPHuiFuHtml = function($data){
+	var html = '';
+	$.each($data,function(i,k){
+		html += '<li class="w600">';
+		html += '<div class="clearfix">';	
+		html += '<div class="clearfix">';	
+		html += '<em class="ls fl mr15">'+k.username+'</em>';	
+		html += '<p class="time fl">'+k.strtime+'</p></div><p class="p_dp">'+k.content+'</p><div class="fr"> ';	
+		//html += '<span class="pl ml5" style="background:none">回复</span>';	
+		html += '</div>';	
+		html += '</div>';	
+		html += '</li>';	
+	});
+	return html;
+}
+
+
+var mzSubmitHuiFu = function(oEditwrap,value){
+	var pid = $(oEditwrap).closest('li.comment_li').find('input[name="reviewid"]').val();
+	$.ajax({
+		url : U('classroom/Index/dowrite'),
+		type : 'POST',
+		data : {rid:pid,type:filetype,content:value},
+		timeout: 5000,
+		dataType : 'json',
+		success:function(xMLHttpRequest, textStatus, errorThrown){
+			mzgaojiaowang.ajaxDone(xMLHttpRequest, textStatus, errorThrown);
+			if(xMLHttpRequest.status == 1){
+				dianPingHuiFuObj.getData({
+					limit:4,
+					pid:pid,
+					type:filetype
+				});
+				//把回复总数+1
+				var count = $(oEditwrap).closest('li.comment_li').find('span.mzdianphuifu').html();
+				$(oEditwrap).closest('li.comment_li').find('span.mzdianphuifu').html(parseInt(count)+1);
+				
+				var _count = $(oEditwrap).closest('li.comment_li').find('em.mzzan_zoe').html();
+				$(oEditwrap).closest('li.comment_li').find('em.mzzan_zoe').html(parseInt(_count)+1);
+				
+				$(oEditwrap).closest('li.comment_li').find('textarea[name="edittxt"]').val('');
+			}
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			mzgaojiaowang.ajaxError(xhr, ajaxOptions, thrownError);
+		}
+	});
+}
+
+
+//添加回复时的验证事件
+var judgeComment = function(_form){
+	//同步数据
+	E.sync();
+	return true;	
+};
+//添加回复之后的回调
+var callbackComment = function(_form,$data,xMLHttpRequest){
+	if(xMLHttpRequest.status == 1){
+		E.setData('');
+		theTopHotObj.getData({
+			limit:6,
+			type:filetype,
+			pid:fileparentid
+		});
+		theTopNewObj.getData({
+			limit:6,
+			type:filetype,
+			pid:fileparentid
+		});
+		//把界面上的评论总数+1
+		$('#txtmzpltotal').html(parseInt($('#txtmzpltotal').html())+1);
+	}
+};
+</script>
+
+<div class="main_box_index shadow Tag" id="Tag">
+    <p class="Tag_p"></p>
+    <span class="Tag_span"></span>
+</div>
+<div class="main_box_index shadow Tag" id="Tag1">
+    <p class="Tag_p"></p>
+    <span class="tag_span1"></span>
+</div>
+ <!--小标签bg-->  
+<div id="xq_transparent"></div>
+<div class="clearfix main">
+	<p class="h40 ft16"><a href="index.html">课程组合</a>&nbsp;>&nbsp;<em class="ft12">公共课</em>&nbsp;>&nbsp;<em class="ft12">考研英语大纲核心词汇1</em>&nbsp;>&nbsp;<em class="ft12">提问</em></p>
+    <div class="fl">
+        <div class="bg_f w626 p20 clearfix">
+            <div class="clearfix pos_r">
+                <div class="fl">
+                    <p class="p_ans">
+                        <a class="fl" href="javascript:void(0);" target="_blank">{$data.title}</a>
+                    </p> 
+                    <div class="cmt-txt pt20 fl">
+                        <!--<a class="coin_num"  target="_blank" href="javascript:;">BBBB</a>-->
+                        <em class="ls fl mr10">{$data.username}</em>
+                        <span class="cmt-info">-&nbsp;{$data.strtime}</span>
+                    </div> 
+                </div>   
+                <div class="fr w80 txt_r">            
+                    <if condition=" $data.iscollect GT 0 ">
+                    <a id="mzkecCollect" class="bg_hui sel_w fl" href="javascript:;" data-id="{$data.id}" data-type="{$type}">已收藏</a>
+                    <else />
+                    <a id="mzkecCollect" class="sel_w fl" href="javascript:;" data-id="{$data.id}" data-type="{$type}">收藏</a>
+                    </if>
+                    <div>
+                        <a id="Share_r" class="fr mr10 sel_w bg_lan mt10" href="javascript:;">分享</a>
+                        <div class="ds_show">
+                            <div id="auto-id-Wgv0KyQS2q5GtCJz" class="cli-share j-sharebox auto-1390289261253-parent" title="分享">
+                            <div class="bdsharebuttonbox">
+                                <a href="#" class="bds_weixin w8 share6" data-cmd="weixin" title="分享到微信"></a>
+                                </a><a href="#" class="bds_qzone w8 share2" data-cmd="qzone" title="分享到QQ空间">
+                                </a><a href="#" class="bds_tsina w8 share3" data-cmd="tsina" title="分享到新浪微博">
+                                </a><a href="#" class="bds_tqq w8 share4" data-cmd="tqq" title="分享到腾讯微博"></a>
+                                <a href="#" class="bds_renren w8 share1" data-cmd="renren" title="分享到人人网"></a>
+                                <a href="#" class="bds_douban w8 share5" data-cmd="douban" title="分享到豆瓣网"></a>
+                            </div>                                        
+                            <script>
+                            window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"tag":'img_share',"viewList":["renren","qzone","tsina","tqq","douban","weixin"],"viewText":"分享到：","viewSize":"16"},};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                            </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content_txt mt35">
+                {$data.content}
+            </div>
+            <div class="Show_all_box txt_r ls"><a class="Show_all1 pr10" href="javascript:;">显示全部</a></div>
+           <div class="mt20 clearfix" id="txtmzeditordel">
+                <em class="ls">来自{$data.source}</em>
+                <if condition=" $mid eq $data.uid ">
+                <a id="ans_up1" href="javascript:void(0);" class="my" style="margin-left:8px;display:none;">编辑</a>
+                <a href="javascript:void(0);" class="my" onclick="mzgaojiaowang.delResource(this,'{$mid}','{$data.id}','{$type}');" style="margin-left:8px;display:none;">删除</a>
+                </if>
+                <p class="fr">这个问题对您有帮助吗？<a class="ls help_bor ml15" href="javascript:;">同问<span id="txtmzspantwcount">{$data.help_count}</span></a></p>
+            </div>
+            <div>
+            	<div class="clearfix">
+                	<form id="zmform" name="zmform" action="{:U('classroom/Index/dowrite')}" method="post" onsubmit="return j_validateCallback(this,judgeComment,callbackComment);">
+                    <input name="rid" type="hidden" value="{$data.id}" />
+                    <input name="type" type="hidden" value="{$type}" />
+                    <h6 class="green_txt ft18 mt20">我要<if condition=" $type==3 ">回答<else />评论</if></h6>
+                    <div class="reply_box">
+                       <p class="reply_info">写<if condition=" $type==3 ">答案<else />评论</if>…</p>
+                    </div>
+                    <div class="mce_tinymce">
+                        {:W("Editor",array("contentName"=>"content",'tool'=>'more'))}
+                        <!--<form>
+                            <textarea name="content" style="width:626px;height:338px;visibility:hidden;"></textarea>
+                        </form>-->
+                        <div class="form_do form_do_a">
+                            <input style="background: #fff;color: #999;cursor:pointer;" type="submit" value="<if condition=" $type==3 ">提交答案<else />发表评论</if>" class="form_do fr"/>
+                            <!--<a class="form_do fr" href="javascript:;">发表评论</a>-->
+                            <a class="form_do form_do_b fr mr10" href="javascript:;">取消</a>
+                       </div>
+                    </div>
+                    </form>
+                </div>
+                
+                	<h6 class="green_txt ft18 mt20">所有<if condition=" $type==3 ">回答<else />评论</if><span class="ft12">(<span id="txtmzpltotal">{$data.comment_count}</span>)</span></h6>
+                    <ul class="px_box px_box_a clearfix">
+                        <li data-id="txttopnew" class="selecttag"><a class="green_txt" href="javascript:;">最新</a></li>
+                        <p class="fl">|</p>
+                        <li data-id="txttophot"><a href="javascript:;">最热</a></li>
+                    </ul>
+                    
+                    <div id="txttopnew" class="txttop">
+                        <ul id="txtultopnew" class="cmts_list mt20"></ul>
+                    </div>
+                    <div id="txttophot" class="txttop" style="display:none">
+                    	<ul id="txtultophot" class="cmts_list mt20"></ul>
+                    </div>
+                    
+                    
+            </div> 
+        </div>   
+    </div>
+    <div class="ml70bfb">
+    	<php>
+        if($type == 1){
+        	$url = U('classroom/Video/view','id='.$id);
+        }else{
+        	$url = U('classroom/Album/view','id='.$id);
+       	}
+        </php>
+        <a class="side_back" href="{$url}" target="_blank">
+            <span class="side_back_arrow"><</span>
+            <if condition=" $type eq 1 ">课程<else />专辑</if>详情
+        </a>
+        <div class="bg_f side_course p20">
+            <a href="{$url}" target="_blank">
+                <img width="45" height="45" src="{$datainfo.uid|getUserFace=###,'m'}">
+            </a>
+            <h6 class="course_title">
+                <a href="{$url}" target="_blank">
+                    <span>{$datainfo.title}</span>
+                    <span>{$datainfo.category|getCategoryName=###,true}</span>
+                </a>
+            </h6>
+            <span class="mt20 mb10"> 
+                <em class="green_txt fl ft12">评分：</em>
+                <ul class="fl">
+                    <li class="<if condition=" $datainfo.score GT 0 ">star<else />star_down</if> fl">star</li> 
+                    <li class="<if condition=" $datainfo.score GT 1 ">star<else />star_down</if> fl">star</li>
+                    <li class="<if condition=" $datainfo.score GT 2 ">star<else />star_down</if> fl">star</li>
+                    <li class="<if condition=" $datainfo.score GT 3 ">star<else />star_down</if> fl">star</li>
+                    <li class="<if condition=" $datainfo.score GT 4 ">star<else />star_down</if> fl">star</li>                       
+                </ul>
+                <em class="green_txt fl ft12">{$datainfo.score}</em>
+                <p>（{$datainfo.comment_count}人评价）</p>
+            </span>
+            <p class="fl">时间：</p>
+            <p>{$datainfo.ctime|date="Y-m-d",###}</p>
+        </div>
+        
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+<include file="__THEME__/public_footer_g" />
+
+<if condition=" $type eq 4 ">
+<!--笔记板块  -->
+<div class="main_box_index shadow tk_review clearfix" id="tk_review1">  
+    <div id="close_up1" class="close fr mr15 mt5">×</div>
+    <h3 id="title_drag1" class="review bor_b txt_l h40">编辑笔记</h3>
+    <div class="bao_box">
+    	<form id="zmform" name="zmform" action="{:U('classroom/Note/editnote')}" method="post" onsubmit="return j_validateCallback(this,validate);">
+        <input name="id" type="hidden" value="{$data.id}" />
+        <div class="review_box w442 fl">
+            <div class="w448 mt10b20 clearfix">
+                <span class="selected_title color_hui mr20 fl">标题</span>
+                 <div id="myInput2" class="myInput1 fl w340">
+                      <input name="title" type="text" id="head_search_2" class="w340" rel="输入关键字" readonly="readonly" value="{$data.title}">
+                      <span id="s_span2" class="w333" style="display:none;">请在这里添加补充笔记</span>
+                 </div>
+            </div>
+            <div id="enter_bar" class="w448 clearfix">
+                    <div class="stip_box mr63">
+                        <h4 class="enter txt_c fr">还可以输入<span>1000</span>字</h4>
+                    </div>
+                    <span class="selected_title color_hui mr20 fl">内容</span>
+                    <div class="editwrap fl w333" style="height:300px;">
+                        <textarea id="editor" class="j-edittxt edittxt" style="height:300px;" name="edittxt">{$data.content}</textarea>
+                        <label id="auto-id-drt6TisVISpRhnQa" class="j-hint hint" for="edittxt" style="display:none;">
+                        请在这写笔记
+                        </label>
+                    </div>
+                    <div class="sure_box  fr clearfix ptb20 mr5">
+                        <a class="sel_w bg_btn_aa mr15 fl" href="javascript:;">取消</a>
+                        <input type="submit" class="yes bg_btn_aa sel_w  mr56 fl" value="确认" style="border:none;"/>
+                    	<!--<a class="yes bg_btn_aa sel_w  mr56 fl" href="javascript:;" onClick="doBiji()">确认标题</a>-->
+                    </div>
+                </div>
+        </div>
+        </form>
+        <div class="side fl">
+           <h3> 温馨提示：</h3>
+            <p>1.&nbsp;笔记可以是你的作业、资料、学习经验和心得，以及你想要记录和分享的与本课程有关的内容。</p>
+            <p>2.&nbsp;请不要低于50字。</p>
+        </div>
+    </div>
+</div>
+<!--//笔记板块  -->
+<script>
+$(function(){
+	reviews(1000,'tk_review1');
+	//弹层 笔记 
+	objshow('ans_up1','tk_review1','close_up1','');
+	//弹层拖拽 笔记
+	listdrge('tk_review1','title_drag1');
+	//笔记——搜索
+	mysearch('myInput2');	
+});
+//验证
+var validate = function(_form){
+	
+	return true;
+};
+</script>
+<elseif condition=" $type eq 3 "/>
+<!--提问-->
+<div class="main_box_index shadow tk_review clearfix" id="tk_review2">  
+    <div id="close_up2" class="close fr mr15 mt5">×</div>
+    <h3  id="title_drag2"class="review bor_b txt_l h40">编辑问题</h3>
+    <div class="bao_box">
+    	<form id="zmform" name="zmform" action="{:U('classroom/Question/editqst')}" method="post" onsubmit="return j_validateCallback(this,validate);">
+        <input name="id" type="hidden" value="{$data.id}" />
+        <div class="review_box fl">
+           <div class="w448 mt10b20 clearfix">
+                 <span class="selected_title color_hui mr20 fl">标题</span>
+                 <div id="myInput1" class="myInput1 fl w340">
+                      <input type="text" id="head_search_1" class="w330" rel="输入关键字" readonly="readonly" value="{$data.title}"/>
+                      <span class="w330" style="display:none;">请在这里添加补充提问</span>
+                 </div>
+            </div>
+           <div id="enter_bar"class="w448 clearfix">
+                <div class="stip_box mr66">
+                    <h4 class="enter txt_r fr">还可以输入<span>100</span>字</h4>
+                </div>
+                <span class="selected_title color_hui mr20 fl">问题</span>
+                <div class="editwrap fl w333 h65">
+                    <textarea id="wenti_content1" class="j-edittxt edittxt h65" name="edittxt">{$data.content}</textarea>
+                    <label id="auto-id-drt6TisVISpRhnQa" class="j-hint hint" for="edittxt" style="display:none;">
+                    请在这里添加补充提问
+                    </label>
+                </div>
+                <div class="sure_box  fr clearfix ptb20">
+                    <a class="sel_w bg_btn_aa mr15 fl" href="javascript:;">取消</a>
+                    <input type="submit" class="yes sel_w mr63 fl" value="确认" style="border:none;"/>
+                    <!--<a id="yes1 bg_btn_aa" class="yes sel_w mr63  fl" href="javascript:;" onClick="doTiwen();">确认</a>-->
+                </div>
+            </div>
+        </div>
+        </form>
+        <div class="side fl">
+           <h3> 温馨提示：</h3>
+            <p>1.&nbsp;可以详细描述所遇到的难题，</p>
+            <p>2.&nbsp;提问字数请保持在50-1000字内，如果有更长的心得体会欢迎到“笔记”分享。</p>
+            
+        </div>
+    </div>
+</div>
+<!--//提问-->
+<script>
+//弹层  提问
+$(function(){
+	objshow('ans_up1','tk_review2','close_up2','');
+	//弹层拖拽 提问
+	listdrge('tk_review2','title_drag2');
+	//弹出——输入--提问
+	reviews(100,'tk_review2');
+	//问题——搜索
+	mysearch('myInput1');
+});
+//验证
+var validate = function(_form){
+	
+	return true;
+};
+</script>
+</if>
+
+
+
+
+
+</body>
+</html>

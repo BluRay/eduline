@@ -1,0 +1,70 @@
+<include file="__THEME__/public_header" />
+<script>
+window.onload=function()
+{
+	//公用库
+	higher_common();
+}
+</script>
+<div class="main mt35">
+    <div class="main_box_index clearfix plr80 ptb50">
+    	<h3 class="fb ft24 lh88" style="margin-left:20px;margin-bottom:20px;">找回密码</h3>
+    	<form action="{:U('home/Repwd/repwdhandle')}" method="post">
+        <ul class="Sign_In_ul">
+            	<li>
+                	<em class="fl selected_title w100" style="font-size:16px;margin-left:20px;">密码</em>
+                    <div class="input_sbox fl" style="margin-left:-10px;">
+                        <div class="input_divs fl w180">
+                            <input name="pwd" class="w175" type="password" value=''>
+                            <input type="hidden" name="phone" value="<?php echo $_GET['phone']?>" />
+                        </div>
+                        
+                    </div>
+                </li>
+                <li>
+                	<em class="fl selected_title w100" style="font-size:16px;margin-left:20px;">确认密码</em>
+                    <div class="input_sbox fl" style="margin-left:-10px;" >
+                        <div class="input_divs w180 fl">
+                        <input id="reg_captcha" name='repwd' class="w175" type="password">
+                        </div>
+                    </div>
+                </li>
+                <span id="prompt" style="display:block; left:110px;font-size:16px; height:18px;line-height:18px;position:absolute;">
+	                <em class="prevnum_info">请输入密码，长度为6-15位，数字、字符</em>
+               </span>
+                <li style="top:35px; left:">
+                	<a id="pre" class="ljzc_li ml100 sel_w color_lv" href="javascript:;">修改密码</a>
+                </li>
+        </ul>
+        </form>
+       <!--  <a class="ml100 green_txt lh64" href="javascript:;">联系我们</a> -->
+    </div>
+</div>
+<script type="text/javascript">
+     $(function(){
+            $("#pre").click(function(){
+                 var phone = $.trim($("input[name='phone']").val());
+                 var pwd = $.trim($("input[name='pwd']").val());
+                 var repwd = $.trim($("input[name='repwd']").val());
+                 var url = U('classroom/Index/index');
+                 if(pwd != repwd){
+                    $("#prompt em").removeClass().addClass('Error').text('两次输入密码不一致');
+                       	return false;
+                   }
+                 $.post(U('home/Repwd/repwdhandle'),{phone:phone,pwd:pwd,repwd:repwd},function(data){
+                       	if(data == 'ok'){
+                       		$("#prompt em").removeClass().addClass('success').text('修改成功');
+                       		var jump = setInterval(function(){
+                       		window.location.href=url;
+                       		//	jump.clearInterval(jump);
+                       		},3000);
+                       	}else{
+                       		$("#prompt em").removeClass().addClass('Error').text(data);
+                       }
+                  });
+               });
+          });
+</script>
+<include file="__THEME__/public_footer" />
+</body>
+</html>

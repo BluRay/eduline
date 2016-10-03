@@ -1,0 +1,61 @@
+<include file="__THEME__/public_header" />
+<link href="__ROOT__/apps/exam/_static/css/exam.css" rel="stylesheet" type="text/css" />
+
+<!--main-->
+<!--面包屑-->
+<div class="breadcrumb"> <a href="/">首页</a>><a href="{:U('exam/Index/index')}">考试系统</a>><a href="#">{$exam_info.exam_name}已参加的考试</a></div>
+<div class="worap-con">
+    <ul class="th-list fl">
+
+    </ul>
+</div>
+<script>
+    //页面加载完毕执行
+    $(function(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('exam/UserExam/getList')}",
+            data:"p=1",
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+    });
+    //追加html
+    function appendHtml(data){
+        $("#getList").remove();
+        $(".th-list").append(data.data);
+        if(data.nowPage+1>data.totalPages){
+            return;
+        }else{
+            var html="<div class=\"more\" style='margin-top:15px;'><a href=\"javascript:void(0)\" id=\"getList\">查看更多</a></div>"
+            $(".worap-con").append(html);
+            p=data.nowPage+1;//下一页
+
+        }
+    }
+    //查看更多点击事件
+    $("#getList").live("click",
+            function(){
+                ajaxBang();
+            }
+    );
+    //请求事件
+    function ajaxBang(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('exam/UserExam/getList')}",
+            data:"p="+p,
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+    }
+
+
+
+</script>
+
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,133 @@
+<include file="__THEME__/public_header" />
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+            <a href="#" class="onactive" onclick="navClick(this,'getbuyalbumslist')">我购买的专辑</a>
+            <a onclick="navClick(this,'getcollectalbumslist')" href="#">我收藏的专辑</a>
+            <div class="user-Release-l"> 
+                <a href="javascript:;" class="operation" onclick="manageBang(this)">
+	            	<i></i><span class="fl" id="magsta">管理</span>
+	            </a> 
+            </div>
+        </div>
+
+
+        <!--图片列表-->
+        <ul class="user-imglist">
+        </ul>
+
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+
+
+<script>
+
+    var btnclick="getbuyalbumslist";
+    var fdata;
+    var magstatus;
+    $(function(){
+        var url="{:U('classroom/Home/getbuyalbumslist')}";
+
+        $(".user-Release").hide();
+        //异步加载我购买的课程
+        $.ajax({
+            type: "POST",
+            url:url,
+            data:"p=1",
+            dataType:"json",
+            success:function(data){
+                appendHtml(data,btnclick,'getbuyalbumslist');
+            }
+        });
+    });
+    //头部点击事件
+    function navClick(cate,type){
+        $("#magsta").text("管理");
+        $(".Operation-list").css("display","none");
+        $(".user-imglist").html("");
+        btnclick=type;
+        magstatus=false;
+        if(type!="getuploadalbumslist"){
+            $(".user-Release").hide();
+        }
+        if(type=="getbuyalbumslist"){
+            url="{:U('classroom/Home/getbuyalbumslist')}";
+        }else if(type=="getcollectalbumslist"){
+
+            url="{:U('classroom/Home/getcollectalbumslist')}";
+        }else if(type=="getuploadalbumslist"){
+            $("#sel_ok").removeClass("current");
+            $("#sel_w").addClass("current");
+            $(".user-Release").show();
+            fdata="type=1";
+            url="{:U('classroom/Home/getuploadalbumslist')}"
+        }else{
+            url="{:U('classroom/Home/getbuyalbumslist')}";
+        }
+        $(cate).addClass("onactive").siblings('a').removeClass("onactive");
+        p=1;
+        ajaxBang(url,'',fdata,'',type);
+    }
+    function manageBang(cate){
+        var manageval=$(cate).find('#magsta').text();
+        if(manageval=="管理"){
+            magstatus=true;
+            $(cate).find('#magsta').text("完成");
+            $(".Operation-list").css("display","block");
+        }else{
+            magstatus=false;
+            $(cate).find('#magsta').text("管理");
+            $(".Operation-list").css("display","none");
+        }
+    }
+    //点击查看更多事件
+    function fallBang(cate){
+        var clickid=$(cate).attr('id');
+        var url="{:U('classroom/Home/"+clickid+"')}";
+        ajaxBang(url,clickid,fdata,function(){
+            if(magstatus==true){
+                $(".Operation-list").css("display","block");
+
+            }else{
+                $(".Operation-list").css("display","none");
+
+            }
+        });
+
+    }
+    /**
+     * 删除专辑法
+     * @param id
+     */
+    function delalbum(cate,id){
+        var id=id;
+        url="{:U('classroom/Album/delalbum')}";
+        //删除我购买的专辑
+        if(btnclick=="getbuyalbumslist"){
+            fdata="type=2&rtype=1&id="+id;
+        }else if(btnclick=="getcollectalbumslist"){
+            fdata="type=2&rtype=2&id="+id;
+        }else if(btnclick=="getuploadalbumslist"){
+            fdata="type=2&rtype=3&id="+id;
+        }
+        $.ajax({
+            type: "POST",
+            url:url,
+            data:fdata,
+            dataType:"json",
+            success:function(data){
+                if(data.status==1){
+                    $(cate).parent().parent().parent().fadeOut();
+                }
+            }
+        });
+    }
+
+</script>
+
+<include file="__THEME__/public_footer" />

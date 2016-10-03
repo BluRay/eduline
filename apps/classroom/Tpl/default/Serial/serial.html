@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Eduline&nbsp;|&nbsp;让所有网站轻松应用视频&nbsp;|&nbsp;中国领先的视频云服务提供商</title>
+<meta name="viewport" charset="UTF-8" content="user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+<link href="__THEME__/css/lz_index.css" type="text/css" rel="stylesheet">
+<script src="__THEME__/js/gjwjs/jquery-1.7.1.min.js"></script>
+<script src="__THEME__/js/gjwjs/jquery.mousewheel.js"></script>
+<script src="__THEME__/js/gjwjs/title_common.js"></script>
+<script>
+window.onload=function()
+{
+	 (function(){
+		serial_z_story();	  
+	 })();
+	(function(){
+		var oMenListContent=getByClass(document,'men_list_content')[0];
+		oPic_x=getByClass(oMenListContent,'pic_x');
+		for(var i=0; i<oPic_x.length; i++)
+		{
+			Graphic_serial(oPic_x[i]);
+		}
+	 })();
+}
+
+</script>
+</head>
+<body>
+<div class="main_x clearfix">
+	<include file="_left" />
+    <div id="apDiv1">
+          <div id="apDiv2">
+             <table class="men_content">
+                <tbody>
+                    <tr>
+                        <td class="men_slide_item">
+                            <div class="men_list_content bg_f clearfix">
+                            	<volist name="myserial" id="vo">
+                                <div class="fl w340">
+                                	<volist name="vo" id="vo1">
+                                    <div class="pic_x mt10">
+                                        <img src="{$vo1.attach|getImageUrlByAttachId=###}">
+                                        <div class="Graphic_box h55">
+                                            <span class="c_span_bg h55"></span>
+                                            <a href="{:U('classroom/Serial/turncontent','did='.$vo1['did'])}" target="_blank"><span class="c_span_text ft24 h55 lh55">{$vo1.title}</span></a>
+                                        </div>
+                                    </div>
+                                    </volist>
+                                </div>
+                                </volist>
+                            </div>
+                        </td>
+                        
+                        <td class="men_slide_item">
+                            <div class="box_xr_r ml20 bg_f clearfix">
+                                <h3 class="ft24 txt_c mt10">Eduline系列连载</h3>
+                                <ul class="ul_fl mt30 clearfix">
+                                    <li>出品人：ssss</li>
+                                    <li>责任编辑：快速冷</li>
+                                    <li>鸣谢：元芳    元芳    元芳</li>
+                                </ul>
+                                <h3 class="ft18 txt_c mt30">合作伙伴：</h3>
+                                <div class="clearfix mb50">
+                                    <a class="fl mr20 mt30" href="javascript:;"><img src="__THEME__/images/logo_x.png"></a>
+                                    <a class="fl mr20 mt30" href="javascript:;"><img src="__THEME__/images/logo_x.png"></a>
+                                    <a class="fl mr20 mt30" href="javascript:;"><img src="__THEME__/images/logo_x.png"></a>
+                                    <a class="fl mr20 mt30" href="javascript:;"><img src="__THEME__/images/logo_x.png"></a>
+                                    <a class="fl mr20 mt30" href="javascript:;"><img src="__THEME__/images/logo_x.png"></a>
+                                    <a class="fl mr20 mt30" href="javascript:;"><img src="__THEME__/images/logo_x.png"></a>
+                                </div>
+                                <hr class="bor_b mb38"></hr>
+                                <div class="fl txt_l br_foot_txt_x">
+                                    <a href="javascript:;">点播 &nbsp;|&nbsp;</a>
+                                    <a href="javascript:;">课程组合 &nbsp;|&nbsp;</a>
+                                    <a href="javascript:;">团购定制 &nbsp;|&nbsp;</a>
+                                    <a href="javascript:;">企业信息 &nbsp;|&nbsp;</a>
+                                    <a href="javascript:;">联系我们</a>
+                                    <p class="ft12">Copyright © 2014 Eduline All Rights Reserved &nbsp;|&nbsp; 京ICP备12005338号 &nbsp;|&nbsp; 京ICP证120201号 &nbsp;|&nbsp; 京公网安备110108008476</p>
+                                    <p class="ft12">北京育智兴邦教育科技有限公司 &nbsp;咨询热线：(手机用户免收长途费)：400-890-0005</p>
+                                </div>
+                                <img src="__THEME__/images/erw_x.png">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+          </div>
+    </div>
+</div>
+</body>
+</html>
+<script language="javascript" type="text/javascript">
+var Browser = function(){
+ var d_ = document,n_ = navigator,t_ = this,s_= screen;
+ 
+    var b = n_.appName;
+    var ua = n_.userAgent.toLowerCase();
+    
+ t_.name = "Unknow";
+ 
+ t_.safari = ua.indexOf("safari")>-1;  // always check for safari & opera
+    t_.opera = ua.indexOf("opera")>-1;    // before ns or ie
+ t_.firefox = !t_.safari && ua.indexOf('firefox')>-1; // check for gecko engine 
+    t_.ns = !t_.firefox && !t_.opera && !t_.safari && (b=="Netscape");
+    t_.ie = !t_.opera && (b=="Microsoft Internet Explorer");
+ 
+ t_.name = (t_.ie ? "IE" : (t_.firefox ? "Firefox" : (t_.ns ? "Netscape" : (t_.opera ? "Opera" : (t_.safari ? "Safari" : "Unknow")))));
+}
+var brw = new Browser();
+var apDiv1 = document.getElementById("apDiv1");
+var perWidth = apDiv1.clientWidth / 2;
+var mouse_wheel = function(e){
+ var evt = window.event || e;
+ if(evt.detail > 0 || evt.wheelDelta < 0)
+  apDiv1.scrollLeft += perWidth;
+ else
+  apDiv1.scrollLeft -= perWidth;
+}
+var mouse_wheel_opera = function(e){
+	 //alert(window.event == e); //Opera 下，window.event 和 e 相等
+	 var obj = e.srcElement;
+	 if(obj == apDiv1){
+	  mouse_wheel(e);
+	 }
+} 
+switch(brw.name){
+ case "IE":
+ case "Safari":
+  apDiv1.onmousewheel = mouse_wheel;
+  break;
+ case "Firefox":
+  apDiv1.addEventListener("DOMMouseScroll", mouse_wheel, false);
+  break;
+ case "Opera":
+  document.onmousewheel = mouse_wheel_opera;
+  break;
+}
+</script>

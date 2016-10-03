@@ -1,0 +1,114 @@
+<include file="__THEME__/public_header" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+<script>
+window.onload=function()
+{
+	 //公用库
+	higher_common();
+	//个人中心左侧菜单
+	(function(){
+	  home_titlista();
+	})();
+	
+    //导航
+	/*(function(){
+		var oNavBar=getByClass(document,'Nav_bar')[0];
+		var aBtn=getByTagName(oNavBar,'li');
+		
+		for(var i=0; i<aBtn.length; i++)
+		{
+			aBtn[i].onclick=function()
+			{
+				for(var i=0; i<aBtn.length; i++)
+				{
+					aBtn[i].className='';
+				}
+				this.className='sel_cent_r';
+			}
+		}
+	})(); */
+};
+</script>
+
+<div class="main mt35 clearfix">
+	<div class="plr40 main_box_index fl">
+        <h4 class="ft18 pt20">个人中心</h4>
+        <div class="fl cent_l_box cent_l_box_a">
+         <h3 class="tit_list tit_list_a">内容管理</h3>
+            <ul>
+                <li><a href="{:U('home/Index/index')}">课程</a></li>
+                <li><a href="{:U('home/Index/index_zj')}">专辑</a></li>
+                <li><a href="{:U('home/Index/qanda')}">问答</a></li>
+                <li><a href="{:U('home/Index/note')}">笔记</a></li>
+                <li><a href="{:U('home/Index/comments')}">评论</a></li>
+                <li class="sel_cent"><a href="{:U('home/Index/upload')}">上传课程</a></li>
+            </ul>
+             <h3 class="tit_list tit_list_a">财富管理</h3>
+            <ul>
+                <li><a href="{:U('home/Index/recharge')}">充值</a></li>
+                <li><a href="{:U('home/Index/withdrawal')}">余额</a></li>
+                <li><a href="{:U('home/Index/card')}">绑定银行卡</a></li>
+            </ul>
+            <h3 class="tit_list tit_list_a">账户管理</h3>
+            <ul>
+                <li><a href="{:U('home/Index/upload_z_Setup')}">账户设置</a></li>
+                <li><a href="{:U('home/Index/fans')}">关注/粉丝</a></li>
+            </ul>
+        </div>
+        <div class="cent_r_box clearfix">
+            <div class="nva_cent">
+                <ul class="Nav_bar fl">
+                    <li class="sel_cent_r">上传课程</li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <div class="pb40 txt_c clearfix">
+                <a type="file" class="up_pic" href="{:U('home/Index/upload_z')}">
+                上传视频课程
+                </a>
+                <p>上传视频课程，即表示您已同意<a class="green_txt" href="javascript:;">高教网上传服务条款</a>，请勿上传色情，反动等违法视频</p>
+                <p class="lh30 mt20"><a class="green_txt" href="javascript:;">哪些视频课程是禁止发布的</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="green_txt" href="javascript:;">上传原创视频课程获得分成</a></p>
+                <p class="bor_t mt20 pt20 plr20 ml20 txt_l lh30">本网站主办方已经对本网站内全部正版授权的视频课程内容，采取了必要的反盗版和防盗链等技术措施，并且添加、设置权利管理电子信息。任何单位或个人，未经本网站主办方的许可，不得以任何形式（包括但不限于：盗链，冗余盗取等）直接或间接地盗取相关视频课程内容、不得以任何方式（包括但不限于：隐藏或者修改本网站域名、播放器软件、高教网标识等）删除或者改变相关视频课程内容的权利管理电子信息。否则，本网站主办方将保留进一步追究侵权者法律责任的权利。</p>
+            </div>  
+        </div>
+    </div>
+    <div class="main_box_index w200 plr10 pt20 fr">
+    	<div class="fk_pic txt_c">
+            <a href="javascript:;" target="_blank">
+                <img src="__THEME__/images/xq/xq_50.jpg"></img>
+            </a>
+        </div>
+        <p class="daren_name txt_c lh30">
+            <a class="daren_name_a" target="_blank" href="">
+                向新兰
+                <em class="daren_name_img"></em>
+            </a>
+        </p>
+        <p class="txt_c">关注1000|粉丝1000</p>
+        <a class="btn_lan_h" href="javascript:;">答题高手7段</a>
+        <a class="btn_lan_h" href="javascript:;">数学百晓生</a>
+        <a class="btn_lan_h" href="javascript:;">腰缠万贯</a>
+        <a class="btn_lan_h" href="javascript:;">十佳好青年</a>
+        <div class="clearfix">
+            <p class="fl green_txt txt_c plr30 mt20">
+                我的学币</br>
+                1000
+            </p>
+            <p class="fl green_txt txt_c bor_l plr30 mt20">
+                我的学分</br>
+                1000
+            </p>
+        </div>
+        <a class="btn_big_r">打卡赚学分</a>
+        <p class="mt20">连续领取学分，每天+5，最高+40封顶，如中断领取，重新从5开始。</p>
+        <div class="clearfix">
+            <a class="btn_hui_h" href="javascript:;">做任务赚学分</a>
+            <a class="btn_hui_h" href="javascript:;">学分换购列表</a>
+        </div>
+        <p class="mt10 ml20 bg_phone">手机每天再多领40积分</p>
+    </div>
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

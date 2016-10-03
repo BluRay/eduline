@@ -1,0 +1,172 @@
+<include file="__THEME__/public_header" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+<script>
+window.onload=function()
+{
+	 //公用库
+	higher_common();
+	//个人中心左侧菜单
+	(function(){
+	  home_titlista();
+	})();
+	//导航
+	(function(){
+	    nav_bar_tab('Nav_bar', 'Manage_all','sel_cent_r');
+	 })(); 
+	
+	/* //问答 笔记 显示 隐藏
+	(function(){
+		var oboxBlockA=getByClass(document,'box_block_a')[0];
+		var oAttention=getByClass(document,'Attention');
+		for(var i=0; i<oAttention.length;i++)
+		{
+			oA_none(oAttention[i]);
+		}
+	  })();*/
+	 
+	 
+};
+var myNoteObj = null;
+var collectNoteObj = null;
+$(function(){  
+	$('#mynote').mzpagination({
+		url:U('classroom/Home/getnotelist'),
+		ispage:true,//是否分页
+		data:{
+			limit:4,
+			type:'me'
+		}
+	},function(d){
+		return createMyNoteHtml(d);
+	},function(fun){
+		myNoteObj = fun;
+	});
+	
+	$('#mycollectnote').mzpagination({
+		url:U('classroom/Home/getnotelist'),
+		ispage:true,//是否分页
+		data:{
+			limit:4,
+			type:'collect'
+		}
+	},function(d){
+		return createCollectNoteHtml(d);
+	},function(fun){
+		collectNoteObj = fun;
+	});
+});
+var _mycollect = function(){
+	collectNoteObj.getData({limit:4,p:1,type:'collect'});	
+}
+
+var createMyNoteHtml = function(data){
+	var html ='';
+	//,'&rid='+k.id+'&type=1'
+	$.each(data,function(i,k){
+		html += '<div class="ans_box_cent h240">';
+		html += '<div class="clearfix h55">';
+		html += '<p class="p_ans fl"><a href="'+U('classroom/Index/resource',['rid='+k.id,'type=1'])+'" target="_blank">'+k.qst_title+'</a></p>';
+		html += '<p class="time fr mt10">'+k.strtime+'</p>';
+		if(parseInt(k.qcount)){
+			html += '<span class="sel_w fr mt10 mr20">已回答</span>';
+		}
+		html += '</div>';
+		html += '<hr class="das_l"></hr>';
+		html += '<p class="mb10 lh30">'+k.qst_description+'</p>';
+		html += '<div class="ans_r_cent txt_r mt10">';
+		html += '浏览('+k.qst_count+')&nbsp;&nbsp;|&nbsp;&nbsp;';
+		html += '同问('+k.qst_help_count+')&nbsp;&nbsp;|&nbsp;&nbsp;';
+		html += '答案('+k.qcount+')';
+		html += '</div>';
+		html += '</div>';
+	});
+	return html?html:'暂无数据';
+};
+var createCollectNoteHtml = function(data){
+	var html ='';
+	//,'&rid='+k.id+'&type=1'
+	$.each(data,function(i,k){
+		html += '<div class="ans_box_cent h240">';
+		html += '<div class="clearfix h55">';
+		html += '<p class="p_ans fl"><a href="'+U('classroom/Index/resource',['rid='+k.id,'type=1'])+'" target="_blank">'+k.qst_title+'</a></p>';
+		html += '<p class="time fr mt10">'+k.strtime+'</p>';
+		if(parseInt(k.qcount)){
+			html += '<span class="sel_w fr mt10 mr20">已回答</span>';
+		}
+		html += '</div>';
+		html += '<hr class="das_l"></hr>';
+		html += '<p class="mb10 lh30">'+k.qst_description+'</p>';
+		html += '<div class="ans_r_cent txt_r mt10">';
+		html += '浏览('+k.qst_count+')&nbsp;&nbsp;|&nbsp;&nbsp;';
+		html += '同问('+k.qst_help_count+')&nbsp;&nbsp;|&nbsp;&nbsp;';
+		html += '答案('+k.qcount+')';
+		html += '</div>';
+		html += '</div>';
+	});
+	return html?html:'暂无数据';
+};
+
+</script>
+
+<div class="main mt35 clearfix">
+	<div class="plr40 main_box_index fl">
+        <h4 class="ft18 pt20">个人中心</h4>
+        <!-- 左边开始 -->
+        <include file="../User/_left" />
+        <!-- 左边结束 -->
+        <div class="cent_r_box clearfix">
+            <div class="nva_cent">
+                <ul class="Nav_bar fl">
+                    <li class="sel_cent_r">我的笔记</li>
+                    <li>我关注的笔记</li>
+                </ul>
+            </div>
+            <div class="pb40 Manage_all pt20 clearfix" style="display:block;">
+            	<div id="mynote">
+                <div class="ans_box_cent h240">
+                    <div class="clearfix h55">
+                        <p class="p_ans fl"><a href="{:U('zuhe/Index/anq')}" target="_blank">大纲英语核心词汇视频课程有真题例句吗？</a></p>
+                        <p class="time fr mt10">2014-04-08</p>
+                    </div>
+                    <hr class="das_l"></hr>
+                    <p class="mb10 lh30">有，视频含有历年完形或阅读出现的词汇真题例句，这些都是大纲必考的词汇有，视频含有历年完形或阅读出现的词汇真题例句，这些都是大纲必考的词汇有，视频含有历年完形或阅读出现的词汇真题例句，这些都是大纲必考的词汇有，视频含有历年完形或阅读出现的词汇真题例句，这些都是大纲必考的词汇</p>
+                    <div class="ans_r_cent txt_r mt10">
+                        浏览(500)&nbsp;&nbsp;|&nbsp;&nbsp;
+                        有帮助(2)&nbsp;&nbsp;|&nbsp;&nbsp;
+                        评论(0)
+                    </div>
+                </div>
+                </div>
+            </div>   
+           
+            <div class="pb40 Manage_all pt20 clearfix">
+            	<div id="mycollectnote">
+            	<div class="box_block">
+                    <div class="ans_box_cent_h h220">
+                        <div class="clearfix h55">
+                            <p class="p_ans fl"><a href="{:U('zuhe/Index/anq')}" target="_blank">大纲英语核心词汇视频课程有真题例句吗？</a></p>
+                            <p class="time fr mt10">2014-04-08</p>
+                        </div>
+                        <hr class="das_l"></hr>
+                        <p class="mb10 lh30">有，视频含有历年完形或阅读出现的词汇真题例句，这些都是大纲必考的词汇有，视频含有历年完形或阅读出现的词汇真题例句，这些都是大纲必考的词汇有，视频含有历年完形或阅读出现的词汇真题例句，这些都是大纲必考的词汇有，视频含有历年完形或阅读出现的词汇真题例句，这些都是大纲必考的词汇</p>
+                        <div class="ans_r_cent txt_r mt10 mb10">
+                            浏览(500)&nbsp;&nbsp;|&nbsp;&nbsp;
+                            有帮助(2)&nbsp;&nbsp;|&nbsp;&nbsp;
+                            评论(0)
+                        </div>
+                    </div>
+                    <div class="box_gl w510 h260">
+                        <a class="Attention sel_w wz_b fr" href="javascript:;">取消关注</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 右边开始 -->
+    <include file="../User/_right" />
+    <!-- 右边结束 -->
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

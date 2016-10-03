@@ -1,0 +1,29 @@
+
+
+<a class="pic"><img src="{$groupinfo['logourl']}" /></a>
+<h1>{$groupinfo['name']}</h1>
+<div class="sk_dig">帖子：{$groupinfo.threadcount} 成员：{$groupinfo.membercount}</div>
+<p>{:limitNumber($groupinfo['intro'],112)}</p>
+
+<div class="sk_btnbox">
+	<php>$level = getLevel($GLOBALS['ts']['mid'], $gid);</php>
+	<php>if($level === null){</php>
+	     <a href="javascript:;" onclick="joingroup('{$gid}');"  class="btn s">加入该小组</a>
+	<php>}</php>
+	<php>if($level === '0'){</php>
+	     <a class="btn s">等待审核</a>
+	<php>}</php>
+	<php>if($level == 1 || $level==2){</php>
+	     <a href="{:U('group/Manage/index',array('gid'=>$gid))}" class="btn s">管理该小组</a>
+	<php>}</php>
+	<php>if($level == 1){</php>
+	     <a href="javascript:;" onclick="delgroup({$gid})" class="btn s">解散该小组</a>
+	<php>}</php>
+	<php>if($level == 2 || $level == 3){</php>
+	     <a href="javascript:;" onclick="quitgroup({$gid})" class="btn s">退出该小组</a>
+	<php>}</php>
+	<php>if($level > 0){</php>
+	     <a href="javascript:;" onclick="addPost({$gid})" class="btn s">发帖子</a>
+	<php>}</php>
+</div>
+

@@ -1,0 +1,12 @@
+<foreach name="data" item="l">
+    <li>
+        <div class="position-rt">
+            <div class="position-rt-float">
+                <span class="position-rt-float-a" onclick="doClick('uploadvideo')"><a href="{:U('classroom/User/teacherVideo','id='.$l['id'])}" class="a1">修改</a></span>
+                <span class="position-rt-float-b" onclick="delvideo(this,{$l.id})">删除</span>
+            </div>
+            <a href="{:U('classroom/Video/view',array('id'=>$l['id']))}" class="img"><img src="{:getAttachUrlByAttachId($l['middle_ids'])}"> </a> </div>
+        <h2><a href="{:U('classroom/Video/view',array('id'=>$l['id']))}">{$l.video_title}</a></h2>
+        <div class="user-imglistbt"><span>{$l.video_order_count}人购买</span><span style="margin-left:15px;">{$l.video_collect_count}人收藏</span></div>
+    </li>
+</foreach> 

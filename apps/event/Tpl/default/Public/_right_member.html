@@ -1,0 +1,100 @@
+
+
+<div class="fr wenda-slider"> <a  id="js-newques" class="newques-btn " href="{:U('/Index/addEvent')}"><i></i>发新活动</a>
+    
+
+
+
+ <div class="wenda-mkclass eventfqr clearfix">
+        <h2>发起者</h2>
+         <div class="clearfix">
+            <div class="avatars">
+                <space uid="uid" class="avatar">{uavatar}</space>
+            </div>
+            <div class="uname">
+               <space uid="uid" class="name">{uname}</space>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="button clearfix">
+		<php> if($attention['following'] == "0"): </php>
+         <a href="javascript:;"  onClick="followyou(this,{$uid})" class="follow">关注Ta</a>
+		<php> else: </php>
+		 <a class="follow">已关注</a>
+		<php> endif; </php>
+         <a onclick="ui.sendmessage({$uid}, 0)" href="javascript:void(0)" event-node="postMsg" class="pm">私信</a>
+        </div>
+        
+</div>
+
+
+
+
+  <php>if($is_hot_list){</php>
+    <div class="wenda-mkclass">
+        <h2>推荐活动</h2>
+        <div class="reevents clearfix">
+        <volist name="is_hot_list" id="li"> 
+             <div class="e-list-box">
+                  <div class="image"><a href="{:U('//eventDetail',array(uid=>$li['uid'],id=>$li['id']))}"><img src="{$li['coverId']}" /></a></div>
+                  <div class="content">
+                      <dl>
+                        <dt><strong><a href="{:U('//eventDetail',array(uid=>$li['uid'],id=>$li['id']))}"  title="{$li.title}" >{$li.title|getShort=###,7,'...'}</a></strong></dt> 
+                        <dd>类型：{$li.type}</dd>
+                        <dd>地点：{$li.address}</dd>
+                      </dl>
+                  </div>
+             </div>
+	     </volist>
+        </div>
+    </div>
+    <php>}</php>
+</div>
+
+<script>
+
+    function followyou(cate,uid){
+
+        if(MID=='0'){
+
+            reg_login();
+
+            return;
+
+        }
+
+        $.ajax({
+
+            type: "POST",
+
+            url:U('classroom/Public/followyou'),
+
+            data:"fid="+uid,
+
+            dataType:"json",
+
+            success:function(data){
+
+                if(data.status=='0'){
+
+                    notes(data.info,'failure');
+
+                    return;
+
+                }else{
+
+                    $(cate).text("已关注对方");
+
+                }
+
+
+
+            }
+
+        });
+
+    }
+
+
+
+</script>

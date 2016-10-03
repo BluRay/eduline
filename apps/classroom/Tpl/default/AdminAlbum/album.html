@@ -1,0 +1,68 @@
+
+<dd>
+    <input type="hidden" name="video_ids" id="albumids" value="{$album_video}" >
+
+    <div class="admin-kcidfixed" style="display: table-cell">
+        <foreach name="data" item="d">
+            <php>
+                $name = M('ZyVideo')->getVideoTitleById($d);
+                if($name){
+            </php>
+	        <a href="javascript:;" onclick="removeVideo(this,{$d})">{$name}&nbsp;×</a>
+	        <php>}</php>
+        </foreach>
+        <div id="albumlist">
+
+        </div>
+        <input type="text" id="salbum"  placeholder="请输入课程关键字查找"  class="s-txt" style="width:200px; " />
+        <ul class="admin-kcid" style="display:none">
+
+        </ul>
+    </div>
+
+</dd>
+<script>
+    $("#salbum").keyup(function(){
+        var sval= $.trim($("#salbum").val());
+        if(sval==""){
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url:"{:U('classroom/AdminAlbum/seachVideo')}",
+            data:{key:sval},
+            dataType:"json",
+            cache: false,
+            success: function(data){
+                $(".admin-kcid").css("display","block");
+                $(".admin-kcid").html("");
+                $(".admin-kcid").append(data);
+            },
+            error: function(xhr, ajaxOptions, thrownError){
+                ui.error("未知错误!");
+            }
+        });
+    })
+    var albumids="{$album_video}";
+    //选中专辑事件
+    var selectAlbum=function(cate,id){
+        if(albumids.indexOf(id.toString())>=0){
+            ui.error("已选择此课程，请勿重复选择!");
+            return;
+        }
+        albumids=albumids+id.toString()+",";
+        $("#albumids").val(albumids);
+        //追加html
+        $(".admin-kcidfixed").prepend("<a href=\"javascript:;\" onclick=\"removeVideo(this,"+id+")\">"+$(cate).text()+"&nbsp;×</a>");
+        $(".admin-kcid").css("display","none");
+    }
+
+    //删除选中专辑
+    var removeVideo=function(cate,id){
+        var gid = id.toString()+",";
+        albumids= albumids.replace(gid,"");
+        $("#albumids").val(albumids);
+        $(cate).remove();
+
+    }
+</script>

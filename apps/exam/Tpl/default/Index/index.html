@@ -1,0 +1,110 @@
+<include file="__THEME__/public_header" />
+<!--content start-->
+<div class="content">
+	<div class="wrap">
+    	<ul class="content-nav">
+    		<li class="active"><a href="javascript:void(0);" class="a" onclick="cateBang(this,0)" ><span>全部分类</span></a>
+	        </li>
+	        <volist name="selCate" id="vo">
+	            <li><a href="javascript:void(0);" onclick="cateBang(this,{$vo.exam_category_id})"><span>{$vo.exam_category_name}</span></a>
+	            </li>
+	        </volist>
+        </ul>
+        <div class="content-con">
+        	<div class="content-main">
+                <ul class="test-list">
+
+                </ul>
+                <div class="pagebox">
+                </div>
+            </div>
+            <div class="content-sider">
+                <div class="page-tit">
+                    <div class="page-tit-box"><div class="fl">已参加考试</div></div>
+                </div>
+                <php> if($data) {</php>
+                <ul class="sider-test">
+                	<volist name="data" id="vo" lenth='5'>
+	                	<li>
+	                        <div class="tit"><a href="{:U('exam/UserExam/exam_info','exam_id='.$vo['user_exam'].'&paper_id='.$vo['user_paper'].'&user_exam_number='.$vo['user_exam_number'])}"><b>{$vo.exam_name|getShort=###,'12',''}</b></a></div>
+	                        <div class="txt"><i class="icon-can"></i>{$vo.user_sum} 人参加</div>
+	                    </li>
+                    </volist>
+                    <php>if( count($data) > 5) {</php>
+                    	<li><div class="tit"><a href="{:U('exam/UserExam/index')}">查看更多</a></div></li>
+                    <php>}</php>
+                </ul>
+                <php>}else{</php>
+                	<div class="tjread">你还没有参加考试哦~~</div>
+                <php>}</php>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //页面加载完毕执行
+    $(function(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('exam/Index/getList')}",
+            data:"p=1",
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+      //页面中间最低高度
+        var headHeight = $('.header-worap').height();
+        var footHeight = $('.footer-worap').height();
+        var miniHeight = (parseInt($(document).height()-headHeight-footHeight))
+        $('.worap').css({"min-height":(miniHeight-60)+'px'});
+    });
+    //请求事件
+    function ajaxBang(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('exam/Index/getList')}",
+            data:"p="+p+"&cateId="+cateId,
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+    }
+    //追加html
+    function appendHtml(data){
+        $(".more").remove();
+        if(data.data!=""){
+            $(".test-list").append(data.data);
+            if(data.nowPage+1>data.totalPages){
+                return;
+            }else{
+                var html="<div class=\"more\" ><a href=\"javascript:void(0)\" id=\"getList\">查看更多</a></div>"
+                $(".test-list").append(html);
+                p=data.nowPage+1;//下一页
+            }
+        }else{
+            $(".test-list").append("<script>对不起，暂无此考试分类信息T_T<\/script>");
+        }
+    }
+    //查看更多点击事件
+    $("#getList").live("click",
+            function(){
+                ajaxBang();
+            }
+    );
+    //分类点击
+    function cateBang(cate,id){
+        $(".test-list").html("");
+        $("li").removeClass("active");
+        if($(cate).attr("id")=="sona"){
+            $(cate).parent().parent().addClass("active");
+        }else{
+            $(cate).parent().addClass("active");
+        }
+        cateId=id;
+        p=1;
+        ajaxBang();
+    }
+</script>
+<include file="__THEME__/public_footer" />

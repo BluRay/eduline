@@ -1,0 +1,56 @@
+<include file="__THEME__/admin_header" />
+<div style="margin-top:10px;margin-left:10px">
+	<center><h1>栏目审核</h1></center>
+</div>
+<div style="margin-top:10px;margin-left:10px;">
+	<table width="600" height="118" cellpadding="0" cellspacing="0">
+		<tr>
+			<th width="5" height="20">查看子栏目</th><th width="5" height="20">栏目名称</th><th width="5" height="20">栏目状态</th><th width="5" height="20">审核操作</th><th width="10" height="20">栏目内容管理</th>
+		</tr>
+		<volist name="firsts" id="first" key="k">	
+			<tr>
+			    <td width="5" height="20"><a href="{:U('admin/base/sonExamineList',array('typeid'=>$first['typeid']))}">查看</a></td>
+				<td width="5" height="20">{$first['name']}</td>
+				<td width="5" height="20">
+					<if condition="$first['status'] eq 0">
+					      待审核...
+					<elseif condition="$first['status'] eq 1"/>
+					     <font color="red">已审核</font>
+				    <elseif condition="$first['status'] eq 2"/>
+					     <font color="blue">未通过</font>
+					</if>
+				</td>
+				<td width="5" height="20">
+					<if condition="$first['status'] eq 1">
+					    <font color="red">已通过</font>
+					<else/>
+					    <a href="javascript:viod(0);" onclick="examine_video({$first['typeid']},1)">通过</a>&nbsp;&nbsp;<a href="javascript:viod(0);" onclick="examine_video({$first['typeid']},2)"><font color="blue">未通过</font></a>
+					</if>
+				</td>
+				<td width="10" height="20"><a href="{:U('admin/base/contentManageList',array('id'=>$first['typeid'],'level'=>$first['level']))}">内容管理</a></td>
+			</tr>
+			<span id="son_{$first['typeid']}"></span>
+		</volist>
+	</table>
+</div>
+<include file="__THEME__/admin_footer"/>
+<script type="text/javascript">
+	function examine_video(id,status){
+		$.post(U('admin/base/doStatusExamine'),{"id":id,"status":status},function(res){
+			if(res > 0){
+				ui.success('审核成功!'); 
+				location.reload();
+			}else{
+				ui.error('审核失败!'); 
+			}
+	    });
+	}
+	
+	/*
+	function son_list(id){
+		$.post(U('admin/base/sonExamineList'),{"id":id,"level":2},function(res){
+			$("#son_"+id).replaceWith(res);
+	    });
+	}
+	*/
+</script>

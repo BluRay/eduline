@@ -1,0 +1,543 @@
+<include file="__THEME__/public_header" />
+
+<!--header-->
+<style>
+    .qa-worap{width:850px;}
+    .qa-content{margin:15px 50px;padding:0 0 15px 0;}
+    .wenda-slider{margin-right:85px;}
+    .qa-comment-addon-r {position: absolute;right: 0;top: 15px;}
+	.qa-comment-input{margin: 0 50px;float:none;}
+	#content{width: 100%;height: 50px;padding:5px; }
+</style>
+<!--main-->
+<div  class="wenda position-rt">
+<!--左边-->
+<div class="qa-worap">
+<!------>
+<div class="qa-header">
+    <a class="qa-author" target="_blank"  event-node="face_card" uid="{$wdinfo['uid']}" show="no" href="{:U('classroom/UserShow/index',array('uid'=>$wdinfo['uid']))}">
+        <img width="40" height="40" src="{:getUserFace($wdinfo['uid'],'m')}"> {:getUserName($wdinfo['uid'])}
+    </a>
+    <php>if($mid!=$wdinfo['uid'] && $mid!=0){</php>
+      <php>if($is_follow==0){</php>
+      <a class="qa-header-r" title="添加关注" data-id="{$wdinfo['uid']}" onclick="followBang(this)" href="javascript:void(0)"><i class="wenda-gz fl"></i><span class="fr">关注用户</span></a>
+       <php>}else{</php>
+      <a class="qa-header-r" title="已关注"  href="javascript:void(0)"><i class="wenda-gz-Toggle"></i><span class="fr">已关注</span></a>
+      <php>}</php>
+    <php>}</php>
+    <if condition="$wdinfo.uid eq $mid">
+      <a class="qa-header-r" title="删除此问答" data-id="{$wdinfo['uid']}" onclick="delwenda({$wdinfo['id']})" href="javascript:void(0)">删除</a> 
+    </if>
+</div>
+<div class="qa-content">
+    <p class="qa-textcont">  <php>echo strip_tags($wdinfo['wd_description'], 'fase<a><br><span><b><i><strong><img>');
+
+    </php></p>
+    <div class="qa-content-addon"> <span class="qa-createtime fl">{:getDateDiffer($wdinfo['ctime'])}</span>
+      <!--  <a class="qa-course-from" href="/video/1352"> 源自：系列：Java 入门第一季... 3-11</a> --><span class="qa-view-num fr">{$wdinfo.wd_browse_count} 浏览</span> <span class="qa-total-comment fr">{$wdinfo.wd_comment_count} 回答</span> </div>
+</div>
+
+
+
+<!--我的提问-->
+		<div class="qa-comment-input clearfix">
+		    <div class="qa-ci-wrap">
+		        <textarea name="content" cols="20" rows="10" id="content" placeholder="我来帮TA回答"></textarea>
+		        
+		    </div>
+		    <div class="qa-reply-footright fr"> 
+		        	<span class="qa-tips"></span>
+		            <button class="btn-mc btn-mini btn-mc-green  js-ipt-submit" onclick="huifuBang(this,{$wdinfo.id})">回答</button>
+		        </div>
+		</div>
+
+
+
+
+    <php>if(!empty($cmlist['data'])){</php>
+<!---回复问题--->
+<div class="qa-comment clearfix "> 
+<!--单个主题回复-->
+    <foreach name="cmlist.data" item="cl">
+<div class="qa-comment-wrap">
+    <div class="qa-comment-author">
+        <a title="{:getUserName($cl['uid'])}" event-node="face_card" uid="{$cl['uid']}" show="no" target="_blank" href="{:U('classroom/UserShow/index',array('uid'=>$cl['uid']))}">
+            <img width="40" height="40" src="{:getUserFace($cl['uid'],'m')}">
+            <span class="qa-comment-nick">{:getUserName($cl['uid'])}</span>
+        </a>
+    </div>
+    <div class="qa-comment-inner">
+        <p class="qa-comment-c imgPreview">
+            <php>echo strip_tags($cl['description'], 'hdfth<a><br><span><b><i><strong><img>');
+
+            </php>
+
+        </p>
+        <div class="qa-comment-addon"> <span class="qa-comment-time">{:getDateDiffer($cl['ctime'])}</span>
+            <div class="qa-comment-addon-r"> <span class="qa-total-reply">
+              <i class="qa-icon"></i>
+              <span class="js-qa-tr-num" id="ptr{$cl.id}" onclick="comment(this,{$cl.id})">
+                <a id="nbcomm{$cl.id}">{$cl.comment_count}</a>条评论
+              </span>
+                <span class="qa-tr-up ">收起评论<b><i></i></b></span></span> 
+                <span data-ids="32272-18857" class="js-qa-comment-support qa-comment-support  js-qacom-supported-user">
+
+                 <a href="javascript:;" onclick="zanBang(this,{$cl.id})"><i <php>if($cl['is_praise']){echo "class='qa-iconhover'";}else{echo "class='qa-icon'";}</php> ></i></a>
+
+                <span>{$cl.help_count}</span>
+                </span> 
+                <if condition="$cl.uid eq $mid">
+                <span class="qa-reply-item-reply js-reply-item-reply" onclick="delBang({$cl.wid},{$cl.id})">
+                    <i class="qa-icon" ></i>删除
+                </span> 
+                </if>
+            </div>
+        </div>
+    </div>
+
+    <!--回复问题下面的单独的-->
+    <div class="qa-replies" style="display:none">
+
+        <!--追加的子回复-->
+      <div class="qa-reply-c" id="comm{$cl.id}" >
+
+            <div class="qa-reply-more"  id="fallbtn{$cl.id}">
+                <a href="#">击显示更多</a>
+            </div>
+        </div>
+        <!--追加的子回复-->
+        <php>if($mid!=""){</php>
+        <div class=" qa-reply-ibox clearfix">
+            <div class="qa-reply-iavator fl"> <a title="{:getUserName($mid)}" href="{:U('classroom/UserShow/index',array('uid'=>$mid))}"> <img width="40" height="40" src="{:getUserFace($mid,'m')}"> </a> </div>
+            <div class="qa-reply-iwrap">
+                <div class="qa-reply-iarea">
+                    <textarea placeholder="写下你的评论..." class="js-reply-ipt-default" id="text{$cl.id}" name=""></textarea>
+                </div>
+                <div class="qa-reply-footright fr">
+                    <span class="qa-tips"></span>
+                    <button class="btn-mc-light js-ipt-cancel" style="display: none" id="clbtn{$cl.id}" onclick="closeBang(this,{$wdinfo.id},{$cl.id})">取消</button>
+                    <button class="btn-mc btn-mini btn-mc-green  js-ipt-submit" onclick="scommBang(this,{$cl.id},{$wdinfo.id})" id="soncomm{$cl.id}">提交</button>
+                </div>
+            </div>
+        </div>
+        <php>}</php>
+    </div>
+    <!---回复下的回复-->
+
+
+</div>
+    </foreach>
+
+<!--单个主题回复-->
+
+
+</div>
+<php>}</php>
+
+    <div class="sabrosus">
+        {$cmlist.html}
+    </div>
+
+
+
+<!--提问结束-->
+</div>
+<!--右边-->
+    <!--右边-->
+    <include file="../Public/right" />
+</div>
+</div>
+<script>
+  var ahtml="";
+  /*  $(document).ready(function(){
+   $(".js-reply-ipt-default").mousedown(function(){
+   $(".qa-reply-footright").css("display","block");
+   });
+   });//控制回答别人回复下面的textarea 提交按钮*/
+    var username="{:getUserName($mid)}";
+    var headsrc="{:getUserFace($mid,'m')}";
+
+    var url;
+    var p;
+    var fdata;
+    function comment(cate,id){
+        url="{:U('wenda/Index/getSonComment')}";
+        p=1;
+        fdata="id="+id;
+        $("#comm"+id).html("");
+        ajaxComm(url,fdata,id,p);
+        $(cate).css("display", "none"); //隐藏js-qa-tr-num
+        $(cate).siblings(".qa-icon").css("background-position","-25px -107px"); //显示js-qa-tr-num同级的qa-icon  hover事件
+        $(cate).siblings(".qa-tr-up").css({"display":"inline","color":"#333333"}); //显示js-qa-tr-num同级的qa-tr-up
+        $(cate).parents('div.qa-comment-inner').siblings('div.qa-replies').show(); //查找js-qa-tr-num上一级为qa-comment-inner的并且下一级为qa-replies的div，效果为显示
+        
+       
+    }
+     $(document).ready(function () {
+        $(".qa-tr-up").click(function () {
+            $(this).css("display", "none");
+            $(this).siblings(".qa-icon").css("background-position","-25px -83px");
+            $(this).siblings(".js-qa-tr-num").css("display", "inline");
+            $(this).parents("div.qa-comment-inner").siblings(".qa-replies").hide();
+        });
+        <php>if($is_mescom){</php>
+        document.getElementById('ptr{$msgcomid}').scrollIntoViewIfNeeded();
+        var cmid="{$msgcomid}";
+        var id=parseInt(cmid);
+        comment("#ptr"+id,id);
+        <php>}</php>
+   	     var cate;
+        <php>
+       
+        foreach($cmlist['data'] as $cl){
+            if($cl['isson']){
+        </php>
+        cate=$("#ptr{$cl.id}");
+        comment(cate,"{$cl.id}");
+       <php>}}</php>
+    });
+    
+  //提交子评论
+  function scommBang(cate,id,wid){
+      var cmval=$("#text"+id).val();
+      if($.trim(cmval)==""){
+          notes("对不起，回复内容不能为空","failure");
+          return;
+      }
+      if($.trim(cmval).length<3){
+          notes("对不起，回复内容最少为3个字符","failure");
+          return;
+      }
+      $(cate).text("提交中...");
+      $(cate).attr('disabled',"true");
+      $.ajax({
+          type: "POST",
+          url:"{:U('wenda/Index/doSonComment')}",
+          data:"id="+id+"&wid="+wid+"&txt="+cmval,
+          dataType:"text",
+          success:function(data){
+             if(data!=200){
+                 notes(data,"failure");
+             }else{
+                 notes("恭喜，回复成功！","success");
+                 url="{:U('wenda/Index/getSonComment')}";
+                 p=1;
+                 fdata="id="+id;
+                 $("#comm"+id).html("");
+                 ajaxComm(url,fdata,id,p);
+                 var numberComm=parseInt($("#nbcomm"+id).text());
+                 numberComm+=1;
+                 $("#nbcomm"+id).text(numberComm);
+
+                 $("#text"+id).val("");
+             }
+
+              $(cate).text("提交");
+              $(cate).removeAttr("disabled");
+
+          }
+      });
+
+  }
+
+  //ajax加载子回复
+  function ajaxComm(url,fdata,id,p,callback){
+      if(fdata!=""){
+          var fdata="&"+fdata;
+      }
+      $.ajax({
+          type: "POST",
+          url:url,
+          data:"p="+p+fdata,
+          dataType:"json",
+          success:function(data){
+              
+              $("#fallbtn"+id).remove();
+              if(data.data!=""){
+              $("#comm"+id).append(data.data);
+              }
+              
+              if(data.nowPage+1>data.totalPages){
+                  return ;
+              }else{
+                  var idname="fallbtn"+id;
+                  p=data.nowPage+1;//下一页
+                  var html="<div class=\"qa-reply-more\"  id="+idname+"><a href=\"javascript:;\" onclick=\"fallBang("+id+","+p+")\">点击显示更多</a></div>"
+                  $("#comm"+id).append(html);
+               
+              }
+          }
+      });
+     
+  }
+  function delCommBang(cate,pid,id){
+    $.ajax({
+        type: "POST",
+        url:"{:U('wenda/Index/delCommComment')}",
+        data:"id="+id+"&pid="+pid,
+        dataType:"text",
+        success:function(data){
+           if(data!=200){
+               notes(data,"failure");
+           }else{
+               notes("删除成功！","success");
+               url="{:U('wenda/Index/getSonComment')}";
+                p=1;
+                fdata="id="+pid;
+                $("#comm"+pid).html("");
+                ajaxComm(url,fdata,pid,p);
+                var numberComm=parseInt($("#nbcomm"+pid).text());
+                numberComm-=1;
+                $("#nbcomm"+pid).text(numberComm);
+
+                $("#text"+pid).val("");
+           }
+        }
+    });
+  }
+  /**
+   * 赞
+   * @param cate
+   * @param id
+   */
+  function zanBang(cate,id){
+      if(MID==0){
+          reg_login();
+          return;
+      }
+      $.ajax({
+          type: "POST",
+          url:"{:U('wenda/Index/doWendaCommentZan')}",
+          data:"id="+id,
+          dataType:"text",
+          success:function(data){
+             if(data==200){
+                 var text=parseInt($(cate).next().text());
+                 text=(text+1);
+                $(cate).next().text(text);
+                $(cate).children("i.qa-icon").removeClass().addClass("qa-iconhover");
+             }else{
+                 return;
+             }
+          }
+      });
+  }
+  /**
+   * 删除问答
+   * @param cate
+   * @param id
+   */
+  function delwenda(id){
+      $.ajax({
+          type: "POST",
+          url:"{:U('wenda/Index/delwenda')}",
+          data:"id="+id,
+          dataType:"text",
+          success:function(data){
+             if(data==200){
+                notes("删除成功！","success");
+                window.location.href = U('wenda/Index/index'); 
+             }else{
+                notes("删除失败!","failure");
+             }
+          }
+      });
+  }
+  /**
+   * 回复问答
+   * @param cate
+   * @param id
+   */
+  function huifuBang(cate,id){
+	  if(MID=='0'){
+          reg_login();
+          return;
+      }
+      var cmval= $('#content').val();
+      if($.trim(cmval)==""){
+          notes("对不起，回复内容不能为空","failure");
+          return;
+      }
+      if($.trim(cmval).length<3){
+          notes("对不起，回复内容最少为3个字符","failure");
+          return;
+      }
+      $(cate).text("提交中...");
+      $(cate).attr('disabled',"true");
+      $.ajax({
+          type: "POST",
+          url:"{:U('wenda/Index/doWendaComment')}",
+          data:"wid="+id+"&count="+cmval,
+          dataType:"text",
+          success:function(data){
+              if(data!=200){
+                  $(cate).text("提交");
+                  $(cate).attr('disabled',"false");
+                  notes(data,"failure");
+
+              }else{
+
+                  location.reload();
+              }
+          }
+      });
+  }
+  //加载更多
+  function fallBang(id,p){
+      fdata="id="+id;
+      ajaxComm(url,fdata,id,p);
+  }
+
+   
+ 
+    //第三级加载
+    function sonCommBang(cate,uid,wid,pid,sid){
+       var funame=$("#uname"+uid).text();//加载回复人的姓名
+       var cmtext="回复 "+funame+":";
+        $("#text"+pid).val(cmtext);
+       $("#text"+pid).focus();
+        $("#clbtn"+pid).css("display","inline");
+       $("#soncomm"+pid).attr("onclick","dosCommBang("+uid+","+wid+","+pid+","+sid+");");
+    }
+    //第三级编辑
+    function updateCommBang(cate,uid,wid,pid,sid){
+         var description=$("#description"+uid).text();//加载回复人的姓名
+         var cmtext=description;
+        $("#text"+pid).val(cmtext);
+        $("#text"+pid).focus();
+        $("#clbtn"+pid).css("display","inline");
+        $("#soncomm"+pid).attr("onclick","updatesonComm("+uid+","+wid+","+pid+","+sid+");");
+    }
+    //取消第三级回复
+    function closeBang(cate,wid,pid){
+        $("#soncomm"+pid).attr("onclick","scommBang(this,"+pid+","+wid+");");
+        $(cate).css("display","none");
+        $("#text"+pid).val("");
+    }
+
+    //关注作者
+    function followBang(cate){
+      var fid=$(cate).attr("data-id");
+        $.ajax({
+            type: "POST",
+            url:"{:U('classroom/User/doFollow')}",
+            data:"uid="+fid,
+            dataType:"text",
+            success:function(data){
+                if(data!=200){
+                    notes(data,"failure");
+                }else{
+
+                    $(cate).children("i.wenda-gz").removeClass().addClass("wenda-gz-Toggle");
+                    $(cate).children("span.fr").text("已关注");
+                    $(cate).attr("title","已关注");
+                    $(cate).attr("onclick","#");
+                }
+            }
+        });
+    }
+
+  /**
+   * 提交第三级评论
+   * @param uid
+   * @param wid
+   * @param pid
+   */
+    function dosCommBang(uid,wid,pid,sid){
+
+      var funame=$("#uname"+uid).text();//加载回复人的姓名
+      funame="回复 "+funame+":";
+      var cmval=$("#text"+pid).val();
+      cmval=cmval.replace(funame,"");
+      if($.trim(cmval)==""){
+          notes("对不起，回复内容不能为空","failure");
+          return;
+      }
+      if($.trim(cmval).length<3){
+          notes("对不起，回复内容最少为3个字符","failure");
+          return;
+      }
+      $("#soncomm".pid).text("提交中...");
+      $("#soncomm".pid).attr('disabled',"true");
+      $.ajax({
+          type: "POST",
+          url:"{:U('wenda/Index/doSonComms')}",
+          data:"id="+pid+"&wid="+wid+"&txt="+cmval+"&uid="+uid+"&sid="+sid,
+          dataType:"text",
+          success:function(data){
+              if(data!=200){
+                  notes(data,"failure");
+              }else{
+                  notes("恭喜，回复成功！","success");
+                  url="{:U('wenda/Index/getSonComment')}";
+                  p=1;
+                  fdata="id="+pid;
+                  $("#comm"+pid).html("");
+                  ajaxComm(url,fdata,pid,p);
+                  var numberComm=parseInt($("#nbcomm"+pid).text());
+                  numberComm+=1;
+                  $("#nbcomm"+pid).text(numberComm);
+
+                  $("#text"+pid).val("");
+              }
+              $("#soncomm"+pid).text("提交");
+              $("#soncomm"+pid).removeAttr("disabled");
+              $("#soncomm"+pid).attr("onclick","scommBang(this,"+pid+","+wid+");");
+          }
+      });
+  }
+  /**
+   * 编辑第三级评论
+   * @param uid
+   * @param wid
+   * @param pid
+   */
+    function updatesonComm(uid,wid,pid,sid){
+      var cmval=$("#text"+pid).val();
+      if($.trim(cmval)==""){
+          notes("对不起，回复内容不能为空","failure");
+          return;
+      }
+      if($.trim(cmval).length<3){
+          notes("对不起，回复内容最少为3个字符","failure");
+          return;
+      }
+      $.ajax({
+        type: "POST",
+        url:"{:U('wenda/Index/updateSonComment')}",
+        data:"id="+sid+"&txt="+cmval,
+        dataType:"text",
+        success:function(data){
+           if(data!=200){
+               notes(data,"failure");
+           }else{
+               notes("恭喜，编辑成功！","success");
+               url="{:U('wenda/Index/getSonComment')}";
+               p=1;
+               fdata="id="+pid;
+               $("#comm"+pid).html("");
+               ajaxComm(url,fdata,pid,p);
+               $("#text"+pid).val("");
+           }
+        }
+      });
+  }
+  function delBang(wid,id){
+    $.ajax({
+      type: "POST",
+      url:"{:U('wenda/Index/delcomm')}",
+      data:"id="+id+"&wid="+wid,
+      dataType:"text",
+      success:function(data){
+        if(data!=200){
+          notes(data,"failure");
+        }else{
+          notes("删除成功！","success");
+          location.reload();
+        }
+      }
+    });
+  }
+</script>
+<!--footer-->
+<include file="__THEME__/public_footer" />

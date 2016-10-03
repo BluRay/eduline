@@ -1,0 +1,191 @@
+<include file="__THEME__/public_header" />
+<style type="text/css">
+.talkPop{clear:left;margin-top:43px;*margin-top:20px !important;margin-left:-75px !important;*margin-left:-25px !important;_*margin-left:-25px;position:absolute !important;}
+@media screen and (-webkit-min-device-pixel-ratio:0){ .talkPop {margin-left:-25px !important} }
+</style>
+<div class="sixin-worap position-rt">
+    <!--左-->
+    <include file="left" />
+    <!--中 -->
+    <div class="user-con fl">
+        <div class="user-con-title"> <a href="#" class="onactive">我的私信</a></div>
+        <!--后台私信-->
+        <div class="user-sxmain">
+            <div class="user-sxmainhd">我和 <a href="{$message['to'][0]['user_info']['space_url']}" style="color: #3366cc;">{$message['to'][0]['user_info']['uname']}</a> {:L('PUBLIC_PRIVATE_MESSAGE')}({:L('PUBLIC_SUM_TO_TALL',array('num'=>"<strong id='message_content_count'>".$message['message_num']."</strong>"))})
+                <a class="fr" href="{:U('public/Message/index')}">返回»</a> </div>
+            <!--直接回复部分-->
+            <div class="user-sxhf">
+                <dl class="replay-article clearfix">
+                    <dt class="fr dt"><a href="javascript:;"><img src="{$GLOBALS['ts']['_user']['avatar_small']}"></a></dt>
+                    <dd class="dd-title f9">发送私信给： <a href="{$message['to'][0]['user_info']['space_url']}" style="color: #3366cc;">{$message['to'][0]['user_info']['uname']}</a> </dd>
+                    <dd class="user-sxinfo dd">
+                        <textarea onfocus="this.className='s-textarea-focus'" onblur="this.className='s-textarea'" class="s-textarea" rows="" cols="" id="reply_content"></textarea>
+                    </dd>
+                    <dd class="action dd "> <a onclick="doReply();" id="replymessage" class="btn-green-small fr" href="javascript:;"> 回复</a>
+                        <div class="acts fl"> <a event-node="message_insert_face" href="javascript:;" class="face-block">
+                            <i class="face"></i><span class="fl" href="javascript:;" event-node="message_insert_face">表情</span></a>
+                            <div id="message_face_div_detail"></div>
+                        </div>
+                    </dd>
+                </dl>
+            </div>
+            <!--对话框开始-->
+            <div class="user-sxdhcon">
+                <!---ta-->
+
+            </div>
+            <!--分页-->
+            <div class="more">
+                <p class="moreFoot" id="moreFoot"><a id="load_more_btn" onclick="load_more_message(this)" href="javascript:void(0)"><span class="ico_morefoot"></span>{:L('PUBLIC_MORE')}</a></p>
+            </div>
+            <div class="sabrosus">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type='text/javascript'>
+M.addEventFns({
+  message_insert_face: {
+    click: function () {
+      var parentDiv = $('#message_face_div_detail')[0];
+      core.plugInit('face', this, $('#reply_content'), parentDiv);
+    }
+  }
+});
+
+
+var list_id = "{$message['list_id']}";
+var since_id = "0";
+var defalut_since = "{$message['since_id'] - 1}";
+var max_id = 0;
+var timeout = null;
+var type = '{$type}';
+
+$(document).ready(function(){
+    load_more_message('#load_more_btn');
+	  timeout = setTimeout("load_new_message()", 4000);
+});
+
+shortcut('ctrl+return', doReply , {target:'replay'});
+
+function reply_message(name)
+{
+	var $reply_content = $('#reply_content');
+	var reply_content = $reply_content.val();
+	reply_content = reply_content ? reply_content + ' ' : '';
+  var reply_user = ' ';
+	if(-1 == reply_content.indexOf(reply_user)) {
+		$reply_content.val(reply_content + reply_user);
+	}
+  scrolltotop.scrollup();
+	$reply_content.focus();
+};
+var replylock = 0;
+function doReply()
+{
+  if ( replylock == 1 ){
+	  return;
+  }
+  var reply_content = $('#reply_content').val();
+  var to = "{$message['to'][0]['member_uid']}";
+  if('' == reply_content) {
+
+      notes('{:L('PUBLIC_COMMENT_MAIL_REQUIRED')}','failure');
+    return false;
+  }
+  $('#replymessage').html('回复中..');
+  var attach_ids = $.trim($('#attach_ids').val());
+  $.post("{:U('public/Message/doReply')}", {id:list_id, reply_content:reply_content, to:to, attach_ids:attach_ids}, function(res) {
+    if(res.status != '0') {
+      $('#reply_content').val('');
+      load_new_message();
+    } else {
+      notes(res.data,'failure');
+
+    }
+    $('#replymessage').html("<span>{:L('PUBLIC_STREAM_REPLY')}</span>");
+    if("undefined" != typeof(core.uploadFile)) {
+      core.uploadFile.clean();
+      core.uploadFile.removeParentDiv();
+    }
+  },'json');
+  replylock = 1;
+  setTimeout(function (){
+	  replylock = 0;
+  },5000);
+};
+function delSession(ids)
+{
+  ids = ids.toString();
+  if(ids == '') {
+    return false;
+  }
+  $.post("{:U('public/Message/doDeleteSession')}", {ids:ids}, function(res) {
+    if (res == '1') {
+      ui.success('{:L('PUBLIC_DELETE_SUCCESS')}');
+      ids = ids.split(',');
+			for(i = 0; i < ids.length; i++) {
+				$('#message_'+ids[i]).remove();
+			}
+			var $message_content_count = $('#message_content_count');
+      var message_content_count  = parseInt($message_content_count.html());
+      $message_content_count.html(message_content_count - ids.length);
+    }else {
+      ui.error('{:L('PUBLIC_DELETE_FAIL')}');
+    }
+  });
+};
+function load_more_message(o)
+{
+	var type = 'old';
+	var $o = $(o);
+	$o.html('{:L('PUBLIC_WATING')}');
+	load_more(type);
+	$o.html('{:L('PUBLIC_MORE')}');
+};
+function load_new_message()
+{
+	var type = 'new';
+	clearTimeout(timeout);
+	load_more(type);
+	timeout = setTimeout("load_new_message()", 4000);
+};
+function load_more(load)
+{
+	if('new' == load) {
+		var param = {since_id:since_id,list_id:list_id,type:type};
+	} else if ('old' == load) {
+    var param = {since_id:defalut_since,max_id:max_id,list_id:list_id,type:type};
+	}
+  $.post(U('public/Message/loadMessage'), param, function(txt){
+    if(txt.data) {
+      if ('new' == load) {
+
+        $('.user-sxdhcon').prepend(txt.data);
+        if(txt.since_id > 0) {
+  				since_id = txt.since_id;
+        }
+        var $message_content_count = $('#message_content_count');
+        var message_content_count  = parseInt($message_content_count.html());
+        $message_content_count.html(message_content_count + txt.count);
+      } else if ('old' == load) {
+
+        $('.user-sxdhcon').append(txt.data);
+        max_id = txt.max_id;
+        if (since_id <= 0) {
+          since_id = txt.since_id;
+        }
+        if (0 == txt.max_id) {
+          $('#moreFoot').css('display', 'none');
+        }
+      }
+    }
+  }, 'json');
+};
+</script>
+<script src="__THEME__/js/message/module.message.js"></script>
+
+<include file="__THEME__/public_footer" />

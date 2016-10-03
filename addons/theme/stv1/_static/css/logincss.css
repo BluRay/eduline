@@ -1,0 +1,120 @@
+#loging-worap-regsiter{ width:814px; margin:0 auto; height:426px; background:#FFF; position:fixed; top:50%; left:50%; margin: -223px 0 0 -407px; z-index:1001}
+.loging-Cancel{ position:absolute; right:0px; width:30px; line-height:30px; height:30px; text-align:center; color:#ffffff;font-family:"microsoft yahei"; }
+.loging-Cancel:hover{color:#ffffff;font-family:"microsoft yahei"; }
+#loging-worap-regsiter .label{ width:70px; text-align:left;}
+/*注册*/
+#loging-back{ width:100%; height:100%;overflow:hidden; display:block; position:fixed; z-index:1000; background:#000000;filter:alpha(opacity=60);-moz-opacity:0.60;opacity:0.60;}
+#loging-worap-regsiter .title{  float:left;  height:60px; line-height:60px; padding:0 0 0 20px; font-size:18px;font-family:"microsoft yahei"; color:#FFF; background:#2B92F9;}
+.regsiter .inputcheckbox{vertical-align:middle; height:inherit; border:0;+margin-top:5px;} 
+.regsiter-width{ width:239px; height:34px; line-height:30px;}
+.regsiter .width130{ width:130px; height:34px; line-height:34px\9;line-height: normal;}
+.regsiter .width121{ width:121px; height:34px; line-height:30px;}
+.regsiter .width80{ width:95px; height:34px; line-height:34px;border:1px solid #EDEDED; text-align:center;  display:inline-block; font-size:12px; color:#999999}
+.regsiter .width97{ width:97px; height:36px; line-height:36px; background:#f3f4f4;text-align:center; display:inline-block;font-size:12px; color:#999999}
+.regsiter .width108{ width:108px; height:36px; line-height:30px; display:block}
+
+#regsiter-worap{ width:407px; float:left;}
+#regsiter-worap .title{ width:386px; border-right:1px solid #1E74A5; float:left;}
+.regsiter{ width:371px; padding:20px 0 0 35px; height:346px; float:left;border-right:1px solid #EDEDED; color:#999999;  }
+.regsiter .teb{padding-right:52px; height:50px;text-align:right; color:#999999; font-size:12px}
+.regsiter li{height: auto; line-height:34px; width:100%; float:left; padding-bottom:30px; overflow:inherit;position:relative}
+.regsiter label{height:34px; padding:0 15px 0 0; float:left}
+.regsiter i{margin:18px 5px 0 0;}
+.regsiter input {padding:0 0 0 10px; background:none; float:left;line-height: normal ;*line-height:34px; vertical-align:middle; border:1px solid #eeeeee; margin-right:10px;}
+.regsiter .submit{ width:80px; height:30px; line-height:28px; margin:3px 0 0 0; font-size:12px;border:1px solid #eeeeee; float:left; text-align:center; padding:0; color:#999999;cursor:pointer}
+.regsiter-xy{ width: 302px; float:right;}
+.regsiter-xy-top{ width: 302px; float:right; height:30px; line-height:30px;font-size:12px}
+.regsiter-xy-submit{font-family:"microsoft yahei"; background:#2B92F9; height:39px; width:251px; border:none; text-align:center; line-height:39px; margin-top:5px; padding:0 !important;font-size:14px; color:#FFF; float:left; cursor:pointer}
+.regsiter li .p{ position:absolute; top:-30px; font-size:12px; height:20px; left:85px;}
+.regsiter-xy-top label{height:30px; line-height:30px; padding:0 15px 0 0; float:left}
+.regsiter .regsiter-xy-submit{font-family:"microsoft yahei"; background:#2B92F9;border:none;vertical-align:middle; }
+/*登录*/
+#loging-worap{ width:407px; float:left;}
+#loging-worap .title{ width:387px;}
+.loging .inputcheckbox{vertical-align:middle; height:inherit; border:0;}
+.loging-width{ width:239px;}
+.loging{ width:371px; padding:70px 0 0 35px; height:296px; float:left; color:#999999}
+.loging li{height:34px; line-height:34px; width:100%; float:left; padding-bottom:30px;}
+.loging label{height:34px; padding:0 15px 0 0; float:left}
+.loging i{margin:18px 5px 0 0;}
+.loging input{padding:0 0 0 10px; background:none; float:left;line-height:normal; vertical-align:middle; border:1px solid #eeeeee; margin-right:10px;line-height: 34px\9;}
+.loging-xy{ width: 285px; float:right;}
+.loging-xy-top{ width: 312px; float:right; height:30px; line-height:30px;font-size:12px}
+.loging .loging-xy-submit{background:#2B92F9; height:39px; width:145px; border:none; text-align:center; line-height:39px; font-size:14px; padding:0 !important;color:#FFF; float:left;font-family:"microsoft yahei"; cursor:pointer}
+.loging-xy-top label{height:30px; line-height:30px; padding:0 15px 0 0; float:left}
+.loging-xy-bottom{ width:100%; float:left; line-height:56px;}
+.loging-bottom{ width:100%; float:left; line-height:56px; padding:11px  0 0 0 }
+.loging-bottom a{ width:50px; height:50px; display:block; float:left; margin:0 22px 0 0;text-indent:1000px; overflow:hidden;  background-repeat:no-repeat}
+.loging-bottom-wb{ background-position: 0 -4px}
+.loging-bottom-qq{background-position:-50px 0}
+.loging-bottom-rr{ background-position:-100px 0}
+/*邮箱提示*/
+.regsiter-main-msg{width:814px; margin:0 auto; height:286px; background:#FFF; position:fixed; top:50%; left:50%; margin: -223px 0 0 -407px; z-index:302; padding-top:140px}
+.regsiter-main-msg h3{ width:550px;height:40px; line-height:40px; font-size:14px; font-weight:100;  float:right; position:relative; padding:0 0 0 50px; }
+.regsiter-main-msg h3 i{ position:absolute; top:5px; left:0; width:30px; height:28px; display:block}
+.regsiter-main-msg h3 .tru{ background:url(../image/msg.jpg) no-repeat top left}
+.regsiter-main-msg h3 .wro{background:url(../image/msg.jpg) no-repeat bottom left}
+.regsiter-main-msg .box{ width:550px; float:right;  }
+.regsiter-main-msg .p{ width:550px; float:right; height:40px;font-size:12px; color:#999999}
+.regsiter-main-msg .bottom{ width:550px; float:right; font-size:12px;}
+.regsiter-main-msg .bottom .a{ color:#2286bf;font-size:12px;}
+.regsiter-main-msg .bottom .span{ width:90px; float:left; text-align:center; height:30px; line-height:30px; color:#ffffff; margin-right:10px;font-size:12px; display:block; background:#C7C7C7}
+/*头像设置*/
+.regsiter-main-headerworap{width:814px; margin:0 auto;height:426px; background:#FFF; position:fixed; top:50%; left:50%; margin: -223px 0 0 -407px; z-index:303;}
+
+.regsiter-main-header{width:470px; margin:0 auto;height:426px;padding:0 172px; background:#FFF; }
+.regsiter-main-header h2{ font-size:18px; font-weight:100; height:70px; line-height:70px;}
+.regsiter-main-header .header{width:470px; margin:0 auto; float:left; padding:10px 0 0 0}
+.regsiter-main-header .p{ font-size:12px; height:20px; color:#999999}
+.regsiter-main-header .header-l{width:252px; height:252px;float:left; background:#EFEFEF; position:relative;}
+.regsiter-main-header .header-l img{ max-width:252px; width:auto !important; max-height:252px;}
+.regsiter-main-header .header-l .bnt{ width:65px !important; font-size:12px;height:28px; background:none;left:50%; top:50%; margin:-14px 0 0 -32px; text-align:center; position: absolute; display:block; color:#333333; line-height:32px; outline:none}
+.regsiter-main-header .header-r{width:200px; float: right; height:200px;border:#d0d6d9 1px dashed; line-height:200px; text-align:center; color:#999999}
+.regsiter-main-header .header-r img{width: auto !important;  }
+.regsiter-main-header .header-rimg{idth:200px; float: right; height:200px;border:#d0d6d9 1px  solid; line-height:200px; text-align:center; color:#999999}
+.regsiter-main-header .bntbox{width:470px; height:39px; float:left; line-height:66px; font-size:12px}
+.regsiter-main-header .bnt{width:135px; background:#2B92F9; text-align:center; line-height:39px; margin-right:10px;height:39px; float:left; color:#FFF; font-size:14px}
+/*用户信息*/
+.regsiter-main{width:560px; margin:0 auto; height:426px; padding:0 127px; background:#FFF; position:fixed; top:50%; left:50%; margin: -223px 0 0 -407px; z-index:301;}
+.regsiter-main h2{ font-size:18px; font-weight:100; height:70px; line-height:70px;}
+.regsiter-main li{width:560px; float:left; margin:0 0 20px 0;}
+.regsiter-main .bntbox{width:400px; height:39px; position:relative; float:left; padding-left:70px;}
+.regsiter-main .bntbox .a{ position:absolute; top:20px; width:50px; height:20px; line-height:20px; right:-90px; color:#333333; font-size:12px;}
+.regsiter-main .bnt{width:430px; background:#2B92F9; text-align:center; line-height:39px; margin-right:10px;height:39px; float:left; color:#FFF; font-size:14px}
+.regsiter-main .width{width:400px;height:34px; float:left; border:1px solid #d0d6d9; padding:0 15px;}
+.regsiter-main .label{ width:70px; text-align:left; float:left; color:#999999}
+.regsiter-main .select{ font-size:12px; color:#999999; margin-right:10px; height:24px;border:1px solid #d0d6d9;}
+.regsiter-main .label{ width:70px; text-align:left; float:left; color:#999999}
+.textareawidth{width:400px;height:50px; float:left; border:1px solid #d0d6d9; line-height:24px; overflow:auto; padding:5px 15px}
+/*找回密码*/
+.login .header-l{ width:814px;}
+.worap-login{ width:814px; margin:20px auto 0 auto; height:auto; overflow:hidden;min-height:500px}
+.worap-login .title{ width:744px; border-bottom: 1px solid #e3e5e5; font-size: 16px;font-family:"microsoft yahei"; height: 47px;  line-height: 47px;  margin: 0 0 -1px; padding:0 35px; float:left;}
+.worap-login .onactive{ border-bottom: 3px solid #000000;padding:0 20px;color: #363d40;line-height: 45px; display: inline-block;}
+.login-msg{ width:740px; padding:50px; height:auto;}
+.login-msg h1{ height:60px; line-height:60px; font-size:24px}
+.Mailbox{width:740px; padding:50px; }
+.Mailbox h1{ width:100%; height:32px; line-height:32px; color:#000; font-size:20px; font-family: inherit; color:#66AEDE;padding:0 0 0 50px; }
+.Mailbox .again-box{padding:0 0 0 50px; width:70%; height:auto; line-height:33px;}
+.Mailbox .again{width:96px; height:33px; display:block; line-height:33px; color:#999999; font-size:12px; text-align: center; color:#FFF;background:#C7C7C7; margin:0; padding:0;}
+.Mailbox p{ line-height:60px; padding:0 0 0 50px; }
+
+.login-Cipher{ width:610px; padding:20px 0; height:auto; float:right;}
+.login-Cipher-ul{ width:610px; padding:10px 0 0 35px; height: auto; float:left;}
+.login-Cipher-ul li{height:34px; line-height:34px; width:100%; float:left; padding-bottom:30px; position:relative;}
+.login-Cipher-ul li .p{height:30px; line-height:30px; position:absolute; left:85px; bottom:0px;}
+.login-Cipher-ul label{height:50px; padding:0 15px 0 0; float:left; width:70px ; text-align:left}
+.login-Cipher-ul i{margin:18px 5px 0 0;}
+.login-Cipher-ul input{padding:0 0 0 10px; background:none; float:left;line-height: inherit ;*line-height:34px; vertical-align:middle; border:1px solid #eeeeee; margin-right:10px;}
+.login-Cipher .regsiter-xy-submit{ margin:0 0 0 120px; font-family:"microsoft yahei"; cursor:pointer}
+.login-Cipher-ul .submit{ font-family:"microsoft yahei"; width:80px; height:30px; line-height:28px; margin:3px 0 0 0; font-size:12px;border:1px solid #eeeeee; float:left; text-align:center; padding:0; color:#999999}
+.yam{  width:108px; height:36px; line-height:30px; display:block; float:left;}
+.yam img{ width:80px; height:34px;}
+.login-Cipher-r{ width:250px; float:left; font-size:12px; margin-top:50px; border-left:1px solid #eeeeee; padding-left:20px;}
+.login-Cipher-r a{ color:#2B92F9}
+.login-Cipher .teb{padding-right:52px; height:30px;text-align:right; color:#999999; font-size:12px; padding: 0 240px 0 0 ;}
+
+/*第三方注册信息填写*/
+.login-qqheader{ width:734px; padding:40px 0 10px 0; text-align:center;border-bottom:1px solid #dddddd; float:right;margin:0 40px;}
+.login-qqheader img{ width:100px; line-height:100px;border-radius: 100px;-moz-border-radius: 100px; margin-bottom:30px;}
+.login-qqheader p{ height:30px; line-height:30px; color:#333333; font-size:16px;}

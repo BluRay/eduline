@@ -1,0 +1,232 @@
+<include file="__THEME__/public_header" />
+<script type="text/javascript" src="__APP__/Js/common.js"></script>
+<script type="text/javascript" src="__APP__/Js/json2select.js" ></script>
+<script type="text/javascript" src="__APP__/Js/group.info.form.js" ></script>
+<link  href="__APP__/group.css" rel="stylesheet" type="text/css"/>
+<script>
+$(document).ready(function(){
+	group_info.init();
+	group_info.$input_tags.change(function(){
+		group_info.tag_num();
+	});
+});
+</script>
+
+
+<div class="breadcrumb"> <a href="{:U('group')}">小组首页</a>&gt;<a href="{:U('group/Topic/index',array('gid'=>$gid))}">{$groupinfo.name}</a>&gt;
+    <a>《管理小组》</a>
+</div>
+<div class="sk_main">
+<div class="sk_heading">
+
+  <include file="../Public/top" />
+</div>
+<div class="newpost">
+<a href="{:U('group/Manage/index',array('gid'=>$groupinfo['id']))}"  class="quealltab <if condition="$current eq 'basic'">onactive</if>">基本信息</a>
+<a href="{:U('group/Manage/membermanage',array('gid'=>$groupinfo['id']))}" class="quealltab  <if condition="$current eq 'membermanage'">onactive</if>">成员管理</a>
+
+
+
+</div>
+<div class="sk_l2">
+ <form name="editform" action="{:U('group/Manage/index', array('gid'=>$gid))}" method="post" onsubmit="javascript:return group_info.check_form(this);" enctype="multipart/form-data">
+
+<ul class="user-set-sz" style="padding-left:0px;margin-top:30px;width:100%">
+     <li>
+        <label class="label"><em>*</em> 小组名称：</label>
+          <input name="name" value="{$groupinfo['name']}" class="user-width" style="border: 1px solid #cce4f4;" type="text" placeholder="">     
+    </li>
+       <li>
+        <label class="label"><em>*</em> 分类：</label>
+       <div class="c2" id="pid"></div>
+      </li>
+      
+	  
+	    <li>
+        <label class="label"><em>*</em> 封面：</label>
+           <div class="c2" style=" height:230px">
+                  <span class="left lh25">
+                 
+                    <input class="text" type="file" id="logoxz" name="logo" value="浏览" onchange="handleFiles(this)"/><br />
+					<img src="{$groupinfo['logourl']}" id="logo_src" width="186" height="186" style="margin-top:10px;" />
+                  </span>
+				  
+                  </div>
+      </li>
+	  
+	   <li>
+        <label class="label"><em>*</em> 简介：</label>
+	       <textarea id="" class="user-textarea"  name="intro" style="width:520px">{$groupinfo['intro']}</textarea>
+      </li>
+	  
+	  
+	    <li>
+        <label class="label"><em>*</em> 公告：</label>
+	       <textarea id="" class="user-textarea" name="announce" style="width:520px">{$groupinfo['announce']}</textarea>
+      </li>
+	  
+    
+       <li>
+        <label class="label">&nbsp;</label>
+        <input class="user-submit" type="submit"  name="editsubmit" value="保 存">
+      </li>
+      </ul>
+</form>
+
+
+</div>
+
+<div class="sk_r2">
+	<div class="sk_anc">
+    <h3>公告</h3>
+    {$groupinfo['announce']}
+    </div>
+    <div class="sk_plist">
+    <h3>组长</h3>
+    <ul>
+    <volist name="adminlist" id="v">
+        <li>
+             <space uid='v.uid' class="pic">{uavatar}</space>
+            <h4><a href="{:U('classroom/UserShow/index',array('uid'=>$v[uid]))}" style="color:#333">{$v.uname}</a></h4>
+            <p>{$v.intro|getShort=###,15,'...'}</p>
+        </li>
+    </volist>
+    </ul>
+    </div>
+</div>
+<div class="sk_cl"></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="content_holder" style="display:none">
+<div class="content no_bg boxShadow"><!-- 内容 begin  -->
+<include file="../Public/_mainNav" />
+  <div class="main no_l"> 
+    <!-- 右侧内容 begin  -->
+    <div class="mainbox">
+      <div class="mainbox_C mainC_pad" style="margin-right:0"> <include file="../Public/manage_group_top" />
+        <div class="groupBox">
+          <div class="boxL" style="width:100%;">
+            <form name="editform" action="{:U('group/Manage/index', array('gid'=>$gid))}" method="post" onsubmit="javascript:return group_info.check_form(this);" enctype="multipart/form-data">
+              <ul class="add_group">
+                <li>
+                  <div class="c1"><font color="red">*</font>群名称：</div>
+                  <div class="c2">
+                    <input name="name" value="{$groupinfo['name']}" class="text" style="width: 50%;" onBlur="this.className='text';group_info.text_length(this,30);" onFocus="this.className='text2'" type="text" />
+                    <span id="group_name_tips" class="cRed pr5"></span>
+                  </div>
+                </li>
+                <li>
+                  <div class="c1"><font color="red">*</font>群分类：</div>
+            	  <div class="c2" id="pid"></div>
+                </li>
+                <li>
+                  <div class="c1">群头像：</div>
+                  <div class="c2" style=" height:45px"><span class="left mr10"><img src="{$groupinfo['logourl']}" width="50" height="50" /></span>
+                  <span class="left lh25">
+                  	换用其它图标：<br />
+                    <input class="text" type="file" name="logo" value="浏览" />
+                  </span>
+                  </div>
+                </li>
+                <li>
+                  <div class="c1">群介绍：</div>
+                  <div class="c2">
+                    <textarea name="intro" rows="6"  style="width:400px;height:100px;overflow:auto" class="text"  onBlur="this.className='text';group_info.text_length(this,200);" onFocus="this.className='text2'">{$groupinfo['intro']}</textarea><br /><span id="group_intro_tips" class="cRed pr5"></span>
+                  </div>
+                </li>
+<!--                 <li>
+		          	<div class="c1"><font color="red">*</font>群标签：</div>
+		            <div class="c2">
+						<div><input name="tags" type="text" value="{$group_tags}" class="text" style="width:250px" /> <span id="tags_change" class="cRed pr5"></span><br />
+						<if condition="$reTags">热门标签：<volist name="reTags" id="tag"><a href="javascript:;" onclick="group_info.add_tag(this)" title="添加标签">{$tag}</a>&nbsp;&nbsp;</volist></if></div>
+		                <div class="cGray2">最多设置5个，多个标签之间用英文逗号做间隔。设置标签可以让你的微群更容易被其他用户找到</div>
+		            </div>
+                </li> -->
+                <li>
+                  <div class="c1">群人数：</div>
+                  <div class="c2">{$groupinfo['membercount']}人 </div>
+                </li>
+                <li>
+                  <div class="c1">&nbsp;</div>
+                  <div class="c2">
+                    <input type="hidden" name="gid" value="{$gid}">
+                    <input type="hidden" name="editsubmit" value="1" >
+                    <input type="hidden" name="verify" value="1" />
+                    <input name="button" type="submit" class="btn_b mt5" id="button" value="保存" />
+                  </div>
+                </li>
+              </ul>
+            </form>
+          </div>
+          <!-- end  --> 
+        </div>
+        <div class="c"></div>
+      </div>
+      <div class="c"></div>
+    </div>
+  </div>
+  <!-- 右侧内容 end  --> 
+</div>
+</div>
+<script>
+    window.URL = window.URL || window.webkitURL;
+    var fileElem = $("#logoxz");
+    function handleFiles(obj) {
+        var files = obj.files,
+                img = new Image();
+        if(window.URL){
+            $('#logo_src').attr('src',window.URL.createObjectURL(files[0]))
+        }else if(window.FileReader){
+            //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+            var reader = new FileReader();
+
+            $('#logo_src').attr('src',this.result)
+
+        }else{
+            //ie
+            obj.select();
+            obj.blur();
+            var nfile = document.selection.createRange().text;
+            document.selection.empty();
+            img.src = nfile;
+            $('#logo_src').attr('src',nfile)
+
+            //fileList.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='image',src='"+nfile+"')";
+        }
+    }
+</script>
+<!-- 内容 end --> 
+<script type="text/javascript">
+ $(document).ready(function(){
+	 var category_json = {:getCategorySelect(0)};
+	 $("#pid").json2select(category_json,[{$groupinfo['cid0']},{$groupinfo['cid1']}],'cid');
+ });
+</script> 
+<include file="__THEME__/public_footer" />
+</body>
+</html>

@@ -1,0 +1,6 @@
+<ul class="user-sidebar">
+    <li><a href="{:U('classroom/UserShow/index',array('uid'=>$_GET['uid']))}" <php>if(ACTION_NAME=="index"){echo "class='active'";}</php>  >课程</a></li>
+    <li><a href="{:U('classroom/UserShow/wenda',array('uid'=>$_GET['uid']))}" <php>if(ACTION_NAME=="wenda" || ACTION_NAME=="wdcomm"){echo "class='active'";}</php>  >问答</a></li>
+    <li><a href="{:U('classroom/UserShow/note',array('uid'=>$_GET['uid']))}" <php>if(ACTION_NAME=="note" ){echo "class='active'";}</php>>笔记</a></li>
+    <li><a href="{:U('classroom/UserShow/fans',array('uid'=>$_GET['uid']))}" <php>if(ACTION_NAME=="fans" ){echo "class='active'";}</php>>关系</a></li>
+</ul>

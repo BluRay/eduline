@@ -1,0 +1,92 @@
+<include file="__THEME__/public_header" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+<script src="__THEME__/js/gjwjs/jquery.mousewheel.js"></script>
+<script>
+window.onload=function()
+{
+	 //公用库
+	higher_common();
+	(function(){
+		Serie_Knopf_tab();
+	})();
+	//系列轮播图
+	(function(){
+		Serie_Carousel();
+	})();
+}
+</script>
+<div class="figure_bar">
+<div class="figure_Icon_div">
+    <ol class="figure_Icon_ul clearfix">
+        <li class="fl clearfix">
+            <a href="{:U('classroom/Serial/serial')}" class="figure_show_span fl">返回</a>
+            <span class="figure_show_span1 fl"><b class="b_0 figure_icon"></b></span>
+        </li>
+        <!--
+        <li class="fl">
+          <a href="{:U('classroom/Serial/icontent','cid='.$cid.'&did='.$did)}" target="_blank" class="figure_show_span fl">图组</a>
+          <span class="figure_show_span1 fl"><b class="b_1 figure_icon"></b></span>
+        </li>
+        -->
+        <li class="fl">
+          <a href="{:U('classroom/Serial/scontent','cid='.$cid.'&did='.$did)}" target="_blank" class="figure_show_span fl">正文</a>
+          <span class="figure_show_span1 fl"><b class="b_2 figure_icon"></b></span>
+        </li>
+        <li class="fl">
+          <div class="figure_show_fx fl">
+                <div id="auto-id-Wgv0KyQS2q5GtCJz" class="cli-share j-sharebox auto-1390289261253-parent" title="分享">
+                                    <div class="bdsharebuttonbox bdshare-button-style1-16" data-bd-bind="1400060242462">
+                                        <a href="#" class="bds_weixin share6" data-cmd="weixin" title="分享到微信"></a>
+                                        <a href="#" class="bds_qzone share2" data-cmd="qzone" title="分享到QQ空间">
+                                        </a><a href="#" class="bds_tsina share3" data-cmd="tsina" title="分享到新浪微博">
+                                        </a><a href="#" class="bds_tqq share4" data-cmd="tqq" title="分享到腾讯微博"></a>
+                                        <a href="#" class="bds_renren share1" data-cmd="renren" title="分享到人人网"></a>
+                                        <a href="#" class="bds_douban share5" data-cmd="douban" title="分享到豆瓣网"></a>
+                                    </div>
+                                    <style>
+								    .jj{height:40px;}
+                                    </style>
+                                    
+<script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"tag":'img_share',"viewList":["renren","qzone","tsina","tqq","douban","weixin"],"viewText":"分享到：","viewSize":"16"},};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+                                </div>
+                </div>
+          <span class="figure_show_span1 fl"><b class="b_3 figure_icon"></b></span>
+        </li>
+    </ol>
+</div>
+<div class="figure_box">
+    <div class="focus_tag">
+    	<!--<volist name="data" id="vo" key="key"><a
+         <if condition=" $key eq 0 ">class="current"</if>></a>
+        </volist>-->
+    </div>
+    <ul>
+    	<volist name="data" id="vo">
+        <li>
+            <a href="javascript"><img src="{$vo.attach|getImageUrlByAttachId=###}" alt="{$vo.title}" /></a>
+            <div class="Graphic_box_a">
+                <div class="c_span_text ">
+                        <div class="re_box"><strong class="c_strong">phone<em>1</em>/<em>1</em></strong></div>
+                        <p>{$vo.description}</p>
+                        <div class="time_line">
+                        <em>版权作品<em>.</em>请勿转载</em>
+                        </div>
+                        </div>
+            </div>
+        </li>
+        </volist>
+        
+        
+        
+    </ul>
+</div>
+<p class="figure_icon figure_prev"></p>
+<p class="figure_icon figure_next"></p>
+</div>
+
+
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

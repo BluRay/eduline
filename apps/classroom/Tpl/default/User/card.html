@@ -1,0 +1,196 @@
+<include file="__THEME__/public_header" />
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+   <div class="user-con fl user-pbottom">
+   <div class="user-con-title">
+            <a href="javascript:;" class="onactive" >绑定银行卡</a>
+        </div>
+    <?php if($isEditCard):?>
+    <div class="user-Release">
+     <form method="post" action="{:U('classroom/User/card')}">
+    <ul class="user-set-sz">
+        <li  style="height:24px; padding-bottom:15px; line-height:24px;">
+          <label class="label" ><em>*</em>开户银行：</label>
+          <select class="inputcheckbox select" name="accounttype" style="width:333px ;padding-left:10px;">
+                        <option value="">-选择银行-</option>
+                        <?php foreach($banks as $bank):?>
+                        <option<?php echo $data['accounttype']==$bank?' selected="selected"':''?> value="{$bank}">{$bank}</option>
+                        <?php endforeach;?>
+                    </select>
+        </li>
+      <li style="height:24px; padding-bottom:15px;line-height:24px;">
+        <label class="label" ><em>*</em>开户省：</label>
+        {:W('Area',array('curPro'=>$data['province'],'curCity'=>$data['city'],'area'=>$data['area'],'city_names'=>$data['location'],'tpl'=>'zyCardArea'))}
+      </li>
+      <li>
+        <label class="label"><em>*</em>开户分行地址：</label>
+        <input  class="user-width" id="head_search" rel="请输入开户行/分行地址" name="bankofdeposit" value="{$data['bankofdeposit']}" style="color:#666">
+         <p >详细的分行地址/开户行，如不清楚，请咨询银行客服。</p>
+      </li>
+      <li>
+        <label class="label"><em>*</em>银行帐号：</label>
+         <input type="text" class="user-width" rel="银行帐号" name="account" value="{$data['account']}" style="color:#666">
+         <p >请填写与您提供的银行账户持卡人姓名一致的储蓄卡帐号。</p>
+      </li>
+      <li>
+         <label class="label"><em>*</em>开户姓名：</label>
+         <input type="text" class="user-width" rel="开户姓名" name="accountmaster" value="{$data['accountmaster']}" style="color:#666">
+         <p >请填写与您提供的银行账户持卡人姓名开户姓名</p>
+      </li>
+      <li>
+         <label class="label"><em>*</em>手 机：</label>
+         <input type="text" class="user-width" id="head_search" rel="手机" name="tel_num" value="{$data['tel_num']}" style="color:#666">
+      </li>
+      <li>
+          <label class="label">&nbsp;</label>
+          <input  class="user-submit" type="button" value="提 交" onclick="saveCard(this)">
+        </li>
+     </ul>
+     </form>
+                 <style type="text/css">
+            .user-set-sz .label{ width:110px}
+			.user-set-sz li p{ left:115px}
+			.user-set-sz{ padding-left:130px}
+			.user-set-sz .user-submit{ width:332px;}
+			.select{ height:22px;}
+            </style>
+</div>
+     <!--
+    <div class="cent_r_box pt20 pb40 clearfix">
+            <style type="text/css">
+            select.edittxt_cent{color:#666}
+            </style>
+            <form method="post" action="{:U('classroom/User/card')}">
+            <div class="clearfix pl20 h80">
+                <span class="selected_title w130 color_hui fl">
+                    <em class="red_txt mr5">*</em>开户银行：
+                </span>
+                <div class="myInput1 w280" style=" padding:0; height:28px;">
+                    <select class="select_r w280 edittxt_cent" name="accounttype">
+                        <option value="">-选择银行-</option>
+                        <?php foreach($banks as $bank):?>
+                        <option<?php echo $data['accounttype']==$bank?' selected="selected"':''?> value="{$bank}">{$bank}</option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+            </div>
+            <div class="clearfix pl20 h55">
+                <span class="selected_title w130 color_hui fl">
+                    <em class="red_txt mr5">*</em>开户省市：
+                </span>
+                {:W('Area',array('curPro'=>$data['province'],'curCity'=>$data['city'],'area'=>$data['area'],'city_names'=>$data['location'],'tpl'=>'zyCardArea'))}
+            </div>
+            
+            <div class="clearfix pl20 h80">
+                <span class="selected_title w130 color_hui fl">
+                    <em class="red_txt mr5">*</em>分行地址/开户行：
+                </span>
+                <div class="myInput1 Album_Title_s w280">
+                    <input type="text" class="w280 upload_input_a" id="head_search" rel="请输入开户行/分行地址" name="bankofdeposit" value="{$data['bankofdeposit']}" style="color:#666">
+                </div>
+                <p class="selected_p">详细的分行地址/开户行，如不清楚，请咨询银行客服。</p>
+            </div>
+            <div class="clearfix pl20 h80">
+                <span class="selected_title w130 color_hui fl">
+                    <em class="red_txt mr5">*</em>银行帐号：
+                </span>
+                <div class="myInput1 Album_Title_s w280">
+                              <input type="text" class="w280 upload_input_a" id="head_search" rel="银行帐号" name="account" value="{$data['account']}" style="color:#666">
+                </div>
+                <p class="selected_p">请填写银行储蓄卡帐号，提现业务不支持信用卡转账，您提供的银行账户持卡人姓名需与开户人姓名一致。</p>
+            </div> 
+            <div class="clearfix pl20 h55">
+                <span class="selected_title w130 color_hui fl">
+                    <em class="red_txt mr5">*</em>开户姓名：
+                </span>
+                <div style="line-height:32px;color:#06A7E1"><?php echo $data['accountmaster']?></div>
+            </div>  
+            <div class="clearfix pl20 h55">
+                <span class="selected_title w130 color_hui fl">
+                    <em class="red_txt mr5">*</em>手机：
+                </span>
+                <div class="myInput1 Album_Title_s w130">
+                              <input type="text" class="head_search upload_input_a" id="head_search" rel="手机" name="tel_num" value="{$data['tel_num']}" style="color:#666">
+                </div>
+            </div> 
+            <div class="clearfix pl20 h55">
+                <a class="btn_big_r selected_p" href="javascript:/*{:U('home/Index/card_o')}*/" onclick="saveCard(this)">确认提交</a>
+            </div>
+            </form>
+        </div>
+        -->
+        
+        
+    	<?php else:?>
+    	<div class="cent_r_box pb40 clearfix">                
+            <div class="box_block">
+                <table class="table_ye" cellpadding="0" cellspacing="1" bordercolor="#dddddd"border="1" width="100%">
+                        <thead>
+                            <tr><td width="16%">银行卡</td>
+                            <td width="36%">卡号</td>
+                            <td width="16%">持卡人姓名</td>
+                            <td width="16%">联系方式</td>
+                            <td width="16%">操作</td>
+                        </tr></thead>
+                        <tbody><tr>
+                            <td><?php echo $data['accounttype']?></td>
+                            <td><?php echo $data['account']?></td>
+                            <td><?php echo $data['accountmaster']?></td>
+                            <td><?php echo $data['tel_num']?></td>
+                            <td><a href="{:U('classroom/User/card', array('edit'=>'yes'))}">修改</a></td>
+                        </tr>
+                </tbody></table>
+            </div>
+        </div>
+        <?php endif;?>
+        </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+
+<script type="text/javascript">
+
+function saveCard(o){
+	var form = $(o).parents('form');
+	var val = form.find('select:first').children(':selected').val();
+	if(!$.trim(val)){
+		notes('请选择开户银行', 'failure');
+		form.find('select:first').focus();
+		return false;
+	}
+	var province = form.find('select#province').children(':selected').val();
+	var city = form.find('select#city').children(':selected').val();
+	if(province<=0||city<=0){
+		notes('请选择开户省市', 'failure');
+		return false;
+	}
+	var itxts = form.find('input:text');
+	if(!itxts.eq(0).val()){
+		notes('请输入分行地址/开户行', 'failure');
+		itxts.eq(0).focus(); return false;
+	}
+	if(!/^\d{16,19}$/.test(itxts.eq(1).val())){
+		notes('请正确的银行帐号', 'failure');
+		itxts.eq(1).focus(); return false;
+	}
+	if(!/^1[3458][0-9]{9}$/.test(itxts.eq(3).val())){
+		notes('请输入正确的手机', 'failure');
+		itxts.eq(2).focus(); return false;
+	}
+	$.post('{:U("classroom/User/card")}', form.serialize(), function(data){
+		if(data.status){
+			notes('保存成功', 'success');
+			setTimeout(function(){
+				window.location = '{:U("classroom/User/card")}';
+			}, 2000);
+		}else{
+			notes('保存失败', 'failure');
+		}
+	}, 'json');
+}
+
+</script>
+
+<include file="__THEME__/public_footer" />

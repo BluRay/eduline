@@ -1,0 +1,25 @@
+<style type="text/css">
+.feed_img_lists img.imgsmall { cursor: url("http://timg.sjs.sinajs.cn/t3/style/images/common/small.cur"), auto; }
+.feed_img_lists img.pre{cursor:url(<?php echo THEME_PUBLIC_URL; ?>/image/pre.cur), auto}
+.feed_img_lists img.next{cursor:url(<?php echo THEME_PUBLIC_URL; ?>/image/next.cur), auto}
+</style>
+
+<volist name="message.data" id="vo">
+    <dl class="reply-list <php>if($vo['from_uid'] == $uid){ echo 'fr'; }else{ echo 'fl';}</php> clearfix">
+        <dt class="dt position-rt"> <a href="{$vo['user_info']['space_url']}"><img width="50" height="50" src="{$vo['user_info']['avatar_middle']}"></a><i></i><b></b></dt>
+        <dd class="dd">
+            <p class="hd">
+
+                <a href="{$vo['user_info']['space_url']}" class="f228">
+                    <if condition="$vo['from_uid'] eq $mid">
+                    {:l('PUBLIC_ME')}：
+                    <else />
+                    {$vo['user_info']['uname']}：
+                </if>
+                    &nbsp;</a>
+
+                <span class="font12">{$vo.content|parse_html} </span></p>
+            <p class="date"><span class="fl">{$vo.mtime|friendlyDate}</span><a href="javascript:;" class="fr font12 f228" onclick="reply_message('{$vo['user_info']['uname']}')">{:l('PUBLIC_STREAM_REPLY')}</a></p>
+        </dd>
+    </dl>
+</volist>

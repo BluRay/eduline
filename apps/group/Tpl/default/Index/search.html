@@ -1,0 +1,197 @@
+<include file="__THEME__/public_header" />
+
+
+<style>
+.sk_cl {clear:both;}
+.sk_btn1 {margin:17px auto;width:83px;height:30px;line-height:28px;background:#b2d6ee;color:#FFF;cursor:pointer}
+.sk_btn1:hover {background:#9AC9E9;}
+.sk_wenda_l {width:1028px;padding: 0 0 65px 0;margin: 0 18px 0 170px;background:#FFF;border: 1px solid #e6e8e9;}
+.sk_wenda_l .newpost {margin-right:0;}
+.sk_wenda_l ul {margin:0;padding:0;list-style:none;}
+.sk_wenda_l ul dl {height:175px;border-bottom:1px solid #EEE;}
+.sk_wenda_l ul li {float:left;width:322px;height:100px;padding:38px 0 37px 20px;border-bottom:1px solid #EEE; cursor:pointer}
+.sk_wenda_l ul li:hover {background:#f8f8f8;}
+.sk_wenda_l ul .sk_m {width:314px;border-left:1px solid #EEE;border-right:1px solid #EEE;}
+.sk_wenda_l ul li .pic {float:left;width:100px;height:100px;}
+.sk_wenda_l ul li .pic img {width:100px;height:100px;border:0;}
+.sk_wenda_l ul li .sk_r {float:right;width:180px;height:100px;padding-right:22px;}
+.sk_wenda_l ul li .sk_r h2 {margin:0;padding:0;line-height:30px;font-size:16px;}
+.sk_wenda_l ul li .sk_r p {font-size:12px;color:#999;line-height:24px;}
+.sk_wenda_l ul li .sk_r .sk_dig {line-height:26px;font-size:12px;color:#B6B6B6;}
+.leftboder,.rightborder{border-right:1px solid #EEE;}
+#pages {margin:40px;float:right}
+#pages {height: 36px;}
+#pages a {border:1px solid #dddddd;width: 36px;height: 36px;background: #fff;display: block;color: #a9a9a9;line-height: 36px;text-align: center;font-family: Arial;float: left;margin-right: 5px;transition: background-color 0.2s ease-out;cursor: pointer}
+#pages .current {background: #70ca10;color: #fff;}
+#pages .next,#pages .pre{width:auto;padding:0px 10px}
+#pages a:hover{ background:#70ca10; color:#fff;}
+
+</style>
+</head>
+
+<body>
+<div class="wenda clearfix position-rt">
+
+
+ <include file="../Public/_indexRight" />
+
+<div class="fl sk_wenda_l" style="min-height:700px;">
+<div style="width:100%"  class="clearfix">
+<ul>
+
+<volist name="group_list['data']" id="vo">
+ 
+
+	<li  <php>if($key%3==0 || $key==0){</php> class="leftboder"<php>}</php>  <php>if($key%3==1){</php> class="rightborder"<php>}</php> onclick="localhref('{:U('group/Group/index',array('gid'=>$vo['id']))}')"><a href="{:U('group/Group/index',array('gid'=>$vo['id']))}" target="_blank"><img src="{$vo.logo}" width="100" height="100" /></a></a>
+    <div class="sk_r">
+    	<h2><a href="{:U('group/Group/index',array('gid'=>$vo['id']))}" target="_blank">{$vo.name|getShort=12}</a></h2>
+        <div class="sk_dig">帖子：{$vo.threadcount} 成员：{$vo.membercount}</div>
+        <p>{$vo.intro|getShort=26}</p>
+    </div>
+    </li>
+	
+ 
+
+</volist>
+
+</ul>
+
+
+
+</div>
+
+
+
+
+<div id="pages">
+ 
+  {$html}
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+<script>
+function localhref(h){
+	window.location.href=h;
+}
+</script>
+
+
+
+
+
+
+
+<include file="__THEME__/public_footer" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<include file="__THEME__/header" />
+<script type="text/javascript" src="../Public/Js/Common.js"></script>
+<link  href="__APP__/group.css" rel="stylesheet" type="text/css"/>
+<div class="content_holder">
+<div class="content no_bg"><!-- 内容 begin  -->
+<include file="../Public/_mainNav" />
+  <div class="main no_l clearfix"><!-- 画布 begin  -->
+    <div class="mainbox">
+      <include file="../Public/_isHotList" />   
+      <div class="mainbox_appC">
+      <div class="clearfix">
+        <if condition="$search_key">
+          <div class="f14px">搜索"<span class="cRed">{$search_key}</span>"群({$group_list['count']})</div>          
+          
+        <elseif condition="$current_cid" />
+          <!-- <h2 class="f14px lh30" style="line-height:30px"><span class="right fn f12px"><a href="{:U('group/Index/find')}#group_category">&gt;&gt; 全部分类</a></span><strong>{:implode(' > ', $top_path)}</strong></h2> -->
+          <div style="width:auto; _width:99%; overflow:hidden">
+            <a href="{:U('group/Index/search', array('cid'=>$top_category['id']))}" <php>if ($top_category['id'] == $current_cid) {</php>style="font-weight:bold;color:#000;"<php>}</php>>{$top_category['title']}</a> > 
+          	<volist name="son_categorys" id="son">
+             <span class="ml10"><a href="{:U('group/Index/search', array('cid'=>$son['id']))}" <php>if ($son['id'] == $current_cid) {</php>style="font-weight:bold;color:#000;"<php>}</php>>{$son['title']}</a></span>
+          	</volist>
+          </div>
+        </if>
+        <div class="group_box">
+          <div class="searchBox">           
+            <form action="{:U('group/Index/search')}" method="POST">
+            <div>
+            <label class="find_group">找群:</label>
+            <input name="k" type="text" value="{$search_key}" class="txt_group"/>
+            <input type="submit" class="btn_group" value="" /></div>
+            </form>
+          </div>
+        </div>
+        <if condition="$search_key && !$group_list['data']">
+        <div class="f14px cGray" style="margin:20px 0">
+            <p>你来早了一步，"<span class="cRed">{$search_key}</span>"群还没人创建呢……  现在就<a class="ml5" href="{:U('group/Index/add', array('k'=>$search_key))}" ><strong>创建一个</strong></a></p>
+        </div>
+        </if>
+        <div class="group-list my-group">
+          <volist name="group_list['data']" id="group">
+          <li class="lineD_btm">
+            <span class="right cGray2 f12px fn">创建时间：{$group['ctime']|friendlyDate=###,'ymd'}</span>
+            <div class="group-pic left">
+              <a href="{:U('group/Group/index', array('gid'=>$group['id']))}">
+                <img src="{$group['logo']|logo_path_to_url}" width="100" height="100">
+              </a>
+            </div>
+            <div class="group-info">
+              <h3><a href="{:U('group/Group/index', array('gid'=>$group['id']))}"> {$group['name']}</a></h3> <p><span class="mr10">成员：{$group['membercount']}</span></p>
+              <!-- <p>标签：{$group['tags']}</p> -->
+              <p>简介：{$group['intro']|t|getShort=80}</p>
+            </div>
+            <div class="c"></div>
+          </li>
+          </volist>
+        </div>
+       	<div class="page">{$group_list['html']}</div>
+        <div class="c"></div>
+        </div>
+      </div>
+    </div>
+    <!-- 内容 end --> 
+  </div>
+</div>
+</div>
+<!-- 内容 end --> 
+<include file="__THEME__/public_footer" /> 

@@ -1,0 +1,70 @@
+<php>foreach($data['data'] as $key => $vo):</php>
+<li class="j_list pinterestitem">
+	<?php if($data['nowPage']){ 
+		$page = ($data['nowPage']-1) * $limit + 1 + $key;
+	} ?>
+	<em class="rnum hot"><php>if($data['nowPage'] > 1){</php>{$page}.<php>} else {</php>{$key + 1}.<php>}</php></em>
+	<div class="box_mainb w276 fl">
+		<php>if($vo['type'] == 2){</php><p class="sj_r">专辑</p><php>}</php>
+		<php>if($vo['is_buy']){</php><p class="sj_l">已支付</p><php>}</php>
+		<?php if($vo['is_offical'] == 1):?>
+			<div class="tag_box">
+				<div class="w90 fl"><img src="__THEME__/images/logo_m.png"></div>
+				<span class="spa fl">出品</span>
+				<?php
+					$trueUid = $vo['uid'];
+					if($uid>0 && $uid != $trueUid):
+					$isFollow = in_array($trueUid, $fids);
+				?>
+				<a href="javascript:;" id="fellow_status" class="bg_lv gz_a color_bai sel_w fr follow_uid_{$trueUid}" data-uid="{$trueUid}" data-status="{$isFollow?1:0}">{$isFollow?'取消关注':'＋关注'}</a>
+				<?php endif;?>
+			</div>
+			<?php else:?>
+			<div class="tag_box">
+				<div class="daren_pic_aa">
+					<img src="{:getUserFace($vo['uid']);}">
+				</div>
+				<em class="lan_txt w55 fl lh30 ml5 ov_h">{:getUserName($vo['uid'])}</em>
+				<span class="spa fl">出品</span>
+				<?php
+					$trueUid = $vo['uid'];
+					if($uid>0 && $uid != $trueUid):
+					$isFollow = in_array($trueUid, $fids);
+				?>
+				<a href="javascript:;" id="fellow_status" class="bg_lv gz_a color_bai sel_w fr follow_uid_{$trueUid}" data-uid="{$trueUid}" data-status="{$isFollow?1:0}">{$isFollow?'取消关注':'＋关注'}</a>
+				<?php endif;?>
+			</div>
+		<?php endif;?>
+		<a href="{:U('classroom/Video/view',array('id'=>$vo['id']))}" target="_blank" title="">
+		<span class="img_zz"></span>
+		<img src="{$vo['cover']}" width="276" height="137" alt="{$vo['title']}">
+		</a>
+		<span class="M-list-color-1"></span>
+		<div class="txt_box_index">
+			<div class="clearfix">
+				<em class="yellow fl">{:getCategoryName($vo['category'],true)}</em>
+				<php>if($vo['type'] == 1){</php><em class="lan fr"><php>if($vo['price'] == 0){</php>免费<php>} else {</php>￥{$vo['price']}<php>}</php></em><php>}</php>
+			</div>
+			<h4><a class="p_ans_zh" href="{:U('classroom/Video/view',array('id'=>$vo['id']))}" target="_blank" title="{$vo['title']}">{$vo['title']}</a></h4>
+			<p><a class="p_ans_zh1" href="{:U('classroom/Video/view',array('id'=>$vo['id']))}" target="_blank">{:mb_substr($vo['intro'],0,20,'utf-8')}</a></p>
+			<div class="detail mt18 clearfix">
+				<ul class="clearfix fl">
+					<li title="评1分" class="<if condition=" $vo['star_score'] GT 0 ">star<else />star_down</if>">star</li> 
+					<li title="评2分" class="<if condition=" $vo['star_score'] GT 1 ">star<else />star_down</if>">star</li>
+					<li title="评3分" class="<if condition=" $vo['star_score'] GT 2 ">star<else />star_down</if>">star</li>
+					<li title="评4分" class="<if condition=" $vo['star_score'] GT 3 ">star<else />star_down</if>">star</li>
+					<li title="评5分" class="<if condition=" $vo['star_score'] GT 4 ">star<else />star_down</if>">star</li>                       
+				</ul>
+			</div>
+			<div class="star_box clearfix">
+				<php>if($vo['type'] == 1){</php>
+					<a class="topics fl" data-id="{$vo['id']}"><span class="Test_<?php echo in_array($vo['id'], $vms)?'true':'wrong';?>"></span>如需组合，请勾选 </a>
+					<a class="fr look" href="{:U('classroom/Video/view',array('id'=>$vo['id']))}" target="_blank">查看课程</a>
+				<php>} else {</php>
+					<a class="fr look" href="{:U('classroom/Album/view',array('id'=>$vo['id']))}" target="_blank">查看专辑</a>
+				<php>}</php>
+			</div>
+		</div>
+	</div>
+</li>
+<php>endforeach;</php>

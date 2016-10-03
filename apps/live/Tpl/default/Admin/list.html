@@ -1,0 +1,52 @@
+
+<include file="__THEME__/admin_header" />
+<div class="so_main">
+	<div class="page_tit">
+        <php>echo $type == 'code' ? '观看地址' : '直播列表';</php>
+	</div>
+	<div class="list" id="list">
+	  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	  	  <php>if($type == 'code'){</php>
+		  <tbody>
+		  	   <tr>
+			       <th class="line_l">客户端登录地址</th>    
+			       <th class="line_l">助教登录地址</th>    
+			       <th class="line_l">学生观看地址</th>    
+		       </tr>
+		  	   <tr>
+		       	   <td><a href="{$list.clientLoginUrl}" target="_blank">{$list.clientLoginUrl}</a></td>  
+		       	   <td><a href="javascript:;" target="_blank">暂无</a></td>  
+		       	   <td><a href="{$list.viewUrl}" target="_blank">{$list.viewUrl}</a></td>  
+		       </tr>
+		  </tbody>
+		  <php>}else{</php>
+		  <tbody>
+		  	   <tr>
+			       <th class="line_l">直播ID</th>    
+			       <th class="line_l">直播间ID</th>    
+			       <th class="line_l">开始时间</th>    
+			       <th class="line_l">结束时间</th>    
+			       <th class="line_l">操作</th>    
+		       </tr>
+		       <php>if(empty($list['lives'])){</php>
+		       		<tr><td colspan='100' align="center">没有需要显示的数据!</td></tr>
+		       <php>}else{</php>
+		       		<volist name="list.lives" id="vo">
+			  	    <tr>
+			       	   <td>{$vo.id}</td>  
+			       	   <td>{$vo.recordVideoId}</td>  
+			       	   <td>{$vo.startTime}</td>  
+			       	   <td>{$vo.endTime}</td>  
+			       	   <td><a href="{$vo.replayUrl}" target="_blank">回放地址</a> | <a href="javascript:;">统计</a></td>  
+			        </tr>
+			        </volist>
+		       <php>}</php>
+		       
+		       
+		  </tbody>
+		  <php>}</php>
+	  </table>
+  </div>
+</div>
+<include file="__THEME__/admin_footer" />
+

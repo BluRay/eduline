@@ -1,0 +1,79 @@
+<div class="user-rheader back position-rt">
+    <php>if($isteacher==true){</php>
+    <a class="user-rheader-p" href="{:U('classroom/Teacher/view',array('id'=>$teacherid))}">进入TA的课程专页</a>
+    <div class="user-rheader-span"></div>
+    <div class="user-rheader-rz"></div>
+    <php>}</php>
+    <img src="{:getUserFace($userid,'b')}" class="img">
+    <h2>{:strip_tags(getUserSpace($userid),'<img>')}</h2>
+    <?php $credits = getUserCredit($userid);?>
+    <?php $tmp = getFollowCount(array($userid));?>
+    <ul>
+        <li>课程：{$videocont}</li>
+        <li>学币：{:unLast0(getUserLearncoin($userid))}</li>
+        <li>提问：{$twcont}</li>
+        <li>回答：{$commcont}</li>
+        <li>粉丝：{$tmp[$uid]['follower']}</li>
+        <li>学分：<span id="setCreditScore">{$credits['credit']['score']['value']}</span></li>
+        <li>问答：{$wdcont}</li>
+        <li>笔记：{$note}</li>
+    </ul>
+    <php>if($mid!=$_GET['uid']){</php>
+    <div class="user-rheader-gz">
+     <php>if($isfollow){</php>
+      <a class="gz" href="">已关注对方</a>
+     <php>}else{</php>
+        <a class="gz" href="javascript:;" onclick="followyou(this,{$userid})" >关注TA</a>
+      <php>}</php>
+        <a onclick="ui.sendmessage({$userid}, 0)" href="javascript:void(0)" event-node="postMsg" class="sx"><em></em>私信</a>
+      </div>
+    <php>}</php>
+</div>
+<script>
+    function followyou(cate,uid){
+        if(MID=='0'){
+            reg_login();
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url:"{:U('classroom/Public/followyou')}",
+            data:"fid="+uid,
+            dataType:"json",
+            success:function(data){
+                if(data.status=='0'){
+                    notes(data.info,'failure');
+                    return;
+                }else{
+                    $(cate).text("已关注对方");
+                }
+
+            }
+        });
+    }
+
+</script>
+
+
+<!--最近访客-->
+<div class="user-rVisitor back fl">
+    <div class="main-sidebar-title">
+        <h2>最近访客</h2>
+    </div>
+    <ul class="space-visitors">
+        <foreach name="vrlist" item="vl">
+        <li>
+            <a title="{:getUserName($vl['uid'])}"  event-node="face_card" uid="{$vl['uid']}" show="no" class="avatar" target="_blank" href="{:U('classroom/UserShow/index',array('uid'=>$vl['uid']))}">
+                <img width="40" height="40" src="{:getUserFace($vl['uid'],'m')}">
+            </a>
+            <a title="{:getUserName($vl['uid'])}" class="nickname" target="_blank" href="{:U('classroom/UserShow/index',array('uid'=>$vl['uid']))}">{:getUserName($vl['uid'])}</a>
+            <php>if(!empty($vl['userinfo']['profession'])){</php>
+            <p>{:limitNumber($vl['userinfo']['profession'],22)}</p>
+             <php>}else{</php>
+            <p>这人懒，什么也没留下~</p>
+            <php>}</php>
+        </li>
+        </foreach>
+
+    </ul>
+</div>

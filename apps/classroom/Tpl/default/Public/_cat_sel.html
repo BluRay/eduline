@@ -1,0 +1,36 @@
+<?php
+$string = '';
+while(true):
+	$catList = $selCate['list'];
+	if($catList):
+    	ob_start();
+?>
+<div class="attr clearfix">
+    <div class="attrKey">_NEXT_NAME_</div>
+    <div class="attrValues clearfix">
+        <ul class="av_all clearfix">
+            <?php
+            	foreach($catList as $k=>$rs):
+            	if($cateId==$rs['zy_video_category_id']):
+                	$string = str_replace('_NEXT_NAME_', 
+                     $rs['next_name']?$rs['next_name'].'：':'', $string);
+                endif;
+            ?>
+            <?php if($k==0):?>
+            <li><a<?php echo $cateId==$rs['pid']?' class="green_com"':'';?> href="javascript:;" data-id="{$rs['pid']}" data-all="yes">全部</a></li>
+            <?php endif;?>
+            <li><a<?php echo $cateId==$rs['zy_video_category_id']?' class="green_com"':'';?> href="javascript:;" data-id="{$rs['zy_video_category_id']}" data-nextname="{$rs['next_name']}">{$rs['title']}</a></li>
+            <?php endforeach;?>
+        </ul>
+    </div>
+    <div class="view_more more_zh1" style="display:none">更多</div>
+</div>
+<?php
+		$string = ob_get_clean().$string;
+		$cateId   = $rs['pid'];
+	endif;
+    if(!isset($selCate['parent'])) break;
+    $selCate = $selCate['parent'];
+endwhile;
+echo str_replace('_NEXT_NAME_', '分类：', $string);
+?>

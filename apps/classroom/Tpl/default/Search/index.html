@@ -1,0 +1,136 @@
+<include file="__THEME__/public_header" />
+<!--main-->
+<div  class="worap position-rt">
+    <!--左边-->
+
+    <php>if(ACTION_NAME=="index"){</php>
+    <!--课程 左边-->
+    <div class="search-main">
+        <div class="user-con-title"> <a class="onactive" href="#">"{$searchkey}"相关课程</a></div>
+        <div>
+            <php>if(!empty($data['data'])){</php>
+            <ul class="search-kcul fl">
+               <foreach name="data.data" item="l">
+                <li class="li" <php>if($key == 0){</php>style="padding-top:0;"<php>}</php> ><img  src="{:getCover($l['cover'] ,264,170)}" width="264" height="170">
+                    <div class="fr search-kcul-con">
+                        <h2><a href="{:U('classroom/Video/view',array('id'=>$l['id']))}">{$l.video_title}</a></h2>
+                        <p>{:limitNumber($l['video_intro'],107)}</p>
+                        <span>原价：<i>{$l.v_price}学习币</i></span>
+                        <div>
+                            <label class="f3 fl" for="score">评分：</label>
+                            <ul class="star_ul fl">
+                                <li class="<if condition="$l['video_score'] GT 0 ">grade-back-set<else />grade-back-default</if>"></li>
+                                <li class="<if condition="$l['video_score'] GT 1 ">grade-back-set<else />grade-back-default</if>"></li>
+                                <li class="<if condition="$l['video_score'] GT 2 ">grade-back-set<else />grade-back-default</if>"></li>
+                                <li class="<if condition="$l['video_score'] GT 3 ">grade-back-set<else />grade-back-default</if>"></li>
+                                <li class="<if condition="$l['video_score'] GT 4 ">grade-back-set<else />grade-back-default</if>"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="time-price">
+                    	<a class="time-price-Start fr" href="{:U('classroom/Video/view',array('id'=>$l['id']))}">开始学习</a> 
+                    </div>
+                </li>
+               </foreach>
+            </ul>
+            <php>}else{</php>
+            <span style="padding-top:20px;position: absolute;">暂无相关搜索结果~</span>
+            <php>}</php>
+
+            <div class="sabrosus">
+                {$data.html}
+            </div>
+        </div>
+    </div>
+      <php>}</php>
+
+    <php>if(ACTION_NAME=="wenda"){</php>
+<div class="search-main">
+    <div class="user-con-title"> <a class="onactive" href="#">"{$searchkey}"相关问答</a></div>
+    <div>
+        <php>if(!empty($data['data'])){</php>
+        <ul class="user-wenda">
+            <foreach name="data.data" item="l">
+            <!--提问循环-->
+            <li class="li" <php>if($key == 0){</php>style="padding-top:0;"<php>}</php>>
+                <div class="discusslist"> <a target="_blank" title="{:getUserName($l['uid'])}" class="otherHead" href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}"><img width="40" height="40" src="{:getUserFace($l['uid'],'m')}"></a>
+                    <div class="detailmeg">
+                        <div class="report">
+                            <div class="mynote"><a title="{:getUserName($l['uid'])}" href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}">{:getUserName($l['uid'])}</a> <em>提问</em></div>
+                            <p class="mynote"><a target="_blank" href="{:U('wenda/Index/detail',array('id'=>$l['id']))}"><php>echo limitNumber(t($l['wd_description']),120);</php></a> </p>
+                        </div>
+
+                        <php>if(!empty($l['wd_comment'])){</php>
+                        <div class="firendreply"> <a target="_blank" title="Sunflower" class="firendHead" href="{:U('classroom/UserShow/index',array('uid'=>$l['wd_comment']['uid']))}"><img src="{:getUserFace($l['wd_comment']['uid'],'s')}"></a>
+                            <div class="lzreply"> <span><a title="{:getUserName($l['wd_comment']['uid'])}" href="{:U('classroom/UserShow/index',array('uid'=>$l['wd_comment']['uid']))}">{:getUserName($l['wd_comment']['uid'])}</a> 回答</span> <em>{:limitNumber($l['wd_comment']['description'],120)}</em> </div>
+                        </div>
+                        <php>}else{</php>
+                        <span class="replydet">嗯～～，这个提问大家都在考虑......</span>
+                        <php>}</php>
+
+                        <div class="fbtime fl"><span class="fl">时间：{$l.ctime}</span>
+                            <foreach name="l.tags" item="t">
+                            <a class="search-list-tag" target="_blank" href="{:U('classroom/Search/wenda',array('searchtid'=>$t['tag_id'],'type'=>1))}">{$t.name}</a>
+                            </foreach>
+                            <!--<a class="search-course-from f3" href="/video/1352"> 源自：系列：Java 入门第一季... 3-11</a> --><span class="qa-comment-support fr"><i >{$l.wd_browse_count}</i><span>浏览</span></span> <span class="qa-total-reply fr"><i class="qa-icon"></i><span>{$l.wd_comment_count} 条回答</span></span> </div>
+                    </div>
+                </div>
+            </li>
+            </foreach>
+        </ul>
+        <php>}else{</php>
+        <span style="padding-top:20px;position: absolute;">暂无相关搜索结果~</span>
+        <php>}</php>
+        <div class="sabrosus">
+            {$data.html}
+        </div>
+    </div>
+</div>
+    <php>}</php>
+
+
+<php>if(ACTION_NAME=="videowd"){</php>
+<div class="search-main">
+    <div class="user-con-title"> <a class="onactive" href="#">"{$searchkey}"相关课程问答</a></div>
+    <div>
+        <php>if(!empty($data['data'])){</php>
+        <ul class="user-wenda">
+            <foreach name="data.data" item="l">
+                <!--提问循环-->
+                <li class="li" <php>if($key == 0){</php>style="padding-top:0;"<php>}</php> >
+                    <div class="discusslist"> <a target="_blank" title="{:getUserName($l['uid'])}" class="otherHead" href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}"><img width="40" height="40" src="{:getUserFace($l['uid'],'m')}"></a>
+                        <div class="detailmeg">
+                            <div class="mynote"><a title="Sunflower" href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}">{:getUserName($l['uid'])}</a> <em> 提问</em></div>
+                            <p class="mynote"><a target="_blank" href="{$l.href}">{:limitNumber($l['qst_title'],120)} </a> </p>
+                            <div class="fbtime fl"><span class="fl">时间：{$l.ctime}</span><a class="search-course-from f3" href="{$l.href}"> 源自：{:limitNumber($l['video_title'],15)}</a> <span class="qa-comment-support fr"><i class="zan-icon"></i><span>{$l.qst_help_count}同问</span></span> <span class="qa-total-reply fr"><i class="qa-icon"></i><span>{$l.qst_comment_count}条评论</span></span> </div>
+                        </div>
+                    </div>
+                </li>
+            </foreach>
+        </ul>
+        <php>}else{</php>
+        <span style="padding-top:20px;position: absolute;">暂无相关搜索结果~</span>
+        <php>}</php>
+
+        <div class="sabrosus">
+            {$data.html}
+        </div>
+    </div>
+</div>
+<php>}</php>
+
+
+    <!--右边-->
+    <include file="Search:right" />
+</div>
+</div>
+<!--footer-->
+<script type="text/javascript">
+$(function(){
+    var headHeight = $(".header-worap").height();
+    var footHeight = $(".footer-worap").height();
+    var miniHeight = parseInt($(document).height()-(headHeight+footHeight+75));
+    $(".worap").css({"min-height":miniHeight+'px'});
+});
+</script>
+<include file="__THEME__/public_footer" />

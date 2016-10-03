@@ -1,0 +1,199 @@
+<include file="__THEME__/public_header" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+<script>
+window.onload=function()
+{
+	 //公用库
+	higher_common();
+	//个人中心左侧菜单
+	(function(){
+	  home_titlista();
+	})();
+    //导航
+	(function(){
+	    nav_bar_tab('Nav_bar', 'Manage_all','sel_cent_r');
+	 })();
+	(function(){
+	    var aTopicsUp=getByClass(document,'topics_up');
+		for(var i=0; i<aTopicsUp.length; i++)
+		{
+			oTopics_a(aTopicsUp[i])
+		}	
+	 })();
+	 //支付宝
+	 (function(){
+		 zhifubao();
+	 })();
+	 //开通时长
+	 (function(){
+		 opening();
+     })();
+	//input输入
+	 (function(){
+		var oMyInput=getByClass(document,'Album_Title_s');
+		for(var i=0; i<oMyInput.length; i++)
+		{
+			Album_Title_input(oMyInput[i]); 
+		}
+	 })();
+};
+</script>
+
+<!--<div id="tan_rec" class="tan_rec shadow">
+	<p class="lh64">充值金额<span class="green_txt ft18">1000</span>元</p>
+    <a id="quxiao_btn" class="sel_w fl mr40" href="javascript:;">取消</a>
+    <a class="sel_w fl mr15" href="javascript:;">确认</a>
+</div>-->
+
+<div class="main mt35 clearfix">
+	<div class="plr40 main_box_index fl">
+        <h4 class="ft18 pt20">个人中心</h4>
+        <div class="fl cent_l_box cent_l_box_a">
+            <h3 class="tit_list tit_list_a">内容管理</h3>
+            <ul>
+                <li><a href="{:U('home/Index/index')}">课程</a></li>
+                <li><a href="{:U('home/Index/index_zj')}">专辑</a></li>
+                <li><a href="{:U('home/Index/qanda')}">问答</a></li>
+                <li><a href="{:U('home/Index/note')}">笔记</a></li>
+                <li><a href="{:U('home/Index/comments')}">评论</a></li>
+                <li><a href="{:U('home/Index/upload')}">上传课程</a></li>
+            </ul>
+            <h3 class="tit_list tit_list_a">财富管理</h3>
+            <ul>
+                <li class="sel_cent"><a href="{:U('home/Index/recharge')}">充值</a></li>
+                <li><a href="{:U('home/Index/withdrawal')}">余额</a></li>
+                <li><a href="{:U('home/Index/card')}">绑定银行卡</a></li>
+            </ul>
+            <h3 class="tit_list tit_list_a">账户管理</h3>
+            <ul>
+                <li><a href="{:U('home/Index/upload_z_Setup')}">账户设置</a></li>
+                <li><a href="{:U('home/Index/fans')}">关注/粉丝</a></li>
+            </ul>
+        </div>
+        <div class="cent_r_box clearfix">
+            <div class="nva_cent">
+                <ul class="Nav_bar fl">
+                    <li class="sel_cent_r">学币充值</li>
+                    <li>会员充值</li>
+                </ul>
+            </div>
+            <div class="rec_box_r Manage_all" style="display:block;">
+                <div class="clearfix zfb_zxzf h55">
+                                <a class="zfb mr15" href="javascript:;">支付宝<em></em></a>
+                                <a class="zxzf mr15" href="javascript:;">在线支付<em></em></a>
+                            </div>
+                            <span class="selected_title selected_title_a color_hui fl">
+                                充值金额:
+                            </span>
+                            <div class="btn_je_box clearfix">
+                                <a class="btn_hui_h" href="javascript:;">10元</a>
+                                <a class="btn_hui_h" href="javascript:;">20元</a>
+                                
+                                <a class="btn_hui_h" href="javascript:;">50元</a>
+                                <a class="btn_hui_h" href="javascript:;">100元</a>
+                            </div>
+                            <p class="red_txt ml100">备注：1学币=1元</p>
+                        
+                 	<div class="clearfix h55 mt15">
+                        <span class="selected_title selected_title_a color_hui fl">
+                            自定义金额:
+                        </span>
+                        <div class="myInput1 Album_Title_s fl w175">
+                          <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                          <span class="w175"> 请输入学币数量...</span>
+                        </div>
+                        <span class="lh30 ml15">学币</span>
+                	</div>
+                <hr class="das_l"></hr>
+                <p>需要花费:<em class="lan_txt ft18 ml15">10</em>元</p>
+                <a id="buy-s-1r" class="topics_up color_wen9 fl pos_r">
+                    <b class="Text_error"></b>
+                    同意<em class="green_txt">《高教网虚拟货币服务协议》</em>
+                </a>
+                <a id="btn_ljcz" class="btn_big mt30">立即充值</a>
+            </div>
+            <div class="rec_box_r Manage_all">
+                	<div class="clearfix h55">
+                        <p class="lh30">
+                            高教网帐号:<em class="fb ml40">caoyupeng(MR.CAO)</em>
+                        </p>
+                        <p class="lh30 ml100">您的身份已过期&nbsp;&nbsp;&nbsp;当前身份：非会员</p>
+                	</div>
+                    <div class="clearfix mt15 h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                                    支付方式:
+                                </span>
+                                <div class="clearfix zfb_zxzf h55">
+                                <a class="zfb mr15" href="javascript:;">支付宝<em></em></a>
+                                <a class="zxzf mr15" href="javascript:;">在线支付<em></em></a>
+                            </div>
+                    </div>
+                           <span class="selected_title selected_title_a mt10 color_hui fl">
+                                开通时长:
+                            </span>
+                            <div class="mt10 nf_bg_div h78 clearfix">
+                                 <div class="nf_bg border_bg fl"><a href="javascript:;">年费<em class="red_txt">149</em>元？(原价180)</a><b class="nf_bg_em"></b></div>
+                                 <div class="nf_bg  fl"><a class="f_p" href="javascript:;"><em class="fl">按月</em><input class="w70" name="" type="text">个月</a><b></b></div>
+                             <p class="nf_bg_p">推荐购买，仅12.4元/月</p>
+                            </div>
+                 	<div class="clearfix h55 mt15">
+                        <span class="selected_title selected_title_a color_hui fl">
+                            使用优惠码:
+                        </span>
+                        <div class="myInput1 fl w175">
+                          <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                        </div>
+                	</div>
+                    <div class="clearfix h55 mt15">
+                        <span class="selected_title selected_title_a color_hui fl">
+                            需要花费:
+                        </span>
+                        <p><em class="red_txt ft18">149.0</em>元（节省31.0元）</p>
+                	</div>
+                <a id="buy-s-1r" class="topics_up color_wen9 fl pos_r">
+                    <b class="Text_error"></b>
+                    同意<em class="green_txt">《高教网虚拟货币服务协议》</em>
+                </a>
+                <a id="btn_ljcz" class="btn_big mt30">立即充值</a>
+            </div>   
+        </div>
+    </div>
+    <div class="main_box_index w200 plr10 pt20 fr">
+    	<div class="fk_pic txt_c">
+            <a href="javascript:;" target="_blank">
+                <img src="__THEME__/images/xq/xq_50.jpg"></img>
+            </a>
+        </div>
+        <p class="daren_name txt_c lh30">
+            <a class="daren_name_a" target="_blank" href="">
+                向新兰
+                <em class="daren_name_img"></em>
+            </a>
+        </p>
+        <p class="txt_c">关注1000|粉丝1000</p>
+        <a class="btn_lan_h" href="javascript:;">答题高手7段</a>
+        <a class="btn_lan_h" href="javascript:;">数学百晓生</a>
+        <a class="btn_lan_h" href="javascript:;">腰缠万贯</a>
+        <a class="btn_lan_h" href="javascript:;">十佳好青年</a>
+        <div class="clearfix">
+            <p class="fl green_txt txt_c plr30 mt20">
+                我的学币</br>
+                1000
+            </p>
+            <p class="fl green_txt txt_c bor_l plr30 mt20">
+                我的学分</br>
+                1000
+            </p>
+        </div>
+        <a class="btn_big_r">打卡赚学分</a>
+        <p class="mt20">连续领取学分，每天+5，最高+40封顶，如中断领取，重新从5开始。</p>
+        <div class="clearfix">
+            <a class="btn_hui_h" href="javascript:;">做任务赚学分</a>
+            <a class="btn_hui_h" href="javascript:;">学分换购列表</a>
+        </div>
+        <p class="mt10 ml20 bg_phone">手机每天再多领40积分</p>
+    </div>
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

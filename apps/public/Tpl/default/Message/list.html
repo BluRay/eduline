@@ -1,0 +1,137 @@
+<include file="__THEME__/public_header" />
+
+<script>
+var $CONFIG = new Object();
+$CONFIG['location'] = 'msglist';
+</script>
+<div class="sixin-worap position-rt">
+    <!--左-->
+    <include file="left" />
+    <!--中 -->
+    <div class="user-con fl">
+        <div class="user-con-title"> <a href="#" class="onactive fl">私信</a>  <a href="javascript:;" event-node="postMsg" onclick="ui.sendmessage()" class="btn-green-small fr"><span class="sixin-bnt">发私信</span></a></div>
+        <!--私信内容-->
+        <ul class="user-wenda">
+            <foreach name="data" item="vo">
+            <!--私信循环-->
+            <li class="li">
+                <div class="discusslist">
+                    <php> if($vo['last_message']['to_uid'][0] == $mid){</php>
+                    <a target="_blank" title="{$vo['last_message']['user_info']['uname']}" class="otherHead" href="{$vo['last_message']['user_info']['space_url']}">
+
+                        <img width="40" height="40" src="{$vo['last_message']['user_info']['avatar_middle']}">
+                    </a>
+                    <php>}else{</php>
+                    <a target="_blank" title="{$vo['last_message']['user_info']['uname']}" class="otherHead" href="{$vo['last_message']['user_info']['space_url']}">
+
+                        <img width="40" height="40" src="{$vo['last_message']['user_info']['avatar_middle']}">
+                    </a>
+                    <php>}</php>
+                    <div class="detailmeg position-rt">
+                        <div class="report">
+                            <div class="mynote">
+                            <php> if($vo['last_message']['to_uid'][0] == $mid){</php>
+                                <a title="{$vo['last_message']['user_info']['uname']}" href="{$vo['last_message']['user_info']['space_url']}">{$vo['last_message']['user_info']['uname']}</a>
+                                <em>发给我:</em>
+                            <php>}else{</php>
+                                <a title="{$vo['last_message']['user_info']['uname']}" href="{$vo['last_message']['user_info']['space_url']}">{$vo['last_message']['user_info']['uname']}</a>
+
+                                <em>发给</em> <a title="{:getUserName($vo['last_message']['to_uid'][0])}" href="{:U('classroom/UserShow/index',array('uid'=>$vo['last_message']['to_uid'][0]))}">{:getUserName($vo['last_message']['to_uid'][0])}:</a>
+                            <php>}</php>
+
+                            </div>
+                            <div class="Operation-wd"><a href="javascript:void(0);" onclick="ui.confirm(this,'{:L('PUBLIC_DIALOGUE_DELETE_CONFIRM')}');return false;" callback="delMessage({$vo['list_id']})"><i onclick="ui.confirm(this,'{:L('PUBLIC_DIALOGUE_DELETE_CONFIRM')}');return false;" callback="delMessage({$vo['list_id']})"></i><span onclick="ui.confirm(this,'{:L('PUBLIC_DIALOGUE_DELETE_CONFIRM')}');return false;" callback="delMessage({$vo['list_id']})">删除</span></a></div>
+                            <p class="mynote"><a target="_blank" href="{:U('public/Message/detail', array('id'=>$vo['list_id'],'type'=>$vo['type']))}">{$vo.last_message.content|parse_html}</a> </p>
+                        </div>
+                        <div class="fbtime">时间:<span>{$vo.list_ctime|friendlyDate} </span>
+                            <php>if($vo['new']>0){</php> <img src="__THEME__/image/icon_new.gif" />   <php>}</php>
+                            <a href="{:U('public/Message/detail', array('id'=>$vo['list_id'],'type'=>$vo['type']))}" class="fr">回复</a></div>
+                    </div>
+                </div>
+            </li>
+            </foreach>
+        </ul>
+        <div class="sabrosus">{$html}</div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">	
+  
+	function checkon(o){
+		if( o.checked == true ){
+			$(o).parents('li').addClass('bg_on') ;
+		}else{
+			$(o).parents('li').removeClass('bg_on') ;
+		}
+	}
+	
+	function checkAll(o){
+		if( !o || o.checked == true ) {
+			$('input[type="checkbox"]').attr('checked','true');
+			$('ul[overstyle="on"]').addClass("bg_on");
+		}else if ( o.checked == false ) {
+			$('input[type="checkbox"]').removeAttr('checked');
+			$('ul[overstyle="on"]').removeClass("bg_on");
+		}
+	}
+
+	//获取已选择用户的ID数组
+	function getChecked() {
+		var ids = new Array();
+		$.each($('ul input:checked'), function(i, n){
+			ids.push( $(n).val() );
+		});
+		return ids;
+	}
+
+    function setIsRead() {
+        var ids = getChecked();
+        if (ids == '') ui.error('{:L('PUBLIC_CHOOSE_PRIVATE')}');
+        
+        $.post("{:U('public/Message/doSetIsRead')}", {ids:ids.toString()}, function(res){
+            if (res == '1') {
+                ui.success('{:L('PUBLIC_SAVE_SUCCESS')}');
+                
+				for(i = 0; i < ids.length; i++) {
+					$('#message_' + ids[i] + ' span.message_new').remove();
+				}
+            }else {
+                ui.error('{:L('PUBLIC_SAVE_FAIL')}');
+            }
+        });
+    }
+
+    function delMessage(ids) {
+        ids = ids ? ids : getChecked();
+        ids = ids.toString();
+        if (ids == '') return false;
+        
+        $.post("{:U('public/Message/doDelete')}", {ids:ids}, function(res){
+            if (res == '1') {
+
+                ids = ids.split(',');
+				for(i = 0; i < ids.length; i++) {
+					$('#message_'+ids[i]).remove();
+				}
+				var $message_list_count = $('#message_list_count');
+                var message_list_count  = parseInt($message_list_count.html());
+                $message_list_count.html(message_list_count - ids.length);
+                location.reload();
+            }else {
+                ui.error('{:L('PUBLIC_DELETE_FAIL')}');
+            }
+        });
+        return false;
+    }
+		$(document).ready(function() {
+		$(".private-lists dl").hover(function() {
+		$(this).addClass("current");
+		}, function() {
+		$(this).removeClass("current");
+		});
+		});
+</script>
+<script src="__THEME__/js/message/module.message.js"></script>
+<include file="__THEME__/public_footer" /> 

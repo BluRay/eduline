@@ -1,0 +1,14 @@
+
+<volist name="html.data" id="vo">
+	<li>
+    	<div class="pic">
+    		<a href="{:U('classroom/Topic/view',array('id'=>$vo['id']))}">
+        		<img src="{$vo.images}" class="lazyloading">
+    		</a>
+    	</div>
+    	
+    	<div class="tit"><a href="{:U('classroom/Topic/view',array('id'=>$vo['id']))}">{$vo.title|getShort=###,'21'}</a></div>
+    	<div class="txt">{$vo.desc|getShort=###,'85','...'}</div>
+        <div class="info"><span>{$vo.readcount}阅读</span>{$vo.dateline|friendlyDate}</div>
+    </li>
+</volist>

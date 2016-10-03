@@ -1,0 +1,32 @@
+
+<div class="user-r fl">
+    <div class="user-rheader back"> <img src="{:getUserFace($user['uid'],'b')}">
+        <h2>{:strip_tags(getUserSpace($user['uid']),'<img>')}</h2>
+        <?php $credits = getUserCredit($uid);?>
+        <?php $tmp = getFollowCount(array($uid));?>
+        <ul>
+            <li>课程：{$videocont}</li>
+            <li>学币：{:unLast0(getUserLearncoin($uid))}</li>
+            <li>提问：{$twcont}</li>
+            <li>回答：{$commcont}</li>
+            <li>粉丝：{$tmp[$uid]['follower']}</li>
+            <li>学分：<span id="setCreditScore">{$credits['credit']['score']['value']}</span></li>
+            <li>问答：{$wdcont}</li>
+            <li>笔记：{$note}</li>
+        </ul>
+        {:W('CheckIn', array('tpl'=>'zy'))}
+
+    </div>
+</div>
+
+<script type="text/javascript">
+function setCreditScore(num){
+	if(!num) return ;
+
+	setTimeout(function(){
+		var val = parseInt($('#setCreditScore').text());
+		$('#setCreditScore').text(val+num);
+	}, 2000);
+	
+}
+</script>

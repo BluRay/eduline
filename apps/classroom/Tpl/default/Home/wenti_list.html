@@ -1,0 +1,36 @@
+<foreach name="data" item="l" key='k'>
+    <php>if(empty($l['wenti'])){</php>
+<li class="li" <php> if($k == 0) echo "style='padding:0 0 20px;'"</php>>
+    <div class="discusslist"> <a target="_blank" title="{:getUserName($l['uid'])}" href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}" class="otherHead" ><img width="40" height="40" src="{:getUserFace($l['uid'],'m')}"></a>
+        <div class="detailmeg">
+            <div class="mynote"><a title="{:getUserName($l['uid'])}" href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}">{:getUserName($l['uid'])}</a> <em>提问:</em> <a title="{:getUserName($l['uid'])}" href="{:U('classroom/Video/view',array('id'=>$l['oid']))}" target="_blank">{$l.qst_title}</a></div>
+            <p class="mynote"><a target="_blank" href="{:U('classroom/Video/view',array('id'=>$l['oid']))}">
+                {:limitNumber($l['qst_description'],150)} </a> </p>
+            <div class="fbtime">时间：
+                <span>{$l.ctime|date="Y/m/d H:i",###}</span>
+                <span class="js-qa-comment-support qa-comment-support  js-qacom-supported-user fr"><i class="qa-icon"></i><span>同问({$l.qst_help_count})</span></span>
+                <span class="qa-total-reply fr"><i class="qa-icon"></i><span>{$l.qcount}条回答</span></span>
+            </div>
+        </div>
+    </div>
+</li>
+<php>}else{</php>
+    <li  class="li" <php> if($k == 0) echo "style='padding:0 0 20px;'"</php>>
+        <div class="discusslist"> <a target="_blank" title="{:getUserName($l['wenti']['uid'])}" class="otherHead" href="{:U('classroom/UserShow/index',array('uid'=>$l['wenti']['uid']))}"><img width="40" height="40" src="{:getUserFace($l['wenti']['uid'],'m')}"></a>
+            <div class="detailmeg">
+                <div class="report">
+                    <div class="mynote"><a title="{:getUserName($l['wenti']['uid'])}" href="{:U('classroom/UserShow/index',array('uid'=>$l['wenti']['uid']))}">{:getUserName($l['wenti']['uid'])}</a> <em>提问:</em> <a title="{:getUserName($l['wenti']['uid'])}" href="{:U('classroom/Video/view',array('id'=>$l['wenti']['oid']))}" target="_blank">{$l.wenti.qst_title}</a></div>
+                    <p class="mynote"><a target="_blank" href="{:U('classroom/Video/view',array('id'=>$l['wenti']['oid']))}" > {:limitNumber($l['wenti']['qst_description'],120)} </a> </p>
+                </div>
+                <div class="firendreply"> <a  title="{:getUserName($l['uid'])}" class="firendHead" ><img src="{:getUserFace($l['uid'],'s')}"></a>
+                    <div class="lzreply"> <span><a title="{:getUserName($l['uid'])}">{:getUserName($l['uid'])}</a> 回答:</span> <em>{:limitNumber($l['qst_description'],150)}</em> </div>
+                </div>
+                <div class="fbtime">时间：<span>{$l.wenti.ctime|date="Y/m/d H:i",###}</span>
+                    <span class="js-qa-comment-support qa-comment-support  js-qacom-supported-user fr"><i class="qa-icon"></i><span>同问({$l.wenti.qst_help_count})</span></span>
+                    <span class="qa-total-reply fr"><i class="qa-icon"></i><span>{$l.wenti.qcount}条回答</span></span>
+                </div>
+            </div>
+        </div>
+    </li>
+<php>}</php>
+</foreach>

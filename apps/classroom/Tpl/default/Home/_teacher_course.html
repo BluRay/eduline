@@ -1,0 +1,21 @@
+<if condition="$data">
+<foreach name="data" item="l">
+    <li>
+        <h2><a href="{:U('classroom/Video/view',array('id'=>$l['id']))}">{$l.course_name}</a></h2>
+        <div class="position-rt">
+            <div class="user-imglistbt">
+                学生名称: {$l.user_info.uname}&nbsp;&nbsp;性别：<if condition="$l.user_info.sex eq 1">男<else/>女</if><br/>
+                电话号码：<font color="#2388c0">{$l.user_info.phone}</font><br/>
+                授课方式：
+                <if condition="$l.teach_way eq 1">线上授课
+                <elseif condition="$l.teach_way eq 2"/>线下授课
+                <else/>线上线下均可
+                </if><br/>
+                价格：<font color="#2388c0">{$l.course_info.course_price}</font>/小时<br/>
+            </div>
+        </div>
+    </li>
+</foreach>
+<else/>
+你还没有完成的约课
+</if>

@@ -1,0 +1,54 @@
+<include file="__THEME__/public_header" />
+<link  href="__APP__/css/group.css" rel="stylesheet" type="text/css"/>
+<!--content start-->
+<div class="page-palce">
+	<div class="wrap page"><a href="/">首页</a><span>&gt;</span><a href="{:U('classroom/topic')}">资讯</a><span>&gt;</span><span>{$data.title}</span></div>
+</div>
+<!--content start-->
+<div class="content">
+	<div class="wrap page">
+        <div class="content-con">
+        	<div class="content-main">
+            	<div class="question-box">
+                	<h2>{$data.title}</h2>
+                    <dl>
+                    	<dd></dd>
+                        <dt>发布于：{$data.dateline|friendlyDate=###}&nbsp;&nbsp;浏览量: {$data.readcount} </dt>
+                    </dl>
+                     <div class="zhaiyao">
+			           <span class="color99">摘要：</span>{$data.desc}
+			        </div>  
+                    <div class="question-page">
+                        {$data.text}
+                   	</div>
+                </div>
+                <div class="reply feed_list">
+					{:W('Comment',array('tpl'=>'detail', 'table'=>'zy_topic', 'row_id'=>$data[id], 'canrepost'=>'0', 'cancomment'=>1, 'cancomment_old'=>0, 'showlist'=>1, 'limit'=>'20', 'order'=>'DESC'))}
+                </div>
+                
+            </div>
+            <div class="content-sider">
+                <div class="page-tit">
+                    <div class="page-tit-box"><div class="fl">推荐资讯</div></div>
+                </div>
+                <ul class="sider-question">
+                	{:W('Topicread',array('limit'=>5))}
+                </ul>
+                
+                <div class="page-tit">
+                    <div class="page-tit-box"><div class="fl">大家关注</div></div>
+                </div>
+                <ul class="sider-guanzhu">
+                    <volist name="recData" id="vo">
+                    <li>
+                    	<div class="pic"><a href="{:U('classroom/Topic/view',array('id'=>$vo['id']))}"><img src="{:getCover($vo['image'],116,68)}" class="lazyloading"/></a></div>
+                        <div class="tit"><a href="{:U('classroom/Topic/view',array('id'=>$vo['id']))}">{$vo.title}</a></div>
+                    </li>
+                    </volist>
+                	
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer" />

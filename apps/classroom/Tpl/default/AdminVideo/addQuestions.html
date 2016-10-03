@@ -1,0 +1,236 @@
+<include file="__THEME__/admin_header" />
+<div id="container" class="so_main">
+<div class="page_tit">
+  <div class="right">
+    <neq name="back_id" value="-1"><a href="{:U('classroom/AdminVideo/index')}" class="btn_a"><span>返回</span></a></neq>
+  </div>
+  {$pageTitle} </div>
+<php>if(!empty($pageTab)):</php>
+<div class="tit_tab">
+  <ul>
+    <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+    <volist name='pageTab' id='t'>
+      <li><a href="{$t.url}&tabHash={$t.tabHash}" 
+        
+        <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>
+        >{$t.title}</a></li>
+    </volist>
+  </ul>
+</div>
+<php>endif;</php>
+<form method="POST" action="{:U('classroom/AdminVideo/doAddQuestions')}" id="detail_form" name="detail_form" onsubmit="return j_validateCallback(this,checkForm,post_callback)">
+  <input type="hidden" name="systemdata_list" value="video_Admin" class="s-txt">
+  <input type="hidden" name="systemdata_key" value="addVideo" class="s-txt">
+  <input type="hidden" name="pageTitle" value="添加课程" class="s-txt">
+  <div class="form2">
+  	<dl class="lineD" id="dl_video_title">
+      <dt><font color="red"> * </font>课程名称：</dt>
+      <dd>
+        {$data['video_title']} <a href="javascript:void(0)" id="add_question">添加问题</a>
+        <input type="hidden" name="video_id" id="video_id" value="{$_REQUEST['id']}"/>
+      </dd>
+    </dl>
+    <div num-data="1" class="questions">
+	    <dl class="lineD" id="title">
+	      <dt><font color="red"> * </font><span>测试问题1</span>：</dt>
+	      <dd>
+	        <input name="question[1][title]" id="question_title" type="text" value="{$video_title}" class="s-txt mz_title" style="width:200px">
+	      </dd>
+	    </dl>
+	    <dl class="lineD" id="options">
+	      <dt><font color="red"> * </font>选项：</dt>
+	      <dd>
+	        <font color="red"> * </font><span class="span0" a-data="A">A.</span><input name="question[1][answer_0]" type="text" value="{$answer_0}" class="s-txt answer_0" style="width:200px"><br />
+	        <font color="red"> * </font><span class="span1" a-data="B">B.</span><input name="question[1][answer_1]" type="text" value="{$answer_1}" class="s-txt answer_1" style="width:200px"><br />
+	        <font color="red"> * </font><span class="span2" a-data="C">C.</span><input name="question[1][answer_2]" type="text" value="{$answer_2}" class="s-txt answer_2" style="width:200px"><br />
+	        <font color="red"> * </font><span class="span3" a-data="D">D.</span><input name="question[1][answer_3]" type="text" value="{$answer_3}" class="s-txt answer_3" style="width:200px">
+	      </dd>
+	    </dl>
+	    <dl class="lineD" id="answers">
+	    	<dt><font color="red"> * </font>正确答案：</dt>
+	    	<dd>
+	    		<input name="question[1][answers]" type="text" value="{$answers}" class="s-txt answers" style="width:200px">请填写大写字母
+	    	</dd>
+	    </dl>
+	</div>
+  </div>
+  <div class="page_btm">
+	<input type="submit" class="btn_b" value="保存" id="form_submit">
+ </div>
+</form>
+<script type="text/javascript">
+var checkForm = function(_form){
+	//判断所有标题是否为空
+	var  titlesize = $(_form).find('input.mz_title').size();
+	var _titlesize = 0;
+	$(_form).find('input.mz_title').each(function(i,element){
+		var _val = $(element).val();
+		if(!$.trim(_val)){
+			var title = $(element).parent().parent().find('dt span').html();
+			var _answer = $(element).parent().find('span').attr("a-data");
+			ui.error(title+'不能为空!');
+			$(element).focus();
+			return false;
+		}else{
+			_titlesize ++;
+		}
+	});
+	if(titlesize != _titlesize){
+		return false;
+	}
+	//判断答案A
+	var  answer_asize = $(_form).find('input.answer_0').size();
+	var _answer_asize = 0;
+	$(_form).find('input.answer_0').each(function(i,element){
+		var _val = $(element).val();
+		if(!$.trim(_val)){
+			var title = $(element).parent().parent().parent().find('dl dt span').html();
+			var _answer = $(element).parent().find('span.span0').attr("a-data");
+			ui.error(title+'的'+_answer+'选项不能为空!');
+			$(element).focus();
+			return false;
+		}else{
+			_answer_asize ++;
+		}
+	});
+	if(answer_asize != _answer_asize){
+		return false;
+	}
+	
+	//判断答案B
+	var  answer_bsize = $(_form).find('input.answer_1').size();
+	var _answer_bsize = 0;
+	$(_form).find('input.answer_1').each(function(i,element){
+		var _val = $(element).val();
+		if(!$.trim(_val)){
+			var title = $(element).parent().parent().parent().find('dl dt span').html();
+			var _answer = $(element).parent().find('span.span1').attr("a-data");
+			ui.error(title+'的'+_answer+'选项不能为空!');
+			$(element).focus();
+			return false;
+		}else{
+			_answer_bsize ++;
+		}
+	});
+	if(answer_bsize != _answer_bsize){
+		return false;
+	}
+	
+	//判断答案C
+	var  answer_csize = $(_form).find('input.answer_2').size();
+	var _answer_csize = 0;
+	$(_form).find('input.answer_2').each(function(i,element){
+		var _val = $(element).val();
+		if(!$.trim(_val)){
+			var title = $(element).parent().parent().parent().find('dl dt span').html();
+			var _answer = $(element).parent().find('span.span2').attr("a-data");
+			ui.error(title+'的'+_answer+'选项不能为空!');
+			$(element).focus();
+			return false;
+		}else{
+			_answer_csize ++;
+		}
+	});
+	if(answer_csize != _answer_csize){
+		return false;
+	}
+	
+	//判断答案D
+	var  answer_dsize = $(_form).find('input.answer_3').size();
+	var _answer_dsize = 0;
+	$(_form).find('input.answer_3').each(function(i,element){
+		var _val = $(element).val();
+		if(!$.trim(_val)){
+			var title = $(element).parent().parent().parent().find('dl dt span').html();
+			var _answer = $(element).parent().find('span.span3').attr("a-data");
+			ui.error(title+'的'+_answer+'选项不能为空!');
+			$(element).focus();
+			return false;
+		}else{
+			_answer_dsize ++;
+		}
+	});
+	if(answer_dsize != _answer_dsize){
+		return false;
+	}
+	
+	//判断答案
+	var  answers_size = $(_form).find('input.answers').size();
+	var _answers_size = 0;
+	$(_form).find('input.answers').each(function(i,element){
+		var _val = $(element).val();
+		if(!$.trim(_val)){
+			var title = $(element).parent().parent().parent().find('dl dt span').html();
+			ui.error(title+'的答案不能为空!');
+			$(element).focus();
+			return false;
+		}else{
+			_answers_size ++;
+		}
+	});
+	if(answers_size != _answers_size){
+		return false;
+	}
+	
+	return true;
+};
+
+
+var post_callback = function(_form,data){
+	if(data.status != undefined){
+		if(data.status == '0'){
+			ui.error(data.info);
+		} else {
+			ui.success(data.info);
+			window.location.href = U('classroom/AdminVideo/index')+"&tabHash=index";
+		}
+	}
+};
+
+	$(document).ready(function(){
+		$('#add_question').live("click",function(){
+			var questions = $('.form2').find('div.questions').size();
+			if(questions > 5){
+				ui.error('最多只能有5道测试题');
+				return false;
+			}
+			var num = parseInt($('.questions:last').attr("num-data")) + 1;
+			$('.questions:last').after(
+				'<div num-data="'+num+'" class="questions">'
+				    +'<dl class="lineD" id="dl_video_title">'
+				      +'<dt><font color="red"> * </font><span>测试问题'+num+'</span>：</dt>'
+				      +'<dd>'
+				        +'<input name="question['+num+'][title]" id="question_title" type="text" value="{$question_title}" class="s-txt mz_title" style="width:200px"> <a href="javascript:void(0);" onclick="del_question(this);">删除</a>'
+				      +'</dd>'
+				    +'</dl>'
+				    +'<dl class="lineD" id="dl_options">'
+				      +'<dt><font color="red"> * </font>选项：</dt>'
+				      +'<dd>'
+				        +'<font color="red"> * </font><span class="span0" a-data="A">A.</span><input name="question['+num+'][answer_0]" type="text" value="{$answer_0}" class="s-txt answer_0" style="width:200px"><br />'
+				        +'<font color="red"> * </font><span class="span1" a-data="B">B.</span><input name="question['+num+'][answer_1]" type="text" value="{$answer_1}" class="s-txt answer_1" style="width:200px"><br />'
+				        +'<font color="red"> * </font><span class="span2" a-data="C">C.</span><input name="question['+num+'][answer_2]" type="text" value="{$answer_2}" class="s-txt answer_2" style="width:200px"><br />'
+				        +'<font color="red"> * </font><span class="span3" a-data="D">D.</span><input name="question['+num+'][answer_3]" type="text" value="{$answer_3}" class="s-txt answer_3" style="width:200px">'
+				      +'</dd>'
+				    +'</dl>'
+				    +'<dl class="lineD" id="answer_title">'
+				    	+'<dt><font color="red"> * </font>正确答案：</dt>'
+				    	+'<dd>'
+				    		+'<input name="question['+num+'][answers]" id="answers" type="text" value="{$answers}" class="s-txt" style="width:200px">请填写大写字母'
+				    	+'</dd>'
+				    +'</dl>'
+				+'</div>'
+			);
+		});
+	});
+	function del_question(obj){
+		var node = $(obj).parent().parent().parent();
+		if(node.next().size() > 0){
+			ui.error("当前问题后面还有，请先删除靠后的问题，否则会造成答案混乱");
+			return false;
+		} else {
+			node.remove();
+			ui.success("删除成功");
+		}
+	}
+</script>
+<include file="__THEME__/admin_footer" />

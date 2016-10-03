@@ -1,0 +1,156 @@
+/* CSS Document */
+[type~=submit]{ cursor:pointer}
+.user-set-sz input[type~=radio]{ border:none !important;}
+select[type~=radio]{ border:none !important;}
+
+input{ background:none; border:none}
+.back{ background:#ffffff}
+.text-dt{ text-decoration: line-through}
+/**font**/
+.f9{ color:#999}
+.f3{ color:#333333}
+.ff8{ color:#FF854B}
+.width{width:100%;}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td, label {    margin: 0;    outline: medium none;    padding: 0;   resize: none;vertical-align: middle;}
+label {vertical-align: middle;}
+.sk_main .sk_l2 ul li label
+.font12{ font-size:12px;}
+.font18{ font-size:18px;}
+.f228{ color:#2286BF;}
+.ff8{ color:#FF854B}
+.inputcheckbox{vertical-align:middle; cursor:pointer;} 
+.text-right{ text-align:right}
+.fl{ float:left}
+.fr{ float:right}
+.position-rt{ position:relative}
+.padtop{ padding-top: 20px !important;}
+/**border**/
+.border{ border:#F0F0F0 1px solid;}
+/**/
+.worap-con{ width: 1200px; margin:0 auto; overflow:hidden;height:auto; }
+.box-worap{ width: 1200px; margin:0 auto; overflow:hidden;height:auto; padding-top:20px;}
+.star_ul{display:inline-block; line-height:24px; }
+.star_ul li{width:11px; height:10px; font-size:1px; overflow:hidden; display:inline-table; background-image:url(../image/ico.png); background-repeat:no-repeat; float:left; height:10px; margin: 10px 2px 0 0;}
+.worap{ width: 1200px; margin:0 auto; overflow:hidden;height:auto; padding-top:20px;}
+.grade-back-default{width:11px; height:10px; font-size:1px; overflow:hidden; display:inline-block; background-image:url(../image/ico.png); background-repeat:no-repeat; background-position:-83px -3px; width:15px; height:20px}
+.grade-back-set{width:11px; height:10px; font-size:1px; overflow:hidden; display:inline-block; background-image:url(../image/ico.png); background-repeat:no-repeat;background-position:-105px -4px; width:15px; height:20px}
+.in-mina-title{ width:50%; height:68px; line-height:68px; font-size:18px;}
+.worap h2{ font-size:16px}
+.worap h3{ font-size:14px}
+.text_wrong{ width: 16px; height:16px; display:block; background:url(../image/ico.png) no-repeat -125px 0;}
+.text_true{ width: 16px; height:16px; display:block; background:url(../image/ico.png) no-repeat -151px 0;}
+.more{ width:100%;  height:48px; line-height:48px; margin:30px auto;text-align:center ; color:#2B92F9; float:left;}
+.more a{ color:#2B92F9; height:48px;width:500px; display:block; margin: 0 auto ;border: 1px solid; border-radius: 5px;}
+.display-block{ display:block;}
+.display-none{ display:none;}
+/*fenye*/
+.sabrosus { width:100%; text-align: center; float:left; overflow:hidden; padding:15px 0;line-height:60px; color:#999999}
+.sabrosus A {border: #E7E5E6 1px solid;*display:inline-block; padding: 8px 13px; color:#999999; margin:0 5px;FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#FFFFFF,endColorStr=#F3F3F3)/*IE*/
+background:-moz-linear-gradient(top,#FFFFFF,#f3f3f3);/*火狐*/
+background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#FFFFFF), to(#f3f3f));/*谷歌*/}
+.sabrosus A:hover {  border: #E7E5E6 1px solid; background: #ffffff; color:#333333;}
+.sabrosus A.pre,.sabrosus A.next{line-height: 17px;}
+.pagination A:active {border-RIGHT: #E7E5E6 1px solid; border-TOP: #2b66a5 1px solid; border-LEFT: #2b66a5 1px solid; COLOR: #000; border-BOTTOM: #2b66a5 1px solid; BACKGROUND-COLOR: lightyellow}
+.sabrosus SPAN.current { padding:8px 13px;text-align:center ;font-weight:bold; COLOR: #ffffff;margin-right: 2px; border: #2286bf 1px solid; background-color:#66AEDE}
+.sabrosus .current { padding:8px 13px;text-align:center ;font-weight:bold; COLOR: #ffffff !important;margin-right: 2px; border: #2286bf 1px solid; background:#2B92F9 !important}
+.sabrosus .current{*background:#66AEDE!important;*FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#66AEDE,endColorStr=#66AEDE)}
+.sabrosus SPAN.disabled {padding:8px 13px;margin:0 5px;coler: #999999; border: #E7E5E6 1px solid;FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#FFFFFF,endColorStr=#F3F3F3); /*IE*/
+background:-moz-linear-gradient(top,#FFFFFF,#f3f3f3);/*火狐*/background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#FFFFFF), to(#f3f3f));/*谷歌*/}
+.sabrosus .current:hover  { color: #ffffff !important; border: 1px solid #2286bf; background:#66aede;}
+.page-item{height: 20px;line-height: 20px;padding: 0 4px;width: 38px; margin:0;}
+.btn-default{ width:38px; height:20px;padding: 0 4px; padding:0 5px;color:#999999;border: #E7E5E6 1px solid;FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#FFFFFF,endColorStr=#F3F3F3); /*IE*/
+background:-moz-linear-gradient(top,#FFFFFF,#f3f3f3);/*火狐*/background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#FFFFFF), to(#f3f3f));/*谷歌*/}
+/*手型*/
+.pointer { cursor:pointer;}
+/*图标*/
+.video-back{ background:url(../image/ico.png) no-repeat -115px -120px; width:15px; height:15px; display:inline-block;vertical-align: middle;}
+.video-time{ width:14px; height:20px;display: inline-block; background:url(../image/ico.png) no-repeat -112px -34px;vertical-align: middle;}
+.user-true{ width:11px; height:11px; background:url(../image/ico.png) no-repeat -206px -220px; display:block; float:left; margin-right:5px;}
+.user-Wrong{ width:11px; height:11px; background:url(../image/ico.png) no-repeat -206px -195px; display:block; float:left; margin-right:5px;}
+.user-stop{ width:11px; height:11px; background:url(../image/ico.png) no-repeat -206px -245px; display:block; float:left; margin-right:5px;}
+.zan-icon{background:url(../image/ico.png) no-repeat -203px -145px; height: 13px;margin-right: 3px; width: 16px; display: inline-block; margin-top: -2px;    vertical-align: middle;}
+.js-qa-comment-support:hover .zan-icon{background:url(../image/ico.png) no-repeat -203px -174px; height: 13px; margin-right: 3px; width: 16px; display: inline-block; margin-top: -2px;    vertical-align: middle;}
+.bianji-ico{width:12px; height:13px; background:url(../image/ico.png) no-repeat -29px -208px; display:block; float:left; margin:5px 5px 0 0;}
+
+.margin-bt { margin-bottom:20px;}
+/*wenda*/
+.clear{clear:both;display:block;height:0;font-size:0;visibility:hidden;padding:0;margin:0;border:0;}
+.clearfix:after{content:'\0020';display:block;height:0;clear:both;visibility:hidden;}
+.clearfix{*zoom:1;}
+.fa-cc-visa:before {
+  content: "\f1f0";
+}
+/*面包屑*/
+.breadcrumb{ width:1200px; margin:0 auto; height:60px; line-height:60px;}
+.breadcrumb span a{ float:left; padding:0 10px 0 0;}
+.breadcrumb a{padding:0 10px;}
+/*遮罩层*/
+.mask { display:none; background: #666; z-index:999; position:absolute; top:0; left:0; width:100%; height:100%; filter:alpha(opacity=50);-moz-opacity:0.50;opacity:0.50;min-width: 1200px;}
+/*基本颜色*/
+.cgreen{color:green !important}
+
+
+/*新增 TODO*/
+@charset "utf-8";
+/*! * @名称：base.css * @功能：1、重设浏览器默认样式 * 2、设置通用原子类 */
+/* 防止用户自定义背景颜色对网页的影响，添加让用户可以自定义字体 */
+html{color:#424344;background:#fff;}
+/* 内外边距通常让各个浏览器样式的表现位置不同 */
+body,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,hr,button,article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{margin:0;padding: 0;}
+/* 要注意表单元素并不继承父级 font 的问题 */
+body,button,input,select,textarea{font:12px "Microsoft Yahei","微软雅黑","Helvetica Neue", Helvetica, Arial, sans-serif,"Simsun", "Segoe UI";}
+input,select,textarea{font-size:100%;}
+input,select,textarea,button{vertical-align:middle;outline:none}
+textarea{resize:none}
+/* IE bug fixed: th 不继承 text-align */
+th{text-align:inherit;}
+input[type="checkbox"]{width:13px;height:15px;}
+/* 去掉 table cell 的边距并让其边重合 */
+table{border-collapse:collapse; border-spacing:0;}
+/* ie bug：th 不继承 text-align */
+th{text-align:inherit;}
+/* 去除默认边框 */
+fieldset,img{border:none;}
+img{max-width:100%;height:auto;}
+/* ie6 7 8(q) bug 显示为行内表现 */
+iframe{display:block;}
+/* 去掉 firefox 下此元素的边框 */
+abbr,acronym{border:none; font-variant:normal;}
+/* 一致的 del 样式 */
+del{text-decoration:line-through;}
+address,caption,cite,code,dfn,em,th,var{font-style:normal; font-weight:500;}
+/* 去掉列表前的标识，li 会继承 */
+ol,ul{list-style:none;}
+/* 对齐是排版最重要的因素，别让什么都居中 */
+caption,th{text-align:left;}
+/* 来自yahoo，让标题都自定义，适应多个系统应用 */
+h1,h2,h3,h4,h5,h6{font-size:100%; font-weight:500;}
+q:before,q:after{content:'';}
+/* 统一上标和下标 */
+sub,sup{font-size:75%; line-height:0; position:relative; vertical-align:baseline;}
+sup{top:-0.5em;}
+sub{bottom:-0.25em;}
+/* 让链接在 hover 状态下显示下划
+a:hover{text-decoration:underline;}线 */
+/* 默认不显示下划线，保持页面简洁 */
+ins,a{text-decoration:none;}
+a{outline:none;color:#424344;}
+/* 去除 ie6 & ie7 焦点点状线 */
+a:focus,*:focus{outline:none;}
+/* 清除浮动 */
+.clearfix:before,.clearfix:after{content:""; display:table;}
+.clearfix:after{clear:both; overflow:hidden;}
+.clearfix{zoom:1; /* for ie6 & ie7 */}
+.clear{clear:both; display:block; font-size:0; height:0; line-height:0; overflow:hidden;}
+/* 设置显示和隐藏，通常用来与 js 配合 */
+.hide{display:none;}
+.block{display:block;}
+/* 设置浮动，减少浮动带来的 bug */
+.fl,.fr{display:inline;}
+.fl{float:left;}
+.fr{float:right;}
+.t-center{text-align:center;}
+.t-right{text-align:right;}
+
+
+	

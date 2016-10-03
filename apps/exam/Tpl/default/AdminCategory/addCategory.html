@@ -1,0 +1,202 @@
+<include file="__THEME__/admin_header" />
+<php>
+ set_time_limit(0);
+</php>
+	<link rel="stylesheet" href="__THEME__/js/swfupload/css/default.css">
+	<style type="text/css">
+		.ico_top, .ico_btm {
+		    background: url("__THEME__/admin/image/ico_top_btm.gif") no-repeat scroll 0 0 transparent;
+		    height: 14px;
+		    width: 12px;
+		}
+		.ico_top, .ico_btm { display: inline-block; vertical-align: middle;
+		}
+		.ico_top { background-position: -12px 0;}
+		.ico_btm {background-position: -24px 0;}
+		.ico_top:hover { background-position: 0 0;}
+		.ico_btm:hover { background-position: -35px 0;}
+	</style>
+	<div id="container" class="so_main">
+    <div class="page_tit">
+        <div class="right">
+            <neq name="back_id" value="-1"><a href="{:U('exam/AdminExam/index')}" class="btn_a"><span>返回</span></a></neq>
+        </div>
+        {$pageTitle}
+    </div>
+    <php>if(!empty($pageTab)):</php>
+    
+    <div class="tit_tab">
+        <ul>
+        <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+        <volist name='pageTab' id='t'>
+            <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+        </volist>
+        </ul>
+    </div>
+    <php>endif;</php>
+    <form method="POST" action="{:U('exam/AdminCategory/doaddCategory')}" id="detail_form" name="detail_form" onsubmit="return j_validateCallback(this,checkForm,post_callback)">
+    	<div class="form2">
+		    <?php if($exam['exam_admin']){ ?>
+		    	<dl class="lineD" id="dl_author">
+		    	<dt><font color="red"> * </font>创建者：</dt>
+		    	<dd>
+		    		{:getUserSpace($exam["exam_admin"])}
+		    	</dd>
+		    </dl>
+		    <?php } ?>
+		    <dl class="lineD" id="form_teacherlist">
+		    	<dt><font color="red"> * </font>选择分类：</dt>
+		    	<dd>
+					<select name="exam_category" id="exam_category" onchange="checkname()">
+					<?php if($table){
+						if($table=="exam"){
+							echo "<option value='1'>考试分类</option>";
+						}else if($table=="paper"){
+							echo "<option value='2'>试卷分类</option>";
+						}else if($table=="question"){
+							echo "<option value='3'>试题分类</option>";
+						}else{
+							echo "<option value='4'>题库类型分类</option>";
+						}
+					}else{ 
+						echo "
+							<option value='0'>请选择分类</option>
+						  	<option value='1'>考试分类</option>
+						  	<option value='2'>试卷分类</option>
+						  	<option value='3'>试题分类</option>
+						  	<option value='4'>题库类型分类</option>
+						";
+					} ?>
+					</select>
+		    	</dd>
+		    </dl>
+		    <dl class="lineD" id="dl_video_title">
+		      	<dt><font color="red"> * </font>分类名称：</dt> 
+		      	<dd>
+		      		<input name="category_name" id="category_name" type="text" value="{$category_name}" class="s-txt" style="width:200px"> 
+		    	</dd>
+		    </dl>
+		    <input id="category_id" name="category_id" type="hidden" value="{$category_id}">
+		    <input id="name" name="name" type="hidden" value="{$table}">
+		    <input id="category_type" name="category_type" type="hidden" value="{$category_type}">
+		    <div class="page_btm">
+			<input type="submit" class="btn_b" value="保存" id="form_submit">
+    		</div>
+    	</div>
+    	</div>
+    	
+    	
+    </form>
+    <script type="text/javascript">
+    	function checkname(){
+    		$("#category_type").val(1);
+    		if($("#exam_category").val()==1){
+    			$("#name").val("exam");
+    		}else if($("#exam_category").val()==2){
+    			$("#name").val("paper");
+    		}else if($("#exam_category").val()==3){
+    			$("#name").val("question");
+    		}else{
+    			$("#name").val("option");
+    			$("#category_type").val(2);
+    		}
+    	}
+		function j_validateCallback(form,call,callback) {
+			var $form = $(form);
+			if(typeof call != 'undefined' && call instanceof Function){    
+				$i = call($form);
+				if(!$i){
+					return false;
+				}
+			}
+			var _submitFn = function(){
+				$.ajax({
+					type: form.method || 'POST',
+					url:$form.attr("action"),
+					data:$form.serializeArray(),
+					dataType:"json",
+					cache: false,
+					success: function(xMLHttpRequest, textStatus, errorThrown){
+						if(typeof callback != 'undefined' && callback instanceof Function){   
+							callback($form,xMLHttpRequest);
+						}  
+					},
+					error: function(xhr, ajaxOptions, thrownError){
+						ui.error("未知错误!");
+					}
+				});
+			}
+			_submitFn();
+			return false;
+		}
+		function checkForm(form){
+			if($("#exam_category").val()==0){
+				ui.error("请选择考试分类");
+				return false;
+			}
+			if($("#category_name").val()==0){
+				ui.error("请输入分类名称");
+				return false;
+			}
+			return true;
+		}
+		function post_callback(_form,data){
+			if(data.status != undefined){
+				if(data.status == '0'){
+					ui.error(data.info);
+				} else {
+					ui.success(data.info);
+					window.location.href = U('exam/AdminCategory/'+data.name)+"&tabHash="+data.name;
+				}
+			}
+		}
+		
+    	function callback(data){
+    		$("#"+data.input_id+"_cover").remove();
+    		$("#image_"+data.input_id).append(
+    			'<div id='+data.input_id+'_cover>'
+    			+'<img style="max-width:100px;padding:2px; border:1px solid #ccc" src='+UPLOAD_URL+'/'+data.src+' />'
+    			+'</div>'
+    		).find('input:file').val('');
+    		$("#"+data.input_id+"_ids").val(data.attach_id);
+    	}
+    	function filecallback(data){
+    		$("#old_coursefile_ids").remove();
+    		$("#coursefile_ids").val(data.attach_id);
+    	}
+    	$(document).ready(function(){
+			$('#detail_form input:file').click(function(){
+				$('input:file').val('');
+			});
+    		$('#original_recommend').change(function(){ 
+    			var che = $("#original_recommend").attr("checked");
+			   	if(che == true){
+			   		$("#re_sort").removeAttr("readonly");
+			   	} else {
+			   		$("#re_sort").attr("readonly",'readonly');
+			   	}
+			});
+			$('#best_recommend').change(function(){ 
+    			var che = $("#best_recommend").attr("checked");
+			   	if(che == true){
+			   		$("#be_sort").removeAttr("readonly");
+			   	} else {
+			   		$("#be_sort").attr("readonly",'readonly');
+			   	}
+			});
+			
+			$('#is_tlimit').change(function(){ 
+    			var che = $("#is_tlimit").attr("checked");
+			   	if(che == true){
+			   		$("#form_limit_discount,#form_starttime,#form_endtime").show();
+			   		$("#limit_discount,#starttime,#endtime").removeAttr("readonly");
+			   	} else {
+			   		$("#form_limit_discount,#form_starttime,#form_endtime").hide();
+			   		$("#form_limit_discount,#form_starttime,#endtime").attr("readonly","readonly");
+			   		$("#limit_discount,#starttime,#endtime").val('');
+			   	}
+			});
+    	});
+		
+	</script>
+<include file="__THEME__/admin_footer" />

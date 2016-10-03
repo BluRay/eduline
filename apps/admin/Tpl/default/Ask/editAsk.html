@@ -1,0 +1,50 @@
+<dl class="pop-area">
+  <dt>问题标题：<input type="text" id="title" value="{$info[0]['title']}" class="s-txt" style="width:245px"></dt><br/>
+  <dt>问题描述：</dt><textarea id="des" row="6" col="100">{$info[0]['ades']}</textarea>
+  <dd style="text-align:center;margin:15px 0 0 ">
+        <php>if (isset($info)) {</php>
+        <input type="button" class="btn_b" onclick="editAsk()" value="确定" />
+        <php>}else {</php>
+        <input type="button" class="btn_b" onclick=" " value="确定" />
+        <php>}</php>
+        <input type="button" class="btn_w ml10" onclick="cancel()" value="取消" />
+  </dd>
+  <div class="clear"></div>
+</dl>
+<script type="text/javascript">
+// 编辑问题
+function editAsk() {
+	var title = $.trim($('#title').val());
+	var ades = $.trim($('#des').val());
+	var aid = "{$info[0]['id']}";
+	
+	if(title == '') {
+        ui.error('请输入问题标题');
+        return false;
+    }
+	
+	
+	
+	//判断名称是否有变化
+	if(title == "{$info[0]['title']}") {
+		ui.error('标题无变化，未提交修改');
+		ui.box.close();
+		return false;
+	}
+
+	//提交修改
+	$.post("{:U('admin/Ask/doEditAsk')}", {aid:aid, title:title,ades:ades}, function(res){
+		if (res == '0') {
+            ui.error('修改失败');
+        }else {
+        	$('#ask_' + aid).html(title);
+            ui.success('修改成功');
+            ui.box.close();
+        }
+	});
+}
+// 关闭弹窗
+function cancel() {
+	ui.box.close();
+}
+</script>

@@ -1,0 +1,113 @@
+<include file="__THEME__/public_header" />
+
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+        <include file="_tab" />
+        </div>
+        <div class="user-Release" >
+            <div class="cent_r_box clearfix">
+            <div class="box_block">
+            	<p class="lh30 mb10"><span class="selected_title_a fl">可用余额</span> <em class="lan_txt ft24">{:unLast0($userLearnc['balance'])}</em>  学币</p>
+                <?php if(!$data):?>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                         输入兑换金额
+                        </span>
+                        <div class="myInput1 Album_Title_s  fl w276">
+                              <input type="text" class="upload_input_a" id="withdraw_num" rel="请输入提现数量" basenum="{:intval(getAppConfig('withdraw_basenum'))}" total="{$userLearnc['balance']}">
+                              <span class="w276"> (只允许输入{:intval(getAppConfig('withdraw_basenum'))}的倍数)</span>
+                        </div>
+                        <div class="fr txt_r">            
+                            <a class="sel_w Collect" href="javascript:;" onClick="applyWithdraw();">提现</a>
+                        </div>
+                </div>
+                <script type="text/javascript">
+					$(function(){
+                        $('html,body').click(function(){
+                            if($("#withdraw_num").val() == ''){
+                                $("span.w276").show();
+                            }
+                        });
+                        $('.myInput1').click(function(){
+							$("#withdraw_num").focus();
+                        	$(this).find("span.w276").hide();
+                            return false;
+                        });
+                    });
+					function applyWithdraw(){
+						var input   = $('.myInput1 #withdraw_num:first');
+						var num     = input.val();
+						var basenum = parseInt(input.attr('basenum'));
+						var total   = parseFloat(input.attr('total'));
+						if(!/^[1-9][0-9\.]*$/.test(num)){
+							notes('请输入正确的金额！', 'failure');
+							input.focus(); return false;
+						}
+						num = parseFloat(num);
+						if(num > total){
+							notes('无法提现：余额不足', 'failure');
+							input.focus(); return false;
+						}
+						if(num<0||num<basenum||num%basenum!=0){
+							notes('只允许输入'+basenum+'的倍数', 'failure');
+							input.focus(); return false;
+						}
+						if(!confirm('提现金额：'+num+'，确认申请提现?')) return false;
+						$.post(window.location, {num:num}, function(data){
+							if(data.status){
+								notes('申请提现成功', 'success');
+								setTimeout(function(){
+									window.location.reload();
+								}, 2000);
+							}else{
+								var errMsgs = ['未知错误','申请提现应为'+basenum+'的倍数','未找到用户或未绑定银行卡','同时只能申请一笔提现','余额转冻结失败或余额不足','提现申请失败'];
+								data.info = parseInt(data.info);
+								var msg  = errMsgs[data.info] ? errMsgs[data.info] : '未知错误';
+								notes('错误：'+msg, 'failure');
+								input.focus(); return false;
+							}
+						}, 'json');
+					}
+				</script>
+                <?php else:?>
+                <table class="table_ye mt10"  cellpadding="0" cellspacing="1" border="1" width="100%">
+                	<?php foreach($data as $rs):?>
+                    <tr>
+                        <td width="50%" style="color: red">正在处理提现中</td>
+                        <td width="50%">{:unLast0($rs['wnum'])}  学币</td>
+                    </tr>
+                    <?php endforeach;?>
+                    <tr>
+                        <td>剩余的资产</td>
+                        <td> {:unLast0($userLearnc['balance'])}     学币</td>
+                    </tr>
+                </table>
+                <?php endif;?>
+            </div>
+            <?php if($data):?>
+            <div class="clearfix h80" style="margin-left:207px">
+                <span class="fl zzcl"></span>
+                <a class="lan_y" href="javascript:;">dian</a>
+                <a class="lan_y" href="javascript:;">dian</a>
+                <a class="lan_y" href="javascript:;">dian</a>
+                <a class="lan_ky" href="javascript:;">dian</a>
+                <a class="lan_y" href="javascript:;">dian</a>
+                <a class="lan_y" href="javascript:;">dian</a>
+                <a class="lan_y" href="javascript:;">dian</a>
+                <span class="fl hkwc"></span>
+            </div>
+            <?php endif;?>
+            <p class="lh30 ">提示：1学币=1元人民币，提现金额必须是{:intval(getAppConfig('withdraw_basenum'))}的倍数；同时只能申请一笔提现，现金发放于工作日当周完成。如发现页面中一直是处理状态，请及时联系我们。联系电话：{$sys_tel?:'028-86743303'}</p>
+		</div>
+        </div>
+
+    </div>
+    <!--右-->
+    <include file="../../User/_right" />
+</div>
+
+<include file="__THEME__/public_footer" />

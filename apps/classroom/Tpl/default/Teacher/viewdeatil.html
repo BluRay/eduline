@@ -1,0 +1,71 @@
+<include file="__THEME__/public_header" />
+<div class="breadcrumb"> <a href="/">首页</a>><a href="{:U('classroom/Teacher/index')}">讲师</a>><a>{$data.name}</a></div>
+<!--畅销榜单-->
+<div class="worap-con">
+    <!---列表--->
+    <div class="th-with-top"> <img src="{:getAttachUrlByAttachId($data['head_id'])}">
+        <div class="th-with-top-r">
+            <h2><a href="#">{$data.name}</a></h2>
+            <p>{$data.inro}</p>
+            <!---讲师增加主页按钮-->
+            <div class="th-with-rbottom">
+                <php>if($is_user){</php>
+                <a href="{:U('classroom/UserShow/index',array('uid'=>$data['uid']))}" class="th-with-user">访问TA的主页</a>&nbsp;&nbsp;&nbsp;
+                <php>}</php>
+                相关课程：<span class="f228">{$count}&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;最近课程:&nbsp;<a href="{:U('classroom/Video/view',array('id'=>$videoinfo['id']))}" class="f228">{$videoinfo.video_title}</a></div>
+            
+        </div>
+    </div>
+    <ul class="th-with-list">
+
+
+    </ul>
+
+</div>
+<script>
+    var tid="{$data.id}";
+    //页面加载完毕执行
+    $(function(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('classroom/Teacher/getVideoList')}",
+            data:"p=1&tid="+tid,
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+    });
+    //追加html
+    function appendHtml(data){
+        $(".more").remove();
+        $(".th-with-list").append(data.data);
+        if(data.nowPage+1>data.totalPages){
+            return;
+        }else{
+            var html="<div class=\"more\" ><a href=\"javascript:void(0)\" id=\"getList\">查看更多</a></div>"
+            $(".th-with-list").append(html);
+            p=data.nowPage+1;//下一页
+
+        }
+    }
+    //查看更多点击事件
+    $("#getList").live("click",
+            function(){
+                ajaxBang();
+            }
+    );
+    //请求事件
+    function ajaxBang(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('classroom/Teacher/getVideoList')}",
+            data:"p="+p+"&tid="+tid,
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+    }
+</script>
+<include file="__THEME__/public_footer" />

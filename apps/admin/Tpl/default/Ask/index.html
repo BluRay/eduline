@@ -1,0 +1,218 @@
+<include file="__THEME__/admin_header" />
+<div class="so_main">
+
+    <div id="search_div" <neq name="isSearch" value="1">style="display:none;"</neq>>
+    <div class="page_tit">搜索 [ <a href="javascript:void(0);" onclick="searchTag();">隐藏</a> ]</div>
+    <div class="form2">
+    <form method="post" action="{:U('admin/Ask/doSearchAsk')}">
+    <input type="hidden" name="isSearch" value="1"/>
+    <dl class="lineD">
+      <dt>问题标题：</dt>
+      <dd><input name="title" type="text" value=""></dd>
+    </dl>    
+    <div class="page_btm">
+      <input type="submit" class="btn_b" value="提交" />
+    </div>
+    </form>
+  </div>
+  </div>
+  <include file="../Public/_qa_tab" />
+  <div class="Toolbar_inbox">
+  <div class="page_tit">问答列表</div>
+	<a href="javascript:void(0);" class="btn_a" onclick="searchTag();">
+        <span class="search_action"><neq name="isSearch" value="1">搜索<else/>搜索完毕</neq></span>
+    </a>
+	<a href="javascript:void(0);" class="btn_a" onclick="deleteFile();"><span>删除</span></a>
+	<div class="page right">{$ask_list.html}</div>
+  </div>
+  <div class="list">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+	<th style="width:25px;">
+			<input type="checkbox" id="checkbox_handle" onclick="checkAll(this)" value="0">
+			<label for="checkbox"></label>
+	</th>
+    <th class="line_l" width="50px;">ID</th>
+	<th class="line_l" width="80px;">创建者</th>
+    <th class="line_l" width="300px;">问题标题</th>
+    <th class="line_l" width="50px">回答个数</th>
+	<th class="line_l" width="100px">是否解决</th>
+	<th class="line_l" width="250px">所属课程</th>
+	<th class="line_l" width="100px">创建时间</th>
+    <th class="line_l" width="140px">操作</th>
+  </tr>
+  <volist id="vo" name="ask_list['data']">
+      <tr overstyle='on' id="attach_{$vo['id']}">
+		<td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.id}"></td>
+        <td>{$vo.id}</td>
+		<td>{$vo.uid|getUserName}</td>
+        <td><a href="{:U('admin/Ask/anslist',array('id'=>$vo['id']))}" title="查看回答列表" id="ask_{$vo['id']}">{$vo.title}</a></td>
+		<td>{$vo.reward}</td>
+		<php>if($vo['solve']==0){</php>
+		<td>未解决</td>
+		<php>}else{</php>
+		<td>已解决</td>
+		<php>}</php>
+		<td>{$vo.cid|getCnameById}</td>
+		<td>{$vo.ctime|date="Y-m-d H:i",###}</td>
+        <td>
+            <a href="javascript:void(0);" onclick="deleteFile('{$vo.id}')" title="删除">删除</a>&nbsp;|&nbsp;
+			<a title="编辑" href="javascript:void(0)" onclick="edit('{$vo['id']}')">编辑</a>
+		</td>
+      </tr>
+  </volist>
+  </table>
+  </div>
+  
+</div>
+
+<script>
+    //鼠标移动表格效果
+    $(document).ready(function(){
+        $("tr[overstyle='on']").hover(
+          function () {
+            $(this).addClass("bg_hover");
+          },
+          function () {
+            $(this).removeClass("bg_hover");
+          }
+        );
+    });
+    
+    function checkon(o){
+        if( o.checked == true ){
+            $(o).parents('tr').addClass('bg_on') ;
+        }else{
+            $(o).parents('tr').removeClass('bg_on') ;
+        }
+    }
+    
+    function checkAll(o){
+        if( o.checked == true ){
+            $('input[name="checkbox"]').attr('checked','true');
+            $('tr[overstyle="on"]').addClass("bg_on");
+        }else{
+            $('input[name="checkbox"]').removeAttr('checked');
+            $('tr[overstyle="on"]').removeClass("bg_on");
+        }
+    }
+
+    //获取已选择用户的ID数组
+    function getChecked() {
+        var ids = new Array();
+        $.each($('table input:checked'), function(i, n){
+            ids.push( $(n).val() );
+        });
+        return ids;
+    }
+    
+    function deleteFile(ids) {
+        var length = 0;
+    	if(ids) {
+            length = 1;         
+        }else {
+            ids    = getChecked();
+            length = ids.length;
+            ids    = ids.toString();
+        }
+        if(ids=='') {
+            ui.error('请先选择问题');
+            return ;
+        }
+        if(confirm('您将删除'+length+'条记录，删除后无法恢复，确定继续？')) {
+            $.post("{:U('admin/Ask/delAsk')}",{ids:ids},function(res){
+                if(res>0) {
+                    ui.success('删除成功');
+                    removeItem(ids);
+                }else {
+                    ui.error('删除失败');
+                }
+            });
+        }
+    }
+	
+	    function dotop(ids) {
+        var length = 0;
+    	if(ids) {
+            length = 1;         
+        }else {
+            ids    = getChecked();
+            length = ids.length;
+            ids    = ids.toString();
+        }
+        if(ids=='') {
+            ui.error('请先选择问题');
+            return ;
+        }
+        if(confirm('确定将该问题置顶吗?')) {
+            $.post("{:U('admin/qa/dotop')}",{ids:ids},function(res){
+                if(res>0) {
+                    ui.success('置顶成功'+res);
+                     editItem(ids);
+                }else {
+                    ui.error('置顶失败');
+                }
+            });
+        }
+    }
+	
+	function dountop(ids) {
+        var length = 0;
+    	if(ids) {
+            length = 1;         
+        }else {
+            ids    = getChecked();
+            length = ids.length;
+            ids    = ids.toString();
+        }
+        if(ids=='') {
+            ui.error('请先选择问题');
+            return ;
+        }
+        if(confirm('确定取消推荐吗?')) {
+            $.post("{:U('admin/qa/dountop')}",{ids:ids},function(res){
+                if(res>0) {
+                    ui.success('取消成功'+res);
+                    editItem(ids);
+                }else {
+                    ui.error('取消失败');
+                }
+            });
+        }
+    }
+    function editItem(ids){
+		ids = ids.split(',');
+        for(i = 0; i < ids.length; i++) {
+           location.reload();
+        }
+	
+	}
+	
+    function removeItem(ids) {
+    	ids = ids.split(',');
+        for(i = 0; i < ids.length; i++) {
+            $('#attach_'+ids[i]).remove();
+        }
+    }
+	
+	 //搜索问题
+    var isSearchHidden = <neq name="isSearch" value="1">1<else/>0</neq>;
+    function searchTag() {
+        if(isSearchHidden == 1) {
+            $("#search_div").slideDown("fast");
+            $(".search_action").html("搜索完毕");
+            isSearchHidden = 0;
+        }else {
+            $("#search_div").slideUp("fast");
+            $(".search_action").html("搜索问题");
+            isSearchHidden = 1;
+        }
+    }
+    /* 编辑问题 */
+    function edit(id)
+    {
+        ui.box.load("{:U('admin/Ask/editAsk')}&id=" + id, '编辑问题');
+    }
+    
+</script>
+<include file="__THEME__/admin_footer" />

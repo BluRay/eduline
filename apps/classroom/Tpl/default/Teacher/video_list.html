@@ -1,0 +1,7 @@
+<foreach name="listData" item="ld">
+<li><a href="{:U('classroom/Video/view',array('id'=>$ld['id']))}" class="img"><img src="{:getImageUrl($ld['imageurl'],278,179)}"></a>
+    <h2><a href="{:U('classroom/Video/view',array('id'=>$ld['id']))}">{$ld.video_title}</a></h2>
+    <div class="th-with-listbottom"><span>{$ld.video_order_count}人学习</span></div>
+    </a>
+</li>
+</foreach>

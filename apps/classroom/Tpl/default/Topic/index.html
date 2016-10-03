@@ -1,0 +1,128 @@
+<include file="__THEME__/public_header" />
+<!--content start-->
+<div class="content">
+	<div class="wrap">
+        <div class="content-con pt40">
+        	<div class="content-main">
+            	<div class="content-main-left">
+                	<h2>Eduline资讯</h2>
+                	<dl>
+                		<dt><a href="javascript:;" onclick="cateBang(this,0)" class="current">全部分类</a></dt>
+					</dl>
+                	<volist name="cate" id="vo">
+                		<dl>
+	                		<dt><a href="javascript:;" onclick="cateBang(this,{$vo.topic_category_id})">{$vo.title}</a></dt>
+							<dd>
+								<foreach name="vo.childlist" item="li">
+			                    	<a href="javascript:;" onclick="cateBang(this,{$li.topic_category_id})">{$li.title}</a>
+			                    </foreach>
+							</dd>
+						</dl>
+		            </volist>
+                </div>
+                <div class="content-main-right">
+                	<div class="content-main-right-pic"><img src="__THEME__/images/p9.jpg" class="lazyloading"></div>
+                    <ul class="content-lei">
+                        <li class="active"><a href="javascript:;" onclick="navClick(this,'1')">最新</a></li>
+                        <li><a onclick="navClick(this,'2')" href="javascript:;">热门</a></li>
+                    </ul>
+                    <ul class="content-new">
+                    </ul>
+                </div>
+            </div>
+            <div class="content-sider">
+                <div class="page-tit">
+                    <div class="page-tit-box"><div class="fl">推荐资讯</div></div>
+                </div>
+                <ul class="sider-question">
+                	{:W('Topicread',array('limit'=>5))}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+        <script>
+            var mid = "{$mid}",orderBy=1,p=1;
+			  var cateId=0;
+			
+			 function navClick(obj,type){
+				 $('.active').removeClass('active');
+			     $(obj).parent("li").addClass('active');	 
+				  orderBy=type;
+                  p=1;
+				  $(".content-new").html("");
+				  ajaxBang();
+			 }
+            //追加html
+            function appendHtml(data){
+                $(".more").remove();
+                if(data.data!=""){
+	                $(".content-new").append(data.data);
+	                if(data.nowPage+1>data.totalPages){
+	                    return;
+	                }else{
+	                    var html="<div class=\"more\"><a href=\"javascript:void(0)\" id=\"getList\">查看更多</a></div>"
+	                    $(".content-new").append(html);
+	                    p=data.nowPage+1;//下一页
+	
+	                }
+                }else{
+	                $(".content-new").css("padding-top","20");
+	                $(".content-new").append("对不起，暂无更多");
+                }
+            }
+            //页面加载完毕执行
+            $(function(){
+                $.ajax({
+                    type: "GET",
+                    url:"{:U('classroom/Topic/getList')}",
+                    data:"p=1&type=1",
+                    dataType:"json",
+                    success:function(data){
+                        appendHtml(data);
+                    }
+                  });
+					 //页面中间最低高度
+					 var headHeight = $('.header-worap').height();
+					 var footHeight = $('.footer-worap').height();
+					 var miniHeight = (parseInt($(document).height()-headHeight-footHeight))
+					 
+          });//read
+          
+           
+             //查看更多点击事件
+            $("#getList").live("click",
+                    function(){
+                     ajaxBang();
+                    }
+            );
+            //请求事件
+            function ajaxBang(){
+                $.ajax({
+                    type: "GET",
+                    url:"{:U('classroom/Topic/getList')}",
+                    data:"p="+p+"&type="+orderBy+"&cate="+cateId,
+                    dataType:"json",
+                    success:function(data){
+                        appendHtml(data);
+                    }
+                });
+            }
+            //分类点击
+            function cateBang(cate,id){
+                $(".content-new").html("");
+                $(cate).addClass('current');
+                $(cate).parent().parent().siblings().find('a').removeClass('current');
+                cateId=id;
+                p=1;
+                ajaxBang();
+            }
+            //类型点击
+            function redBang(type){
+                $(".content-new").html("");
+                pType=type;
+                p=1;
+                ajaxBang();
+            }
+        </script>
+<include file="__THEME__/public_footer" />

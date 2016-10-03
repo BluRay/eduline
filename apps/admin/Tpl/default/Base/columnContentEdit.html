@@ -1,0 +1,83 @@
+<include file="__THEME__/admin_header" />
+<div>
+		<br><br><br>
+		<h1>编辑栏目内容</h1>
+		<hr>
+		<br><br><br>
+		<form method="POST" action="{:U('admin/base/doColumnContentEdit',array('conid'=>$info['conid']))}" id="frm_js">
+		<tr>
+			<td>名称:</td>
+			<td><input name="name" type="text" size="20" id="js_name" value="{$info['name']}"></td>
+		</tr>
+		<br><br>
+		<tr>
+			<td>类型【类型/上级类型/顶级类型】:</td>
+			<td>【{$info['typeid']|getColumnNameById}/{$info['reid']|getColumnNameById}/{$info['topid']|getColumnNameById}】</td>
+		</tr>
+		<br><br>
+		<tr>
+			<td>创建时间:</td>
+			<td>{$info['ctime']|date="y-m-d",###}</td>
+		</tr>
+		<br><br>
+		<tr>
+			<td>编码:</td>
+			<td><input type="text" name="code" value="{$info['code']}" id="js_code"><input type="hidden" name="conid" value="{$info['conid']}" id="js_conid"></td>
+		</tr>
+		<br><br>
+		<tr>
+			<td>描述:</td>
+			<td>
+				<textarea cols="20" rows="10" type="text" name="description" id="js_description">{$info['description']}</textarea>
+			</td>
+		</tr>
+		<br><br>
+		<tr>
+			<td>备注:</td>
+			<td>
+				<textarea cols="20" rows="10">{$info['remark']}</textarea>
+			</td>
+		</tr>
+		<br><br>
+		<tr>
+			<td><a href="javascript:viod(0);" onclick="doColumnContent()">提交</a></td>
+			<td><input type="reset" name="reset" value="重置"></td>
+		</tr>
+		</form>
+</div>
+<include file="__THEME__/admin_footer"/>
+<script type="text/javascript"> 
+	//获取子栏目
+	function doColumnContent(){
+		var conid =  $("#js_conid").val();
+		var name  =  $("#js_name").val();
+		var code  =  $("#js_code").val();
+		var desc  =  $("#js_description").val();
+		var err   =  '';
+		
+		if(name == ''){
+			err +="栏目名称不能为空；";
+		}
+		
+		if(code == ''){
+			err +="编码不能为空；";
+		}
+		
+		if(desc == ''){
+			err +='栏目描述不能为空；';
+		}
+		
+		if(err !=''){
+			ui.error(err);
+			return false;
+		}else{
+			$.post(U('admin/base/doColumnContentEdit'),{"conid":conid,"name":name,"code":code,"description":desc},function(res){
+				if(res > 0){
+					ui.success("编辑成功!");
+				}else{
+					ui.error("编辑失败!");
+				}
+			});
+		}
+	}
+</script>

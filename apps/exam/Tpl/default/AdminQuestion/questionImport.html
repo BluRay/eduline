@@ -1,0 +1,85 @@
+<include file="__THEME__/admin_header" />
+<php>
+ set_time_limit(0);
+</php>
+	<div id="container" class="so_main">
+    <div class="page_tit">
+        <div class="right">
+            <neq name="back_id" value="-1"><a href="{:U('exam/AdminQuestion/index')}" class="btn_a"><span>返回</span></a></neq>
+        </div>
+        {$pageTitle}
+    </div>
+    <php>if(!empty($pageTab)):</php>
+    
+    <div class="tit_tab">
+        <ul>
+        <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+        <volist name='pageTab' id='t'>
+            <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+        </volist>
+        </ul>
+    </div>
+    <php>endif;</php>
+    <form method="POST" action="{:U('exam/AdminQuestion/doQuestionImport')}" enctype="multipart/form-data" id="detail_form" name="detail_form" >
+    	<div class="form2">
+    		<dl class="lineD">
+		      	<dt><font color="red"> * </font>试题上传：</dt>
+				<dd>
+					<input type="file" name="question" />
+				</dd>
+		    </dl>
+		    <dl class="lineD">
+		      	<dt><input type="button" onclick="exporttemplater();" value="试题模板下载"></dt>
+		    </dl>
+			<div class="page_btm">
+		         <input type="submit" class="btn_b" value="确定">
+		    </div>
+    	</div>
+    </form>
+<script type="text/javascript">
+	function exporttemplater(){
+		window.location.href = U('exam/AdminQuestion/doExport'); 
+	}
+	function checkForm(form){
+		return true;
+	}
+	function j_validateCallback(form,call,callback) {
+		var $form = $(form);
+		if(typeof call != 'undefined' && call instanceof Function){    
+			$i = call($form);
+			if(!$i){
+				return false;
+			}
+		}
+		var _submitFn = function(){
+			$.ajax({
+				type: form.method || 'POST',
+				url:$form.attr("action"),
+				data:$form.serializeArray(),
+				dataType:"json",
+				cache: false,
+				success: function(xMLHttpRequest, textStatus, errorThrown){
+					if(typeof callback != 'undefined' && callback instanceof Function){   
+						callback($form,xMLHttpRequest);
+					}  
+				},
+				error: function(xhr, ajaxOptions, thrownError){
+					ui.error("未知错误!");
+				}
+			});
+		}
+		_submitFn();
+		return false;
+	}
+	function post_callback(_form,data){
+		if(data.status != undefined){
+			if(data.status == '0'){
+				ui.error(data.info);
+			} else {
+				ui.success(data.info);
+				window.location.href = U('exam/AdminQuestion/index')+"&tabHash=index";
+			}
+		}
+	}
+</script>
+<include file="__THEME__/admin_footer" />

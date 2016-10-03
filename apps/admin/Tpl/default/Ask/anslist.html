@@ -1,0 +1,134 @@
+<include file="__THEME__/admin_header" />
+<div class="so_main">
+  <div class="Toolbar_inbox">
+    <div class="page right">{$list.html}</div>
+	<div class="page_tit">回答列表</div>
+  </div>
+  <div class="list">
+  <php>if($list['data']){</php>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th class="line_l" width="50px;">ID</th>
+	<th class="line_l" width="150px;">所属问题</th>
+    <th class="line_l">回答内容</th>
+	<th class="line_l" width="200px;">回答时间</th>
+    <th class="line_l">回答者</th>
+    <th class="line_l">操作</th>
+  </tr>
+  
+  <volist id="vo" name="list['data']">
+      <tr overstyle='on' id="attach_{$vo['id']}">
+        <!--<td><input type="checkbox" name="checkbox" id="checkbox2" onclick="checkon(this)" value="{$vo.id}"></td>-->
+        <td>{$vo.id}</td>
+		<td>{$aid|getTitleById}</td>
+        <td>{$vo.acontent}</td>
+		<!--<td><php> echo htmlspecialchars_decode($vo['content'])</php></td>-->
+		<td>{$vo.ctime|date="Y-m-d H:i",###}</td>
+		<td>{$vo.uid|getUserName}</td>
+		
+        <td>
+            <a href="javascript:void(0);" onclick="deleteFile('{$vo['id']}','{$aid}')" title="删除该回答">删除</a>
+			 
+        </td>
+      </tr>
+  </volist>
+ 
+  </table>
+  <php>}else{</php>
+  <div style="height:40px;color:red;">暂无回答:)</div>
+  <php>}</php>
+  </div>
+  <div class="Toolbar_inbox">
+    <div class="page right">{$list.html}</div>
+	
+  </div>
+</div>
+
+<script>
+    //鼠标移动表格效果
+    $(document).ready(function(){
+        $("tr[overstyle='on']").hover(
+          function () {
+            $(this).addClass("bg_hover");
+          },
+          function () {
+            $(this).removeClass("bg_hover");
+          }
+        );
+    });
+    
+    function checkon(o){
+        if( o.checked == true ){
+            $(o).parents('tr').addClass('bg_on') ;
+        }else{
+            $(o).parents('tr').removeClass('bg_on') ;
+        }
+    }
+    
+    function checkAll(o){
+        if( o.checked == true ){
+            $('input[name="checkbox"]').attr('checked','true');
+            $('tr[overstyle="on"]').addClass("bg_on");
+        }else{
+            $('input[name="checkbox"]').removeAttr('checked');
+            $('tr[overstyle="on"]').removeClass("bg_on");
+        }
+    }
+
+    
+    function getChecked() {
+        var ids = new Array();
+        $.each($('table input:checked'), function(i, n){
+            ids.push( $(n).val() );
+        });
+        return ids;
+    }
+    
+    function deleteFile(ids,aid) {
+        var length = 0;
+    	if(ids) {
+            length = 1;         
+        }else {
+            ids    = getChecked();
+            length = ids.length;
+            ids    = ids.toString();
+        }
+        if(ids=='') {
+            ui.error('请先选择回答');
+            return ;
+        }
+        if(confirm('您将删除'+length+'条记录，删除后无法恢复，确定继续？')) {
+            $.post("{:U('admin/Ask/doDeleteAns')}",{ids:ids,aid:aid},function(res){
+                if(res) {
+                    ui.success('删除成功');
+                    removeItem(ids);
+                }else {
+                    ui.error('删除失败');
+                }
+            });
+        }
+    }
+    
+    function removeItem(ids) {
+    	ids = ids.split(',');
+        for(i = 0; i < ids.length; i++) {
+            $('#attach_'+ids[i]).remove();
+        }
+    }
+    
+     //搜索用户
+    var isSearchHidden = <neq name="isSearch" value="1">1<else/>0</neq>;
+    function searchTag() {
+        if(isSearchHidden == 1) {
+            $("#search_div").slideDown("fast");
+            $(".search_action").html("搜索完毕");
+            isSearchHidden = 0;
+        }else {
+            $("#search_div").slideUp("fast");
+            $(".search_action").html("搜索职位");
+            isSearchHidden = 1;
+        }
+    }
+</script>
+
+<include file="__THEME__/admin_footer" />

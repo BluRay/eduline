@@ -1,0 +1,21 @@
+<script>
+    var p="{$p}";//定义页码
+    var subject_category="{$subject_category}";
+    var reservation="{$reservation}";
+    var sex="{$sex}";
+    var sort_type="{$sort_type}";
+</script>
+<php>if($listData){</php>
+<volist name="listData" id="vo">
+	<li>
+    	<div class="info"><a href="{:U('classroom/Teacher/view',array('id'=>$vo['id']))}">
+            <div class="pic"><img src="{:getCover($vo['head_id'],105,105)}" class="lazyloading"></div>
+            <h3>{$vo.name}</h3>
+            <p>{:limitNumber($vo['inro'],65)}</p>
+        </a></div>
+        <div class="txt">热门课程：<eq name="vo['video']" value="">Ta还没有课程<else /><a href="{:U('classroom/Video/view',array('id'=>$vo['video']['id']))}">{:getShort($vo['video']['video_title'],10)}</a></eq></div>
+    </li>
+</volist>
+<php>}else{</php>
+<span>已经没有相关老师啦~</span>
+<php>}</php>

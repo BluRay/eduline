@@ -1,0 +1,97 @@
+<include file="__THEME__/public_header" />
+<!--main-->
+<!--畅销榜单-->
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+            <a href="javascript:;" onclick="navClick(this,'me')" class="onactive">我的提问</a>
+            <a href="javascript:;" onclick="navClick(this,'question')">我的回答</a>
+           </div>
+        <!--问答内容-->
+        <ul class="user-wenda">
+            <!--提问循环-->
+
+            <!--回答循环-->
+        </ul>
+
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+        <script>
+            var type;
+            var p;
+            var url="{:U('classroom/Home/getwentilist')}";
+            $(function(){
+                type="me"
+                //异步加载我购买的课程
+                $.ajax({
+                    type:"POST",
+                    url:url,
+                    data:"p=1&type="+type,
+                    dataType:"json",
+                    success:function(data){
+                        appendHtml(data,type);
+                    }
+                });
+            });
+            //请求事件
+            function ajaxBang(url,type,callback){
+                $.ajax({
+                    type: "POST",
+                    url:url,
+                    data:"p="+p+"&type="+type,
+                    dataType:"json",
+                    success:function(data){
+                        appendHtml(data,type);
+                        callback && callback();
+                    }
+                });
+            }
+            //头部点击事件
+            function navClick(cate,type){
+
+                $(".user-wenda").html("");
+                type=type;
+                $("a").removeClass("onactive");
+                $(cate).addClass("onactive");
+                p=1;
+                ajaxBang(url,type);
+            }
+            //追加html
+            function appendHtml(data,type){
+                $(".more").remove();
+                if(data.data==""){
+                	if( type == 'me' ) {
+                		var text = '你还没有提问哦~';
+                	} else {
+                		var text = '你还没有回答哦~';
+                	}
+                    $(".user-wenda").append('<span>'+text+'</span>');
+                }else{
+                    $(".user-wenda").append(data.data);
+                }
+                if(data.nowPage+1>data.totalPages){
+                    return;
+                }else{
+                    var html="<div class=\"more\" ><a href=\"javascript:void(0)\" onclick='fallBang(this)' id=\""+type+"\" >查看更多</a></div>"
+                    $(".user-con").append(html);
+                    p=data.nowPage+1;//下一页
+                }
+            }
+
+            //点击查看更多事件
+            function fallBang(cate){
+                var rtype=$(cate).attr("id");
+              ajaxBang(url,rtype);
+            }
+
+
+
+
+        </script>
+<!--footer-->
+<include file="__THEME__/public_footer" />

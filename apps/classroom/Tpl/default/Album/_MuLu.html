@@ -1,0 +1,8 @@
+<dt></dt>
+<volist name="data" id="vo">
+<dd>
+	<div class="fr"><span>免费</span><a href="{:U('classroom/Album/watch','type=1&aid='.$vo['id'].'&vsum='.($key+1))}"></a></div>
+    <div class="fl"><span>课程{$key+1}</span>{$vo.video_title|msubstr=###,0,80}</div>
+    <i></i>
+</dd>
+</volist>

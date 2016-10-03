@@ -1,0 +1,52 @@
+<include file="__THEME__/admin_header" />
+<h1><span style="padding-left:50px;"><th>栏目名称:<a href="{:U('admin/base/addColumn',array('topid'=>0))}">添加一级栏目</a></th></span></h1>
+<div>
+	<br><br><br><hr>
+	<h1>
+			<tr>
+				<th>栏目名称</th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>|</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<th>栏目状态</th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>|</B>&nbsp;&nbsp;&nbsp;&nbsp;<th>栏目操作</th>
+			</tr>	
+	</h1>			
+	            <volist name="columns" id="column" key="m">	
+					<td><a href="javascript:void(0);" onclick="sonColumn({$column['typeid']},2)">查看子菜单</a>&nbsp;&nbsp;&nbsp;&nbsp;<B>|</B>&nbsp;&nbsp;&nbsp;&nbsp;{$column[name]}<td>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<if condition="$column['status'] eq 0">
+					      <td>审核中...</td>
+					<elseif condition="$column['status'] eq 1"/>
+					     <td>通过</td>
+				    <elseif condition="$column['status'] eq 2"/>
+					     <td>未通过</td>
+					</if>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td><a href="{:U('admin/base/addColumn',array('topid'=>$column['typeid'],'reid'=>$column['typeid']))}">添加子栏目</a>&nbsp;&nbsp;<B>|</B>&nbsp;&nbsp;<a href="{:U('admin/base/editColumn',array('id'=>$column['typeid']))}">编辑</a>&nbsp;&nbsp;<B>|</B>&nbsp;&nbsp;<a href="javascript:viod(0);" onclick="delColumn({$column['typeid']});">删除</a>&nbsp;&nbsp;<B>|</B>&nbsp;&nbsp;</td>
+					</br>
+					 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>
+					<span id="ajax_son"></span>
+		        </volist>
+		        </volist>
+</div>
+
+<include file="__THEME__/admin_footer"/>
+
+<script type="text/javascript"> 
+	//获取子栏目
+	function sonColumn(id,level){
+		$.post(U('admin/base/ajax_addColumn'),{"reid":id,"level":level},function(res){
+		  $("#ajax_son").replaceWith(res);
+	    });
+	}
+	
+	//获取子栏目
+	function delColumn(id){
+		if(confirm("确定要删除吗？")){
+			$.post(U('admin/base/ajax_delColumn'),{"id":id},function(res){
+			if(res==0){
+				ui.error("删除失败!");
+				return false;
+			}else{
+				ui.success("删除成功!");
+				location.reload();
+			}
+	      });
+	    }
+	}
+</script>

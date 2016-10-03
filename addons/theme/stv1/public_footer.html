@@ -1,0 +1,46 @@
+<!--footer-->
+<div class="footer">
+	<div class="wrap">
+    	<div class="footer-main">
+        	<div class="footer-logo">
+            	<a href="/" title="eduline"><img src="{$site.logo_foot}" class="logo-img"></a>
+                <ul class="logo-ul">
+                	<li class="l1"><a href="javascript:;"></a></li>
+                    <li class="l2"><a href="javascript:;"></a></li>
+                    <li class="l3"><a href="javascript:;"></a></li>
+                    <li class="l4"><a href="javascript:;"></a></li>
+                </ul>
+            </div>
+            <volist name="pageCategory" id="vo">
+            	<div class="footer-link">
+	            	<dl>
+	                	<dt>{$key}</dt>
+	                	<volist name="vo" id="v">
+	                		<dd><a target="_blank" <php>if($v['url']) {</php> href="{$v['url']}" <php>}else{</php> href="{:U('public/Single/info',array('id'=>$v['id']))}" <php>}</php> >{$v.title}</a></dd>
+	                	</volist>
+	                </dl>
+	            </div>
+            </volist>
+            
+        </div>
+    </div>
+    <div class="copyright">{$site['site_footer']}</div>
+</div>
+
+<!-- 统计代码-->
+<div id="site_analytics_code" style="display:none;">
+{$site.site_analytics_code|base64_decode}
+</div>
+<eq name='site.site_online_count' value='1'>
+<script src="{:SITE_URL}/online_check.php?uid={$mid}&uname={$user.uname}&mod={:MODULE_NAME}&app={:APP_NAME}&act={:ACTION_NAME}&action=trace"></script>
+</eq>
+
+
+<!--百度推广网页转化-->
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F9efa5e6b982a815a97700d8e78129b16' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</body>
+</html>

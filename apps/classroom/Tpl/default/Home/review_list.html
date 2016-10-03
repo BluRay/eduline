@@ -1,0 +1,24 @@
+<foreach name="data" item="l" key='k'>
+<li class="li" <php> if($k == 0) echo "style='padding:0 0 20px;'"</php>>
+    <div class="discusslist"><a target="_blank" title="Sunflower" class="otherHead"><img width="40" height="40" src="{:getUserFace($l['uid'],'m')}"></a>
+        <div class="detailmeg position-rt">
+            <div class="report">
+                <div class="mynote"><a title="Sunflower" class="mynote-title" href="{:U('classroom/Video/view',array('id'=>$l['oid']))}">源自：{$l.title}</a>
+                    <div class="reply-star">
+                        <label for="score" class="form-label fl f3">评分：</label>
+                        <ul class="star_ul fl">
+                            <li class="<if condition="$l['star'] GT 0 ">grade-back-set<else />grade-back-default</if>"></li>
+                            <li class="<if condition="$l['star'] GT 1 ">grade-back-set<else />grade-back-default</if>"></li>
+                            <li class="<if condition="$l['star'] GT 2 ">grade-back-set<else />grade-back-default</if>"></li>
+                            <li class="<if condition="$l['star'] GT 3 ">grade-back-set<else />grade-back-default</if>"></li>
+                            <li class="<if condition="$l['star'] GT 4 ">grade-back-set<else />grade-back-default</if>"></li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="mynote">{$l.review_description}</p>
+            </div>
+            <div class="fbtime">时间：<span>{$l.ctime|date="Y/m/d H:i",###}</span> <span class="js-qa-comment-support qa-comment-support  js-qacom-supported-user fr"><i class="qa-icon"></i><span>赞({$l.review_vote_count})</span></span> <span class="qa-total-reply fr"><i class="qa-icon"></i><span>{$l.qcount} 条评论</span></span> </div>
+        </div>
+    </div>
+</li>
+</foreach>

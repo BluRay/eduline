@@ -1,0 +1,16 @@
+<ul class="wenda-tab wenda-absolute">
+            <li ><a <php>if( !isset( $_GET['cid'] ) ){echo "class = 'active'";}</php>  href="{:U('//')}"><span>全部活动</span></a>
+            </li>
+            <php> foreach($category as $k=>$cate){ </php>
+            <li><a <eq name="k" value="$_GET['cid']"> class="active" </eq>href="{:U('//', array('cid'=>$k))}"><span>{$cate}</span></a>
+             
+           <php> } </php>
+              
+           </li>
+            </foreach>
+        </ul>
+
+        <!--read-->
+        
+
+

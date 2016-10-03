@@ -1,0 +1,60 @@
+<include file="__THEME__/admin_header"/>
+	<link rel="stylesheet" href="__THEME__/js/Jcrop/css/jquery.Jcrop.css" type="text/css" />
+	<link rel="stylesheet" href="__THEME__/js/Jcrop/demos/demo/demos.css" type="text/css" />
+	<script src="__THEME__/js/Jcrop/js/jquery.pack.js"></script>
+	<script src="__THEME__/js/Jcrop/js/jquery.Jcrop.pack.js"></script>
+	<div class="article">
+		<h1>图片上传</h1>
+		<form id="img_upload" method="post" action="{:U('admin/base/imageUpload')}" enctype="multipart/form-data">
+			<input type="file" name="img" onchange="img_upload();"/>
+			<input type="hidden" name="conid" value="{$conid}"/>
+		</form>
+	</div>
+	<div id="outer">
+	<div class="jcExample">
+	<div class="article">
+
+		<h1>图片剪切</h1>
+		<img src="{$img_url}" id="cropbox" width="{$width}" height="{$height}"/>
+		<form action="{:U('admin/base/doImageUpload')}" method="post" onsubmit="return checkCoords();">
+			<input type="hidden" id="x" name="x"/>
+			<input type="hidden" id="y" name="y"/>
+			<input type="hidden" id="w" name="w"/>
+			<input type="hidden" id="h" name="h"/>
+			<input type="hidden" name="conid" value="{$conid}"/>
+			<input type="hidden" name="img_url" value="{$img_url}"/>
+			<input type="hidden" name="path" value="{$path}"/>
+			<input type="submit" value="Crop Image"/>
+		</form>
+	</div>
+	</div>
+	</div>
+<include file="__THEME__/admin_footer"/>
+<script type="text/javascript">
+			$(function(){
+
+				$('#cropbox').Jcrop({
+					aspectRatio: 1,
+					onSelect: updateCoords
+				});
+
+			});
+
+			function updateCoords(c)
+			{
+				$('#x').val(c.x);
+				$('#y').val(c.y);
+				$('#w').val(c.w);
+				$('#h').val(c.h);
+			};
+
+			function checkCoords()
+			{
+				if (parseInt($('#x').val())) return true;
+				alert('Please select a crop region then press submit.');
+				return false;
+			};
+function img_upload(){
+	$("#img_upload").submit();
+}
+</script>

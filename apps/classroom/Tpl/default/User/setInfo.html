@@ -1,0 +1,663 @@
+
+<include file="__THEME__/public_header" />
+<!---选择地址弹出框-->
+<script>
+$(document).ready(function(){
+	$('div.user-con-title a:eq({:intval($_GET["tab"])})').click();
+  $("#user-shcool_select").click(function(){
+	 $(".user-fixdworap").css("display","block");
+  });
+});
+</script>
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+            <a href="javascript:void(0);" class="onactive" >基本信息</a>
+            <a href="javascript:void(0);">头像设置</a>
+            <a href="javascript:void(0);">修改密码</a>
+            <a href="javascript:void(0);">申请认证</a>
+            <a href="javascript:void(0);">帐号绑定</a>
+        </div>
+        <div class="user-Release" >
+                <style type="text/css">
+                    .modify_pe{ width:610px;height: auto; line-height:30px; position:relative; float:left; }
+                    .modify_pe input{position:absolute;top:0;left:0px;height:28px;border:1px solid #CCC;vertical-align:middle;padding:0 5px;color:#666; width:200px;}
+                    .modify_pe input:focus{border-color:#2388c0}
+                    .modify_pe a{color:#2388c0; margin-left:10px; vertical-align:middle}
+                    .modify_pe a.btn{position:absolute;top:0;left:210px;height:30px;padding:0 15px; line-height:30px;background:#2B92F9;color:#FFF;}
+                    .modify_pe a.btn:hover{background:#1981E8;}
+                    .modify_pe p{display:block;height:18px;position:absolute; text-indent:22px;line-height:18px;top:5px; left:330px; font-size:12px; color:#999999}
+                    .user-set-sz li p{ left:115px}
+                    .user-set-sz{ padding-left:130px}
+                    .user-set-sz .user-submit{ width:332px;margin-top:30px;}
+                    .select{ height:22px;}
+            </style>
+            	<div class=" Manage_all" id="basic_sets">
+            	<form action="" method="post" onsubmit="return false;">
+                <!-- start modify phone -->
+                <php>if($user['phone']):</php>
+                <div class="clearfix modify_phone" style="display:none">
+                	<span class="selected_title  fl">
+                       <em>*</em> 手机号：
+                    </span>
+                    <div class="modify_pe modify_pe fl">
+                    	<php>$phone = substr($user['phone'],0,3).'****'.substr( $user['phone'] , 7);</php>
+                    	<strong>{$phone}</strong><a href="javascript:;" type="code" step="1" class="btn" style="width:91px;text-align:center">获取验证码</a><p class="warn">手机号用于密码找回和重要信息接收</p>
+                    </div>
+                </div>
+                <div class="clearfix modify_phone" style="display:none">
+                	<span class="selected_title selected_title_a color_hui fl">
+                       <em>*</em> 验证码：
+                    </span>
+                    <div class="modify_pe fl"><input type="text" value="" class="user-width fl" style="padding:0; margin:0"/><a href="javascript:;" class="btn" type="submit" step="1">提交</a><span></span>
+                    </div>
+                </div>
+                <php>endif;</php>
+                <!-- 新号码 -->
+                <div class="clearfix modify_phone check" style="display:none">
+                	<span class="selected_title  fl">
+                       <em>*</em> 新手机号：
+                    </span>
+                    <div class="modify_pe fl"><input type="text" value="" class="user-tex border" /><a href="javascript:;" class="btn" type="code" step="2" style="width:91px;text-align:center">获取验证码</a><p>手机号用于密码找回和重要信息接收</p>
+                    </div>
+                </div>
+                <div class="clearfix  modify_phone check" style="display:none">
+                	<span class="selected_title fl">
+                       <em>*</em> 验证码：
+                    </span>
+                    <div class="modify_pe fl"><input type="text" value="" /><a href="javascript:;" class="btn" type="submit" step="2">提交</a><span></span>
+                    </div>
+                </div>
+				<!-- end modify phone -->
+                <!--基本信息-->
+                <ul class="user-set-sz">
+     <li>
+        <label class="label"><em>*</em> 登录帐号：</label>
+        <span  id="set_user_login">{$user.login}</span>
+      </li>
+       <li>
+        <label class="label"><em>*</em> 昵 称：</label>
+        <input name="uname" class="user-width" style="border: 1px solid #cce4f4;" type="text" placeholder="" value="{:strpos($user['uname'],'@')?'':$user['uname']}">
+      </li>
+       <li>
+        <label class="label"><em>*</em> 手机号码：</label>
+        <php>;$phone = $user['phone']?substr($user['phone'],0,3).'****'.substr( $user['phone'] , 7):'未设置'</php>
+        <div class="user-tex"><span>{$phone}</span></div><a id="modify_phone" href="javascript:;" class="user-btn">{$user['phone']?'修改':'设置'}</a>
+        <p style=" display:none"><em class="user-stop"></em>用于密码找回和重要信息接收</p>
+      </li>
+      <li class="modify_email">
+        <label class="label"><em>*</em> 常用邮箱：</label>
+        <div id="modify_pe_show" class="user-tex"><span>{$user.email}</span><a style="color:#65addd" href="javascript:;" {$user['mail_activate']?'':'type="activate"'}>{$user['mail_activate']?'已验证':'验证邮箱'}</a></div><a href="javascript:;" type="edit" class="user-btn">修改</a>
+        <div id="modify_pe_edit" style="display:none"><input class="user-tex" type="text" value="{$user.email}" old="{$user.email}" /><a href="javascript:;" class="user-btn" type="save">保存</a></div>
+        <p style=" display:none"><em class="user-stop"></em><span class="note">用于密码找回和重要信息接收</span></p>
+      </li>
+      <li>
+        <label class="label"><em>*</em> 性别：</label>
+        <input type="radio" value="1" name="sex" {$user['sex']==1?'checked':''}/>
+        <label>男&nbsp;&nbsp;&nbsp;</label>
+         <input type="radio" value="2" name="sex" {$user['sex']==2?'checked':''}/>
+        <label>女</label>
+      </li>
+      <li>
+        <label class="label"><em>*</em> 地区：</label>
+       {:W('Area',array('curPro'=>$user['province'],'curCity'=>$user['city'],'area'=>$user['area'],'city_names'=>$user['location'],'tpl'=>'zyCardArea'))}
+      </li>
+      <li>
+        <label class="label"><em>&nbsp;&nbsp;</em>职  业：</label>
+        <input class="user-width" name="profession" type="text" placeholder="" value="{$user['profession']}">
+      </li>
+      <li>
+        <label class="label"><em>&nbsp;&nbsp;</em>个人简介：</label>
+        <textarea id="" class="user-textarea" name="intro">{$user.intro}</textarea>
+      </li>
+    
+    <li>
+        <label class="label">&nbsp;</label>
+        <input  class="user-submit" type="submit"  onclick="setUserInfo(this)" value="保 存">
+      </li>
+      </ul>
+<script src="__THEME__/js/gjwjs/jquery.mzcategory.js" type="text/javascript"></script>
+<script type="text/javascript">
+function setUserInfo(a){
+	var form = $(a).parents('form');
+	var province = form.find('select#province option:selected').val();
+	var city     = form.find('select#city option:selected').val();
+	var uname    = form.find('input[name=uname]');
+	if(!$.trim(uname.val())){
+		notes('昵称必须要填写', 'failure');
+		uname.focus(); return false;
+	}
+	if(!/^[\u4E00-\u9FA5\w]{1,}$/.test(uname.val())){
+		notes('昵称仅支持中英文、数字、下划线', 'failure');
+		uname.focus(); return false;
+	}
+	if(province<=0||city<=0){
+		notes('请先选择地区', 'failure');
+		return false;
+	}
+	$.post(U('classroom/User/saveUser'), form.serialize(), function(data){
+		if(data.status){
+			notes('基本信息更改成功', 'success');
+			setTimeout('window.location.reload();', 2000);
+		}else{
+			notes(data.info, 'failure');
+		}
+	}, 'json');
+}
+</script>
+</form>
+            </div>
+            <!-- 头像设置 -->
+            <div class="mt50 plr20 Manage_all clearfix" style="width:520px;display:none">
+              {:W('Avatar',array('avatar'=>$user,'defaultImg'=>$user['avatar_big'],'theme'=>'zyAvatar'))}
+            </div>
+            <!-- 头像设置 -->
+            <!-- 修改密码 -->
+            <div class=" Manage_all" style="display:none;">
+            <form>
+            <p style=" height:50px; line-height:40px; font-size:12px; padding-left:140px">密码由字母，数字，符号组成，6-15个字符，区分大小写</p>
+            <ul class="user-set-sz">
+     <li>
+        <label class="label"><em>*</em> 原始密码：</label>
+        <input class="user-width" type="password" id="head_search" rel="请输入原密码" name="oldpassword">
+      </li>
+      <li>
+        <label class="label"><em>*</em> 新密码：</label>
+        <input class="user-width" type="password" id="head_search" rel="请输入新密码" name="password">
+      </li>
+      <li>
+        <label class="label"><em>*</em> 确认密码：</label>
+        <input class="user-width" type="password" id="head_search" rel="请输入确认密码" name="repassword">
+      </li>
+      <li>
+        <label class="label">&nbsp;</label>
+        <input  class="user-submit"  id="edit-password"  type="submit"  value="保 存">
+      </li>
+      </ul>
+       </form>
+            </div>
+            <!-- 修改密码结束 -->
+            <!--  申请认证 -->
+            <div class=" Manage_all" style="display:none;">
+            	<form id="renzhengform" method="post" action="" onsubmit="return false;">
+                <input type="hidden" name="vtype" value="{$verifyInfo['usergroup_id']}" id="vtype">
+                <ul class="user-set-sz">
+     <li>
+        <label class="label"><em>*</em> 当前状态：</label>
+        <span>{$status}</span>
+      </li>
+       <php>if($edit == 1 || !$verifyInfo){</php>
+       <li>
+        <label class="label"><em>*</em> 认证类型：</label>
+        <volist name='auType' id='rs'>
+        <input type="radio" value="{$rs.user_group_id}" name="usergroup_id" onclick='changeText({$rs.user_group_id})' class="usergroup_id" id="renzhenglx_{$rs.user_group_id}" <php>if(($verifyInfo['usergroup_id']=="" &&  $vo['user_group_id']==5) || $vo['user_group_id']==$verifyInfo['usergroup_id']){</php>checked="checked"<php>}</php> >
+        <label for="renzhenglx_{$rs.user_group_id}">&nbsp;{$rs.user_group_name}</label>
+         </volist>
+      </li>
+      <li>
+      <label class="label"><em>*</em> 认证分类：</label>
+      <select name="user_verified_category_id" id="user_verified_category_id">
+        <option value="0">请选择认证分类</option>
+        <volist name='verified_category' id='val'>
+            <option value="{$val.user_verified_category_id}">{$val.title}</option>
+        </volist>
+      </select>
+      </li>
+      <li>
+        <label class="label"><em>*</em> 真实姓名：</label>
+       <input type="text" class="user-width" name="realname" id="realname" <php>if($verifyInfo['verified'] !== ""){</php>value="{$verifyInfo['realname']}"<php>}</php> class="head_search upload_input_a" rel="真实姓名">
+      </li>
+       <li>
+        <label class="label"><em>*</em> 身份证号：</label>
+       <input type="text" class="user-width" name="idcard" id="idcard" <php>if($verifyInfo['verified'] !== ""){</php>value="{$verifyInfo['idcard']}"<php>}</php> class="head_search upload_input_a" rel="身份证号">
+      </li>
+		<li>
+        <label class="label"><em>&nbsp;&nbsp;</em>个人地址：</label>
+        <input name="address" class="user-width" id="address" <php>if($verifyInfo['verified'] !== ""){</php>value="{$verifyInfo['address']}"<php>}</php> class="head_search upload_input_a" rel="个人地址"/>
+      </li>
+      <li>
+        <label class="label"><em>*</em> 联系电话：</label>
+        <php>
+                        	if($verifyInfo['phone']){
+                            	$phone = $verifyInfo['phone'];
+                            }elseif($user['phone']){
+                            	$phone = $user['phone'];
+                            }else{
+                            	$phone = null;
+                            }
+                        </php>
+        <input class="user-width" <?php echo $phone?' readonly value="'.$phone.'"':'';?> type="text" name="phone" id="phone" rel="联系电话">
+      </li>
+      <li>
+        <label class="label"><em>*</em> 认证理由：</label>
+       <textarea id="reason" class="user-textarea" name="reason"><php>if($verifyInfo['verified'] !== ""){</php>{$verifyInfo['reason']|format}<php>}</php></textarea>
+      </li>
+      <li style="height:auto;">
+      <include file="../Public/_file_uoload_style" />
+		<label class="label"><em>*</em> 认证附件：</label>
+        <div class="user-tex">
+        {:W('Upload',array('attachIds'=>$verifyInfo['attachIds'], 'uploadType'=>'image', 'urlquery'=>'attach_type=feed_image&upload_type=image&thumb=1'))}
+        </div>
+       <p style="">认证本人手持身份证照片，证件所有信息清晰可见，手持证件人的五官清晰可见。教师认证必须上传教师资格证等其相关证明<a href="javacript:;" style="color:#2388c0; display:none">参考实例</a></p>
+      </li>
+      <li>
+        <label class="label">&nbsp;</label>
+        <input  class="user-submit" onclick="saveVerify();" type="submit" value="保 存">
+      </li>
+      </ul>
+                <php>}else{</php>
+
+         <li>
+        <label class="label"><em>*</em> 认证类型：</label>
+        <label> 
+        <volist name='auType' id='vo'>
+        <php>if($vo['user_group_id']==$verifyInfo['usergroup_id']){</php><label>{$vo.user_group_name}</label><php>}</php>
+        </volist></label>
+      </li>
+      <li>
+      <label class="label"><em>*</em> 认证分类：</label>
+      <volist name='verified_category' id='val'>
+      <?php 
+        if($val['user_verified_category_id']==$verifyInfo['user_verified_category_id']){ ?>
+        {$val.title}
+      <?php } ?>
+      </volist>
+      </li>
+       <li>
+        <label class="label"><em>*</em> 真实姓名：</label>
+       <label>{$verifyInfo['realname']}</label>
+      </li>
+       <li>
+        <label class="label"><em>*</em> 身份证号：</label>
+       <label>{$verifyInfo['idcard']}</label>
+      </li>
+	   <li>
+        <label class="label"><em>&nbsp;&nbsp;</em>个人地址：</label>
+        <label> {$verifyInfo['address']?:'无'}</label>
+      </li>
+       <li>
+        <label class="label"><em>*</em> 联系电话：</label>
+        <label>{$verifyInfo['phone']}</label>
+      </li>
+       <li>
+        <label class="label"><em>*</em> 认证理由：</label>
+        <label>{$verifyInfo['reason']}</label>
+      </li>
+       <li>
+        <label class="label"><em></em> 认证附件：</label>
+        <label><php>if($verifyInfo['attachment']){</php>{$verifyInfo['attachment']}<php>}else{</php>无<php>}</php></label>
+      </li>
+                <php>}</php>
+                </form>
+            </div>
+            <!--  申请认证 -->
+            <!-- 账号绑定 -->
+            <div class="pb40 plr40 clearfix Manage_all" style="display:none;">
+              <div class="mt30">
+                    <ul class="txt_bar_a">
+                       <?php if(isset($bindType['sina'])):$rs = $bindData[$bindType['sina']];?>
+                       <li>
+                           <div class="txt_bar_div">
+                               <span class="txt_bar_span1">新浪微博</span>
+                               <?php if($rs['isBind']):?>
+                               <a class="fr color_blue ml30" href="javascript:;" onclick="unbind('{$rs.name}','{$rs.type}','{$rs.addon}','{$rs.unbind_hook}');">解除绑定</a>
+                               <?php else:?>
+                               <a class="Share sel_w fr mt4" target="_blank" href="{:Addons::createAddonShow($rs['addon'],$rs['bind_hook'],array('type'=>$rs['type'],'do'=>'bind'))}">点击绑定</a>
+                               <?php endif;?>
+                           </div>
+                           <div class="mt10 Introduction">
+                               <p class="ml85 fb lh30">绑定新浪微博后，你可以：</p>
+                               <p class="ml85 lh30">快速找到已加入Eduline的好友，和他们一起学习 </p>
+                               <p class="ml85 lh30">邀请好友加入Eduline，和你一起学习</p>
+                           </div>
+                       </li>
+                       <?php endif;?>
+                       <?php if(isset($bindType['qzone'])):$rs = $bindData[$bindType['qzone']];?>
+                       <li>
+                           <div class="txt_bar_div">
+                           <span class="txt_bar_span2">腾讯QQ</span>
+                               <?php if($rs['isBind']):?>
+                               <a class="fr color_blue ml30" href="javascript:;" onclick="unbind('{$rs.name}','{$rs.type}','{$rs.addon}','{$rs.unbind_hook}');">解除绑定</a>
+                               <?php else:?>
+                               <a class="Share sel_w fr mt4" target="_blank" href="{:Addons::createAddonShow($rs['addon'],$rs['bind_hook'],array('type'=>$rs['type'],'do'=>'bind'))}">点击绑定</a>
+                               <?php endif;?>
+                           </div>
+                           <div class="Introduction">
+                               <p class="ml85 fb lh30">绑定QQ后，你可以：</p>
+                               <p class="ml85 lh30">快速找到已加入Eduline的好友，和他们一起学习</p>
+                               <p class="ml85 lh30">邀请好友加入Eduline，和你一起学习</p>
+                           </div>
+                       </li>
+                       <?php endif;?>
+                       <?php if(isset($bindType['renren'])):$rs = $bindData[$bindType['renren']];?>
+                       <li>
+                           <div class="txt_bar_div mt10">
+                           <span class="txt_bar_span3">人人网</span>
+                               <?php if($rs['isBind']):?>
+                               <a class="fr color_blue ml30" href="javascript:;" onclick="unbind('{$rs.name}','{$rs.type}','{$rs.addon}','{$rs.unbind_hook}');">解除绑定</a>
+                              <?php else:?>
+                               <a class="Share sel_w fr mt4" target="_blank" href="{:Addons::createAddonShow($rs['addon'],$rs['bind_hook'],array('type'=>$rs['type'],'do'=>'bind'))}">点击绑定</a>
+                               <?php endif;?>
+                           </div>
+                           <div class="Introduction">
+                               <p class="ml85 fb lh30">绑定人人网后，你可以：</p>
+                               <p class="ml85 lh30">快速找到已加入Eduline的好友，和他们一起学习</p>
+                               <p class="ml85 lh30">邀请好友加入Eduline，和你一起学习</p>
+                           </div>
+                       </li>
+                       <?php endif;?>
+                       <?php if(isset($bindType['weixin'])):$rs = $bindData[$bindType['weixin']];?>
+                       <li>
+                           <div class="txt_bar_div">
+                           <span class="txt_bar_span4">微信</span>
+                               <?php if($rs['isBind']):?>
+                               <a class="fr color_blue ml30" href="javascript:;" onclick="unbind('{$rs.name}','{$rs.type}','{$rs.addon}','{$rs.unbind_hook}');">解除绑定</a>
+                               <?php else:?>
+                               <a class="Share sel_w fr mt4" target="_blank" href="{:Addons::createAddonShow($rs['addon'],$rs['bind_hook'],array('type'=>$rs['type'],'do'=>'bind'))}">点击绑定</a>
+                               <?php endif;?>
+                           </div>
+                           <div class="Introduction">
+                               <p class="ml85 fb lh30">绑定微信后，你可以：</p>
+                               <p class="ml85 lh30">快速找到已加入Eduline的好友，和他们一起学习</p>
+                               <p class="ml85 lh30">邀请好友加入Eduline，和你一起学习</p>
+                           </div>
+                       </li>
+                       <?php endif;?>
+                    </ul>
+</div>
+            </div>
+            <!-- 账号绑定结束 -->
+        </div>
+
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+
+
+<script type="text/javascript">
+$(".user-con-title a").click(function(){
+	$(this).addClass("onactive").siblings().removeClass();
+	var index = $(this).index();
+	$(".Manage_all").hide().eq(index).show();
+});
+$('#modify_phone').click(function(){
+	$(this).parents('.Manage_all form').children().hide();
+	$('#basic_sets .modify_phone').hide().slice(0,2).show();
+});
+$('#basic_sets .modify_phone a').click(function(){
+	var _this = $(this);
+	if(_this.data('locked')) return;
+	_this.data('locked', true);
+
+	var type  = _this.attr('type');
+	var step  = _this.attr('step');
+	var span  = _this.next();
+	var input = _this.prev();
+	input.val($.trim(input.val()));
+	if(type == 'code'){
+		_this.text('正在发送');
+		if(_this.attr('step') == 2){
+			if(!input.val()){
+				span.removeClass().addClass('err').text('请先输入手机号');
+				input.focus(); _this.data('locked', false); return ;
+			}
+			var post = {phone:input.val()}
+		}else{
+			post = {}
+		}
+		$.post(U('classroom/User/sendCode'),post, function(data){
+			if(data == 'ok'){
+				span.removeClass().addClass('ok').text('短信验证码已发送至您的手机，请输入后继续');
+				var time = 90;
+				var _codesetInterval = setInterval(function(){
+					 if(time <= 0){
+						 _this.text('获取验证码').data('locked', false);
+						 clearInterval(_codesetInterval);
+					 }else{
+						 _this.text('重新获取( '+time+' )');
+						 time--;
+					 }
+				}, 1000);
+			}else{
+				span.removeClass().addClass('err').text(data);
+				_this.text('获取验证码').data('locked', false);
+			}
+		});
+	}else if(type == 'submit'){
+		span.removeClass().text('')
+		if(!input.val()){
+			 notes('请输入验证码','failure');	
+			input.focus();_this.data('locked', false);return;
+		}
+		var post = {code:input.val()};
+		if(_this.attr('step') == 2){
+			var input0 = _this.parents('.modify_phone').prev().find('input:first');
+			if(!input0.val()){
+				input0.next().next().removeClass()
+				 .addClass('err').text('请先输入手机号');
+				 _this.data('locked', false);
+				input0.focus(); return ;
+			}
+			post.phone = input0.val();
+		}
+		$.post(U('classroom/User/checkCode'),post,function(data){
+			if(data == 'ok'){
+				if(typeof post.phone == 'undefined'){
+					var box = $('#basic_sets .modify_phone').hide();
+					box.slice(0,2).hide(); box.slice(2,4).show();
+				}else{
+					span.addClass('ok').text('手机号已经成功更改');
+					setTimeout('window.location.reload()', 2000);
+				}
+			}else{
+				span.addClass('err').text(data);
+				_this.data('locked', false);
+			}
+		});
+	}
+});
+$('.modify_email a').click(function(){
+	var _this = $(this);
+	var type  = _this.attr('type');
+	if(type  == 'edit'){
+		$('#modify_pe_edit').show();
+		$('#modify_pe_show').hide();
+		_this.hide();
+		_this.siblings('p').find('span').text('用于密码找回和重要信息接收');
+	}else if(type == 'save'){
+		var input = _this.prev();
+		input.val($.trim(input.val()));
+		if(!input.val()||input.val().toLowerCase()
+		   ==input.attr('old').toLowerCase()){
+			$('#modify_pe_show').show();
+			_this.parent().hide().prev().show();
+			input.val(input.attr('old'));
+		}else if(!/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(input.val())){
+			notes('请输入正确的电子邮箱地址！', 'failure');return ;
+		}else{
+			$.post(U('classroom/User/setEmail'),{email:input.val()},function(data){
+				if(data == 'ok'){
+					notes('Email已经成功更改', 'success');
+					input.val(input.val()).attr('old', input.val());
+					_this.parent().hide().prev().show();
+					$('#modify_pe_show').show();
+					$('#modify_pe_show').find('a').text('验证邮箱')
+					.attr('type', 'activate').data('locked', false);
+					$('#modify_pe_show span').text(input.val());
+					$('#set_user_login').text(input.val());
+					_this.parent().siblings('p').find('span').text('用于密码找回和重要信息接收');
+				}else{
+					notes(data, 'failure');
+				}
+			});
+		}
+	}else if(type == 'activate'){
+		var _this = $(this);
+		if(_this.data('locked')){
+			return ;
+		}
+		_this.text('正在发送').data('locked', true);
+		$.post(U('classroom/User/sendEmailActivate'),function(data){
+			var span = _this.parent().siblings('p').find('span');
+			if(data == 'ok'){
+				notes('邮件已经发送成功！', 'success');
+				_this.text('发送成功');
+				span.removeClass().addClass('ok').text('激活邮件已发送，请登录邮箱点击链接进行验证');
+			}else{
+				notes(data, 'failure');
+				_this.text('重新发送').data('locked', false);
+				span.removeClass().addClass('err').text(data);
+			}
+		});
+	}
+});
+</script>
+
+<script>
+
+$('#renzhengform input:file').click(function(){
+	$('#renzhengform input:file').val('');
+});
+var setInfo3 = '{:U(APP_NAME."/".MODULE_NAME."/".ACTION_NAME, array("tab"=>3))}';
+var delverify = function(){
+	if(confirm('确定要注销认证吗？')){
+		$.post(U('public/Account/delverify'),{},function(txt){
+			if(txt == 1){
+				notes('注销成功', 'success');
+				setTimeout(function(){
+					window.location = setInfo3;
+				},'2000');
+			}else{
+				notes('注销失败', 'failure');
+			}
+		});
+	}
+};
+var saveVerify = function(){
+    var vtype = $('input.usergroup_id:checked').val();
+	  if(!vtype){
+		  notes('请选择认证类型', 'failure');
+		  return false;
+	  }
+    if($("#user_verified_category_id").val()==0){
+      notes('请选择认证分类', 'failure');
+      return false;
+    }
+    var company = $('#company').val();
+    var realname = $('#realname').val();
+    var idcard = $('#idcard').val();
+    var phone = $('#phone').val();
+    var reason = $('#reason').val();
+    var verifiedCategory = $('#verifiedCategory').val();
+    var attach_ids = $('#attach_ids').val();
+	  if(!/^[\u4E00-\u9FA5·]{2,}$/.test($.trim(realname))){
+		  notes('请输入正确的真实姓名', 'failure');
+		  return false;
+	  }
+	  if(!/^[\dxX]{15,18}$/.test(idcard)){
+		  notes('请输入正确的身份号码', 'failure');
+		  return false;
+	  }
+	  if(!/^[\d\-]{7,11}$/.test(phone)){
+		  notes('请输入联系电话', 'failure');
+		  return false;
+	  }
+	  if(!reason){
+		  notes('请输入认证理由', 'failure');
+		  return false;
+	  }
+	
+      var other_data_ids = $('#other_data_ids').val();
+
+      var data = $('#renzhengform').serialize();
+      $.post(U('public/Account/doAuthenticate'),data,function(msg){
+          if(msg == 1){
+            notes('申请成功，请等待审核', 'success');
+			setTimeout(function(){
+				window.location = setInfo3;
+			},'2000');
+          }else{
+            notes(msg, 'failure');
+			return false;
+          }
+		  
+      });
+    }
+</script>
+<script type="text/javascript">
+$('#edit-password').click(function(e){
+	var form = $(this).parents('form');
+	inputs = form.find('input:password');
+	if(!inputs.eq(0).val()){
+		notes('原密码必须输入', 'failure');
+		inputs.eq(0).focus();
+		return false;
+	}
+	if(inputs.eq(1).val().length < 6 || inputs.eq(1).val().length > 15){
+		notes('新密码为6-15个字符', 'failure');
+		inputs.eq(1).focus();
+		return false;
+	}
+	if(/^\d+$/.test(inputs.eq(1).val())){
+		notes('密码不能为纯数字', 'failure');
+		inputs.eq(1).focus();
+		return false;
+	}
+	if(inputs.eq(1).val() != inputs.eq(2).val()){
+		notes('密码输入不一致', 'failure');
+		inputs.eq(2).focus();
+		return false;
+	}
+	$.post(U('public/Account/doModifyPassword'), form.serialize(), function(data){
+		if(data.status){
+			form.find('input:password').val('');
+			notes(data.info, 'success');
+		}else{
+			notes(data.info, 'failure');
+		}
+	}, 'json');
+	return false;
+});
+
+var changeText = function(value){
+    $.post(U('admin/User/getVerifyCategory'),{value:value},function(data){
+		$('#user_verified_category_id').html(data);
+    });
+};
+</script>
+<script src="__THEME__/js/module.form.js"></script>
+<script>
+//取消新浪帐号绑定
+function unbind(name,type,addon,hooks){
+    if(confirm('确认要取消绑定'+name+'？')){
+        $.post( U('public/Widget/addonsRequest'),{addon:addon,hook:hooks,type:type},function(txt){
+            if(txt){
+                window.location = '{:U(APP_NAME."/".MODULE_NAME."/".ACTION_NAME, array("tab"=>4))}';
+            }
+        });
+    }
+}
+function setSync(sync,type){
+    if(sync=='unsync'){
+        if(!confirm('确认要取消同步么？')){
+            return false;
+        }
+        $.post( U('public/Widget/addonsRequest'),{addon:'Login',hook:'login_unbind_publish_weibo',type:type},function(txt){
+            if(txt){
+                window.location = '{:U(APP_NAME."/".MODULE_NAME."/".ACTION_NAME, array("tab"=>4))}';
+            }
+        });
+    }else{
+        $.post( U('public/Widget/addonsRequest'),{addon:'Login',hook:'login_ajax_bind_publish_weibo',type:type},function(txt){
+            if(txt){
+                window.location = '{:U(APP_NAME."/".MODULE_NAME."/".ACTION_NAME, array("tab"=>4))}';
+            }
+        });
+    }
+}
+</script>
+<include file="__THEME__/public_footer" />

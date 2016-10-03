@@ -1,0 +1,311 @@
+<include file="__THEME__/public_header" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+
+<script>
+window.onload=function()
+{
+ //公用库
+  higher_common();
+}
+$(function(){
+	$('#mznav_pillsul li').click(function(){
+		var dataid = $(this).attr('data-id');
+		
+		$('#mznav_pillsul li').removeClass('active');
+		$('#mznav_pillsul li a').removeClass('sel_l');
+		$('.mzcontent').css('display','none');
+		
+		$('#'+dataid).css('display','block');
+		$(this).addClass('active');
+		$(this).find('a').addClass('sel_l');
+	});	
+	
+	
+	//异步加载笔记
+	$('#btnfirstnew1').mzpagination({
+		url:U('classroom/Note/getlist'),
+		ispage:true,//是否分页
+		data:{
+			limit:12,
+			type:'new'
+		}
+	},function(d){
+		return createBiJiHtml(d);
+	});
+	
+	
+	$('#btnmorehelp1').mzpagination({
+		url:U('classroom/Note/getlist'),
+		ispage:true,//是否分页
+		data:{
+			limit:12,
+			type:'help'
+		}
+	},function(d){
+		return createBiJiHtml(d);
+	},function(fun){
+		bijiPageObj = fun;
+	});
+});
+
+//创建问题的html
+var createBiJiHtml = function(data){
+	var html = '';
+	$.each(data,function(i,k){
+		html += '<div class="ans_box_l w150 clearfix fl">';
+        html += '<p class="p_ans">';
+        html += '<a target="_bank" href="'+k.note_src+'">'+k.note_title+'</a>';
+        html += '</p>';
+        html += '<em class="ls">'+k.username+'</em>';
+        html += '<em class="gray ml15">'+k.strtime+'</em>';
+        html += '<hr class="das_l"></hr>';
+        html += '<p class="p_anss" style="white-space:normal;height:96px;">'+k.note_description+'<a target="_bank" href="'+k.note_src+'" class="ls">更多></a></p>';
+        html += '<em class="fr">同问['+k.note_help_count+']</em>';
+        html += '<em class="fr">评论['+k.note_comment_count+']</em>';
+        html += '</div>';
+	});
+	return html;
+};
+</script>
+
+<div class="clearfix main mt10">
+	<p class="h40 ft16">
+    	<a href="index.html">点播</a>&nbsp;>&nbsp;
+        <em class="ft12">公共课</em>&nbsp;>&nbsp;
+        <em class="ft12">考研英语大纲核心词汇1</em>&nbsp;>&nbsp;
+        <em class="ft12">笔记列表</em>
+    </p>
+    <div class="fl">
+        <div class="bg_f w626 p20 clearfix">
+            <h1 id="contentTitle">全部笔记</h1>
+            <div class="clearfix mt10 mb10">
+                <ul class="tabs nav_pills" id="mznav_pillsul">
+                    <li class="active" data-id="btnfirstnew">
+                        <a class="sel_l lh30" href="javascript:void 0;">最新动态</a>
+                    </li>
+                    <li data-id="btnmorehelp">
+                        <a class="lh30" href="javascript:;">
+                            最有帮助
+                        </a>
+                        <!--<a class="lh30" data-gaevent="note_list-help:v3.0.0.0:academy" href="/course/580/An-Introduction-to-Marketing/note/?ord=helpful">
+                            最有帮助
+                        </a>-->
+                    </li>
+                </ul>
+                <a class="sel_l fr lh30" href="{:U('classroom/Note/addnote','id='.$id.'&type='.$type)}">
+                    <span class="ride">
+                     写笔记
+                    </span>
+                </a>
+            </div>
+            <div id="btnfirstnew" class="mzcontent">
+            <div class="clearfix" id="btnfirstnew1">
+                
+            </div>
+            
+            </div>
+            <div id="btnmorehelp" class="mzcontent" style="display:none;">
+            <div class="clearfix"  id="btnmorehelp1">
+                <div class="ans_box_l w150 clearfix fl">
+                    <p class="p_ans">
+                        <a href="{:U('order/Index/notes')}">
+                           rere Week1(上)生活中的光学 原理以及猜测
+                        </a>
+                    </p>
+                    <em class="ls">liqian2</em>
+                    <em class="gray ml15">2小时前</em>
+                    <hr class="das_l"></hr>
+                    <p>
+                        现象1：爱因斯坦与梦露———视觉欺骗因斯坦与梦露因斯坦与梦露露因斯坦与梦露因斯坦与梦露因斯坦与梦露因
+                        <a href="{:U('order/Index/notes')}" class="ls">更多></a>
+                    </p>
+                    <em class="fr">有帮助[2]</em>
+                    <em class="fr">评论[4]</em>
+                </div>
+                <div class="ans_box_l w150 clearfix fl">
+                    <p class="p_ans">
+                        <a href="{:U('order/Index/notes')}">
+                            Week1(上)生活中的光学 原理以及猜测
+                        </a>
+                    </p>
+                    <em class="ls">liqian2</em>
+                    <em class="gray ml15">2小时前</em>
+                    <hr class="das_l"></hr>
+                    <p>
+                        现象1：爱因斯坦与梦露———视觉欺骗因斯坦与梦露因斯坦与梦露露因斯坦与梦露因斯坦与梦露因斯坦与梦露因
+                        <em class="ls">
+                            更多>
+                        </em>
+                    </p>
+                    <em class="fr">有帮助[2]</em>
+                    <em class="fr">评论[4]</em>
+                </div>
+                <div class="ans_box_l w150 clearfix fl">
+                    <p class="p_ans">
+                        <a href="{:U('order/Index/notes')}">
+                            Week1(上)生活中的光学 原理以及猜测
+                        </a>
+                    </p>
+                    <em class="ls">liqian2</em>
+                    <em class="gray ml15">2小时前</em>
+                    <hr class="das_l"></hr>
+                    <p>
+                        现象1：爱因斯坦与梦露———视觉欺骗因斯坦与梦露因斯坦与梦露露因斯坦与梦露因斯坦与梦露因斯坦与梦露因
+                        <a href="{:U('order/Index/notes')}" class="ls">更多></a>
+                    </p>
+                    <em class="fr">有帮助[2]</em>
+                    <em class="fr">评论[4]</em>
+                </div>
+                <div class="ans_box_l w150 clearfix fl">
+                    <p class="p_ans">
+                        <a href="{:U('order/Index/notes')}">
+                            Week1(上)生活中的光学 原理以及猜测
+                        </a>
+                    </p>
+                    <em class="ls">liqian2</em>
+                    <em class="gray ml15">2小时前</em>
+                    <hr class="das_l"></hr>
+                    <p>
+                        现象1：爱因斯坦与梦露———视觉欺骗因斯坦与梦露因斯坦与梦露露因斯坦与梦露因斯坦与梦露因斯坦与梦露因
+                        <a href="{:U('order/Index/notes')}" class="ls">更多></a>
+                    </p>
+                    <em class="fr">有帮助[2]</em>
+                    <em class="fr">评论[4]</em>
+                </div>
+                <div class="ans_box_l w150 clearfix fl">
+                    <p class="p_ans">
+                        <a href="{:U('order/Index/notes')}">
+                            Week1(上)生活中的光学 原理以及猜测
+                        </a>
+                    </p>
+                    <em class="ls">liqian2</em>
+                    <em class="gray ml15">2小时前</em>
+                    <hr class="das_l"></hr>
+                    <p>
+                        现象1：爱因斯坦与梦露———视觉欺骗因斯坦与梦露因斯坦与梦露露因斯坦与梦露因斯坦与梦露因斯坦与梦露因
+                        <a href="{:U('order/Index/notes')}" class="ls">更多></a>
+                    </p>
+                    <em class="fr">有帮助[2]</em>
+                    <em class="fr">评论[4]</em>
+                </div>
+                <div class="ans_box_l w150 clearfix fl">
+                    <p class="p_ans">
+                        <a href="{:U('order/Index/notes')}">
+                            Week1(上)生活中的光学 原理以及猜测
+                        </a>
+                    </p>
+                    <em class="ls">liqian2</em>
+                    <em class="gray ml15">2小时前</em>
+                    <hr class="das_l"></hr>
+                    <p>
+                        现象1：爱因斯坦与梦露———视觉欺骗因斯坦与梦露因斯坦与梦露露因斯坦与梦露因斯坦与梦露因斯坦与梦露因
+                        <a href="{:U('order/Index/notes')}" class="ls">更多></a>
+                    </p>
+                    <em class="fr">有帮助[2]</em>
+                    <em class="fr">评论[4]</em>
+                </div>
+                <div class="ans_box_l w150 clearfix fl">
+                    <p class="p_ans">
+                        <a href="{:U('order/Index/notes')}">
+                            Week1(上)生活中的光学 原理以及猜测
+                        </a>
+                    </p>
+                    <em class="ls">liqian2</em>
+                    <em class="gray ml15">2小时前</em>
+                    <hr class="das_l"></hr>
+                    <p>
+                        现象1：爱因斯坦与梦露———视觉欺骗因斯坦与梦露因斯坦与梦露露因斯坦与梦露因斯坦与梦露因斯坦与梦露因
+                        <a href="{:U('order/Index/notes')}" class="ls">更多></a>
+                    </p>
+                    <em class="fr">有帮助[2]</em>
+                    <em class="fr">评论[4]</em>
+                </div>
+                <div class="ans_box_l w150 clearfix fl">
+                    <p class="p_ans">
+                        <a href="{:U('order/Index/notes')}">
+                            Week1(上)生活中的光学 原理以及猜测
+                        </a>
+                    </p>
+                    <em class="ls">liqian2</em>
+                    <em class="gray ml15">2小时前</em>
+                    <hr class="das_l"></hr>
+                    <p>
+                        现象1：爱因斯坦与梦露———视觉欺骗因斯坦与梦露因斯坦与梦露露因斯坦与梦露因斯坦与梦露因斯坦与梦露因
+                        <a href="{:U('order/Index/notes')}" class="ls">更多></a>
+                    </p>
+                    <em class="fr">有帮助[2]</em>
+                    <em class="fr">评论[4]</em>
+                </div>
+                <div class="ans_box_l w150 clearfix fl">
+                    <p class="p_ans">
+                        <a href="{:U('order/Index/notes')}">
+                            Week1(上)生活中的光学 原理以及猜测
+                        </a>
+                    </p>
+                    <em class="ls">liqian2</em>
+                    <em class="gray ml15">2小时前</em>
+                    <hr class="das_l"></hr>
+                    <p>
+                        现象1：爱因斯坦与梦露———视觉欺骗因斯坦与梦露因斯坦与梦露露因斯坦与梦露因斯坦与梦露因斯坦与梦露因
+                        <a href="{:U('order/Index/notes')}" class="ls">更多></a>
+                    </p>
+                    <em class="fr">有帮助[2]</em>
+                    <em class="fr">评论[4]</em>
+                </div>
+            </div>
+            
+            </div>
+            
+            
+        </div>
+    </div>
+    <div class="ml70bfb">
+    	<php>
+        if($type == 1){
+        	$url = U('classroom/Video/view','id='.$id);
+        }else{
+        	$url = U('classroom/Album/view','id='.$id);
+       	}
+        </php>
+        <a class="side_back" href="{$url}" target="_blank">
+            <span class="side_back_arrow"><</span>
+            <if condition=" $type eq 1 ">课程<else />专辑</if>详情
+        </a>
+        <div class="bg_f side_course p20">
+            <a href="{$url}" target="_blank">
+                <img width="45" height="45" src="{$datainfo.uid|getUserFace=###,'m'}">
+            </a>
+            <h6 class="course_title">
+                <a href="{$url}" target="_blank">
+                    <span>{$datainfo.title}</span>
+                    <span>{$datainfo.category|getCategoryName=###,true}</span>
+                </a>
+            </h6>
+            <span class="mt20 mb10"> 
+                <em class="green_txt fl ft12">评分：</em>
+                <ul class="fl">
+                    <li class="<if condition=" $datainfo.score GT 0 ">star<else />star_down</if> fl">star</li> 
+                    <li class="<if condition=" $datainfo.score GT 1 ">star<else />star_down</if> fl">star</li>
+                    <li class="<if condition=" $datainfo.score GT 2 ">star<else />star_down</if> fl">star</li>
+                    <li class="<if condition=" $datainfo.score GT 3 ">star<else />star_down</if> fl">star</li>
+                    <li class="<if condition=" $datainfo.score GT 4 ">star<else />star_down</if> fl">star</li>                       
+                </ul>
+                <em class="green_txt fl ft12">{$datainfo.score}</em>
+                <p>（{$datainfo.comment_count}人评价）</p>
+            </span>
+            <p class="fl">时间：</p>
+            <p>{$datainfo.ctime|date="Y-m-d",###}</p>
+        </div>
+        
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

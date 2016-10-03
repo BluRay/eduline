@@ -1,0 +1,171 @@
+<include file="__THEME__/public_header" />
+<!--content start-->
+<div class="content">
+	<div class="wrap">
+    	<ul class="content-nav">
+    		<li class="active"><a href="javascript:;" onclick="cateBang(this,0)"><span>全部课程</span></a></li>
+    		<volist name="selCate" id="vo">
+	        	<li>
+	        		<a href="javascript:;" onclick="cateBang(this,{$vo.zy_video_category_id})">{$vo.title}</a>
+	        		<php>if($vo['childlist']){</php>
+			        	<div class="content-nav-child">
+			        		<foreach name="vo.childlist" item="li">
+		                    	<a href="javascript:;" id="sona" onclick="cateBang(this,{$li.zy_video_category_id})">{$li.title}</a>
+		                    </foreach>
+		        		</div>
+	        		<php>}</php>
+	        	</li>
+        	</volist>
+        </ul>
+        <div class="content-con">
+        	<ul class="content-lei">
+                <li class="active"><a href="javascript:;" id="video_default" onclick="order()">综合排序</a></li>
+                <li><a href="javascript:;" id="video_collect" class="up-default">销量</a></li>
+                <li><a href="javascript:;" id="video_score" class="up-default">评分</a></li>
+            </ul>
+            <ul class="ind-list"></ul>
+            <div class="pagebox">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var mid = "{$mid}";
+    //追加html
+    function appendHtml(data){
+        $(".more").remove();
+        if(data.data!=""){
+        $(".ind-list").append(data.data);
+        if(data.nowPage+1>data.totalPages){
+            return;
+        }else{
+            var html="<div class=\"more\" ><a href=\"javascript:void(0)\" id=\"getList\">查看更多</a></div>"
+            $(".ind-list").append(html);
+            p=data.nowPage+1;//下一页
+
+        }
+        }else{
+         $(".ind-list").append("<script>对不起，暂无此分类课程T_T<\/script>");
+        }
+    }
+    //页面加载完毕执行
+    $(function(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('classroom/Video/getList')}",
+            data:"p=1",
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+    });
+    
+    //综合排序
+   function order(){
+       $(".ind-list").html("");
+       $('#video_default').parent('li').addClass('active');
+       $("#video_collect").parent('li').removeClass('active');
+       $("#video_score").parent('li').removeClass('active');
+       orderBy="default";
+       p=1;
+       ajaxBang();
+   }
+    //销量点击事件
+    $("#video_collect").click(
+            function(){
+            	var _this = this;
+                $(".ind-list").html("");
+                var i_class = $(_this).attr('class');
+                //判断是否有背景
+                if( $(_this).parent('li').hasClass('active') ){
+                	//判断箭头状态
+                    if(i_class == "up-default"){
+                    	$(_this).removeClass("up-default").addClass("down-default");
+                        orderBy="saleasc";
+                    }else{
+                    	$(_this).removeClass("down-default").addClass("up-default");
+                        orderBy="saledesc";
+                    }
+                }else{
+                	$(_this).parent('li').addClass('active');
+                	$('#video_default').parent('li').removeClass('active');
+                	$('#video_score').parent('li').removeClass('active');
+                	if(i_class == "up-default"){
+                		$(_this).removeClass("up-default").addClass("down-default");
+                   		orderBy="saledesc";
+                    }else{
+                    	$(_this).removeClass("down-default").addClass("up-default");
+                   		orderBy="saleasc";
+                   	}
+                }
+                p = 1;
+                ajaxBang();
+            }
+    );
+    //评论点击事件
+    $("#video_score").click(
+    		function(){
+            	var _this = this;
+                $(".ind-list").html("");
+                var i_class = $(_this).attr('class');
+                //判断是否有背景
+                if( $(_this).parent('li').hasClass('active') ){
+                	//判断箭头状态
+                    if(i_class == "up-default"){
+                        orderBy="scoreasc";
+                    }else{
+                        orderBy="scoredesc";
+                    }
+                }else{
+                	$(_this).parent('li').addClass('active');
+                	$('#video_default').parent('li').removeClass('active');
+                	$('#video_collect').parent('li').removeClass('active');
+                	if(i_class == "up-default"){
+                   		orderBy="scoredesc";
+                    }else{
+                   		orderBy="scoreasc";
+                   	}
+                }
+                p = 1;
+                ajaxBang();
+            }
+    );
+
+     //查看更多点击事件
+    $("#getList").live("click",
+         function(){
+	         $(this).remove();
+	         ajaxBang();
+         }
+    );
+    //排序请求事件 TODO
+    function ajaxBang(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('classroom/Video/getList')}",
+            data:"p="+p+"&orderBy="+orderBy+"&cateId="+cateId+"&pType="+pType,
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+    }
+    //分类点击
+    function cateBang(cate,id){
+        $(".ind-list").html("");
+        $(cate).parent('li').addClass('active').siblings('li').removeClass('active');
+        cateId=id;
+        p=1;
+        ajaxBang();
+    }
+    //类型点击
+    function redBang(type){
+        $(".ind-list").html("");
+        pType=type;
+        p=1;
+        ajaxBang();
+    }
+
+</script>
+<include file="__THEME__/public_footer" />

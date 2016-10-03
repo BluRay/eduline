@@ -1,0 +1,161 @@
+<include file="__THEME__/public_header" />
+<!--content start-->
+<div class="banner" style="background:#2c3543 url(__THEME__/images/t3.png) center 0 no-repeat;">
+	<div class="wrap">
+    </div>
+</div>
+<!--content start-->
+<div class="content">
+	<div class="wrap">
+        <div class="content-con">
+        	<div class="content-top-list">
+            	<!-- 
+            	<dl>
+                	<dt>科目类型：</dt>
+                    <dd>
+                    	<a href="javascript:;" onclick="cateBang(this,0);" class="on">全部</a>
+                    	<volist name="subject_category" id="vo">
+		                	<a href="javascript:;" onclick="cateBang(this,{$vo.zy_subject_category_id});">{$vo.title}</a>
+		                </volist>
+                    </dd>
+                </dl>
+                 -->
+                <dl>
+                	<dt>教师性别：</dt>
+                    <dd>
+                    	<a href="javascript:;" onclick="sexBang(this,0);" class="on">全部</a>
+                        <a href="javascript:;" onclick="sexBang(this,1);">男</a>
+                        <a href="javascript:;" onclick="sexBang(this,2);">女</a>
+                    </dd>
+                </dl>
+                <dl>
+                	<dt>上课时间：</dt>
+                    <dd>
+                    	<a href="javascript:;"><input type="checkbox" id="checkbox" onclick="selectweek();">&nbsp;全部</a>
+	                    <volist name="teacher_schedule" id="vo">
+	                        <a href="javascript:;"><input type="checkbox" name="week" value="{$vo.id}" onclick="weekBang(this);">&nbsp;{$vo.title}</a>
+	                    </volist>
+                    </dd>
+                </dl>
+            </div>
+            <ul class="content-lei">
+                <li class="active"><a href="javascript:;"  onclick="sortBang(this,0);">综合排序</a></li>
+                <li><a href="javascript:;"  onclick="sortBang(this,1);">教龄</a></li>
+                <li><a href="javascript:;"  onclick="sortBang(this,2);">评论</a></li>
+            </ul>
+            <ul class="ind-teacher">
+            </ul>
+            <div class="pagebox">
+            </div>
+        </div>
+    </div>
+</div>
+ <script>
+    //页面加载完毕执行
+    $(function(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('classroom/Teacher/getList')}",
+            data:"p=1",
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+    });
+    //请求事件
+    function ajaxBang(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('classroom/Teacher/getList')}",
+            data:"p="+p+"&subject_category="+subject_category+"&sort_type="+sort_type+"&sex="+sex+"&reservation="+reservation,
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+    }
+    //追加html
+    function appendHtml(data){
+        $("#getList").remove();
+        $(".ind-teacher").append(data.data);
+        if(data.nowPage+1>data.totalPages){
+            return;
+        }else{
+            var html="<div class=\"more\" ><a href=\"javascript:void(0)\" id=\"getList\">查看更多</a></div>";
+            $(".content-con").append(html);
+            p=data.nowPage+1;//下一页
+        }
+    }
+    //查看更多点击事件
+    $("#getList").live("click",
+        function(){
+            ajaxBang();
+        }
+    );
+    function Bang(cate){
+        $(".ind-teacher").html("");
+        $(cate).addClass('on').siblings().removeClass('on');
+    }
+    //分类点击
+    function cateBang(cate,id){
+        $(".ind-teacher").html("");
+        Bang(cate);
+        subject_category=id;
+        p=1;
+        ajaxBang();
+    }
+    function sexBang(cate,id){
+        $(".ind-teacher").html("");
+        Bang(cate);
+        sex=id;
+        p=1;
+        ajaxBang();
+    }
+    function sortBang(cate,type){
+        $(".ind-teacher").html("");
+        $(cate).parent().addClass('active').siblings('li').removeClass('active');;
+        p=1;
+        sort_type=type;
+        ajaxBang();
+    }
+    function weekBang(){
+        $(".ind-teacher").html("");
+        var week = "";
+        $('input:checkbox[name=week]:checked').each(function(i){
+            if(0==i){
+            week = $(this).val();
+           }else{
+            week += (","+$(this).val());
+           }
+        });
+        p=1;
+        reservation=week;
+        ajaxBang();
+    }
+    function selectweek(){
+        if($("#checkbox").attr("checked")) {
+            $("input[type='checkbox']").each(function(){
+               $(this).attr("checked",true);
+            });
+            $(".ind-teacher").html("");
+            var week = "";
+            $('input:checkbox[name=week]:checked').each(function(i){
+                if(0==i){
+                week = $(this).val();
+               }else{
+                week += (","+$(this).val());
+               }
+            });
+            p=1;
+            reservation=week;
+            ajaxBang();
+        }else{
+            $("#checkbox").nextAll().css("checked","");
+            $("input[type='checkbox']").each(function(){
+               $(this).attr("checked",false);
+            });
+        }
+    }
+</script>
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,16 @@
+<foreach name="data" item="l" key="k">
+    <li  class="li" <php> if($k == 0) echo "style='padding:0 0 20px;'"</php>>
+        <div class="discusslist"> <a target="_blank" title="Sunflower" class="otherHead" ><img width="40" height="40" src="{:getUserFace($l['uid'],'m')}"></a>
+            <div class="detailmeg">
+                <div class="mynote"><a title="Sunflower">{:getUserName($l['uid'])}</a> <em>笔记:</em> <a title="Sunflower" href="{:U('classroom/Video/view',array('id'=>$l['oid']))}" target="_blank">{$l.note_title}</a>&nbsp;&nbsp;(<?php if($l["is_open"]==1){ ?>公开<?php }else{ ?><font style="color:#2388c0;">私密</font><?php } ?>)</div>
+                <p class="mynote"><a target="_blank" href="{:U('classroom/Video/view',array('id'=>$l['oid']))}">
+                    {:limitNumber($l['note_description'],150)} </a> </p>
+                <div class="fbtime">时间：
+                    <span>{$l.ctime|date="Y/m/d H:i",###}</span>
+                    <span class="js-qa-comment-support qa-comment-support  js-qacom-supported-user fr"><i class="qa-icon"></i><span>赞({$l.note_help_count})</span></span>
+                    <span class="qa-total-reply fr"><i class="qa-icon"></i><span>{$l.qcount}条评论</span></span>
+                </div>
+            </div>
+        </div>
+    </li>
+</foreach>

@@ -1,0 +1,88 @@
+<ul class="hd-list fl clearfix">
+<php> if(!empty($data)): </php>
+<volist name="data" id="vo">
+    <li><a href="{:U('event/Index/eventDetail', array('id'=>$vo['id'], 'uid'=>$vo['uid']))}" class="img"><img src="{$vo['cover']}"></a>
+    <div class="fr hd-list-r">
+        <h2><a href="{:U('event/Index/eventDetail', array('id'=>$vo['id'], 'uid'=>$vo['uid']))}">{$vo['title']}</a></h2>
+        <p>活动时间：{$vo['time']}</a></p>
+        <p>活动时间：{$vo['address']} {$vo['area']}</a></p>
+        <p class="fqr">发起人：{$vo['user_info']['space_link']}</p>
+        <p style="margin-top:10px;"><span class=" mr10"><?php if($vo['opts']['allow'] && $vo['uid'] == $mid) echo "待审人数（".$vo['verifyCount']."）";?><a href="{:U('event/Index/member',array('id'=>$vo['id'],'action'=>'join'))}">参加人数（{$vo['joinCount']}）</a> 关注人数（{$vo['attentionCount']}）</span> <span style="float:right">
+        <php> if( $vo['eTime']>time()){ </php>     
+          <php> if( $vo['follow'] ){ </php>
+          
+                    
+                         <php> if( $vo['canJoin'] ){ </php>
+                                 <span class="detail_joinIn_{$vo[id]}">                               
+
+                                <!-- 判断名额 -->
+              
+                                      <php> if( $vo['limitCount'] >0 ){ </php>
+                                      <a href="javascript:EventAction( {$vo['id']},{$vo['opts']['allow']},'joinIn',1)" class="joinStatus canjoin" rel="我要报名" norel="我要报名">我要报名</a>
+                                      <php> }else{ </php>
+                                              <a href="javascript:;" class="joinStatus nojoin" rel="名额已满" norel="名额已满">名额已满</a>
+                                      <php> } </php>  
+                                      
+                                 </span>     
+                                <!-- 判断名额结束 -->
+                        <php> }else if( false == $vo['admin'] ){ </php>
+                               <!-- 判断是否需要审核 -->
+                                 <span class="detail_joinIn_{$vo[id]}">
+
+                                          <?php if( $vo['opts']['allow'] == 1 && $vo['hasMember'] != 1){ ?>
+                                             <a href="javascript:EventDelAction( {$vo['id']},{$vo['opts']['allow']},'joinIn' ,1)" rel="取消申请" norel="等待审核" class="joinStatus nojoin">等待审核</a>
+                                          <?php }else if($GLOBALS['ts']['mid']){ ?>
+                                             <a  class="joinStatus nojoin" href="javascript:EventDelAction( {$vo['id']},null,'joinIn' ,1)"  rel="取消报名" norel="已报名">已报名</a>
+                                          <?php }else{ ?>
+
+                                     <a href="javascript:EventAction( {$vo['id']},{$vo['opts']['allow']},'joinIn',1)" class="joinStatus canjoin" rel="我要报名" norel="我要报名">我要报名</a>
+                                     <?php }?>
+                                  </span>        
+                               <!-- 判断是否需要审核结束 -->
+                        <php> } </php>        
+            
+          <php> } </php>
+    
+         
+           <php> }else{ </php>
+                    <span  class="joinStatus nojoin" style="cursor:default"  rel="活动结束" norel="活动结束">活动结束</span>
+         <php> } </php>
+                              
+
+         </span>
+        </p></div>
+        <?php if($vo['eTime']>time()){?>
+            <?php if( $vo['admin'] ){ ?>
+              <div class="admincp">
+                <a href="javascript:endEvent( '{$vo['id']}' )">提前结束</a>
+                <a href="javascript:location.href='{:U('/Index/edit',array('id'=>$vo['id']))}';">编辑活动</a>
+                <a href="javascript:delEvent( '{$vo['id']}' )">删除活动</a>
+              </div>  
+           <?php } ?> 
+         <?php } ?> 
+</li>
+</volist>
+<php> else: </php>
+<span class="activity_reminder" style="font-size:14px;">暂无此类活动</span>
+<php> endif; </php>
+</ul>
+
+
+
+
+
+<script>
+$('.joinStatus').mouseenter(function(){
+					$(this).html($(this).attr('rel'));
+			 }).mouseleave(function(){
+					$(this).html($(this).attr('norel'));
+             });
+
+
+</script>
+
+
+
+<div class="clearfix"></div>
+
+<div id="Pagination" class="page">{$html}</div>

@@ -1,0 +1,20 @@
+<volist name="data" id="vo">
+
+<div class="fl w340 plr30 bor_r pinterestitem">
+    <h3>{$vo.name}</h3>
+    <a class="dis_b mt30" href="{:U('classroom/Serial/video','video_id='.$vo['topdate']['video_id'].'&id='.$vo['topdate']['id'])}" target="_blank" style="width:340px;height:211px;overflow:hidden;">
+    	<img src="{$vo.topdate.attach|getImageUrlByAttachId=###}">
+    </a>
+    <div class="mt30">
+        <h3 class="hcs mb30">{$vo.topdate.title|msubstr=###,0,20}</h3>
+        <div class="clearfix">
+            <em class="fl">来源：{$vo.topdate.source|msubstr=###,0,18}</em>
+            <em class="fr">{$vo.ctime|date='Y-m-d',###}</em>
+        </div>
+        <p class="mt20" style="height:68px;overflow:hidden;">{$vo.topdate.description|msubstr=###,0,110}</p>
+        <a href="{:U('classroom/Serial/video','video_id='.$vo['topdate']['video_id'].'&id='.$vo['topdate']['id'])}" class="submit_btn sel_w" target="_blank">立即播放</a>
+    </div>
+    
+</div>
+
+</volist>

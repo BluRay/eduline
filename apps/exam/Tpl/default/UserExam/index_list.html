@@ -1,0 +1,36 @@
+<foreach name="listData" item="ld">
+<li style="width:95%; background-color:#f1f1f1;">
+	<div class="es-section testpaper-heading" style="margin-bottom:-40px;">
+	    <div class="testpaper-description">
+	      <p><strong>{$ld.exam_name}</strong> （第{$ld.user_exam_number}次考试）</p>
+	      <p>描述：{$ld.exam_describe}</p>
+	  	</div>
+		<div class="testpaper-metas">
+			<p>
+				<span style="margin-right:20px;">考试分类：{$ld.category_name}</span>
+				<span style="margin-right:20px;">考试所花时间：{$ld.user_total_date}</span>
+				<span style="margin-right:20px;">考试人数：{$ld.user_sum} 人</span>
+				<?php if($ld['exam_publish_result_flg']==1){ ?>
+				<span style="margin-right:20px;">考试排名：第 {$ld.user_rank} 名</span>
+				<?php }else{ ?>
+				<span style="margin-right:20px;">本次考试不显示排名</span>
+				<?php } ?>
+			</p>
+			<?php if($ld["exam_publish_result_tm_mode"]==0 || $ld["exam_publish_result_tm"]<=time()){ ?>
+			<p>
+				<span style="margin-right:20px;">发布状态：已发布</span>
+				<span style="margin-right:20px;">满分：{$ld.paper_point} 分</span>
+				<span style="margin-right:20px;">及格：{$ld.exam_passing_grade} 分</span>
+				<span style="margin-right:20px;">得分：{$ld.user_exam_score} 分</span>
+				<span style="margin-right:20px;">一共  题，对了 {$ld.user_right_count} 道题， 错了 {$ld.user_error_count} 道题</span>
+				<a class="btn" href="{:U('exam/UserExam/exam_info','exam_id='.$ld['user_exam'].'&paper_id='.$ld['user_paper'].'&user_exam_number='.$ld['user_exam_number'])}" target="_self">查看考试</a>
+			</p>
+			<?php }else{ ?>
+			<p>
+				<span style="margin-right:20px;">发布状态：本次考试在<?php echo date('Y-m-d H:i:s',$ld["exam_publish_result_tm"]); ?> 发布成绩</span>
+			</p>
+			<?php } ?>
+		</div>
+	</div>
+</li>
+</foreach>

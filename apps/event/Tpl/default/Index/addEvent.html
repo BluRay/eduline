@@ -1,0 +1,347 @@
+<include file="__THEME__/public_header" />
+<include file="__THEME__/editor" />
+<link rel="stylesheet" href="__APP__/event.css" type="text/css" media="screen" charset="utf-8" />
+<script type="text/javascript" src="__APP__/js/event.js"></script>
+<div class="worap back in-list">
+<div class="in-mina-title blue1 border-down1">填写基本信息</div>
+
+<div class="groupBox">
+
+          <div class="box1">
+
+            <form method="post" action="{:U('event/Index/doAddEvent')}" onsubmit="return funcheck();" enctype="multipart/form-data" model-node='event_post' style=" position:relative">
+
+              <dl class="base_info">
+
+                <dd>
+
+                  <label><span class="txt_impt">*</span>活动名称</label>
+
+                  <div class="c2">
+
+                    <input name="title" type="text" class="text w1" id="title"  size="60" value="{$title}" placeholder="请输入活动标题"/>
+
+                  </div>
+
+                  <div class="c"></div>
+
+                </dd>
+
+                <dd>
+
+                  <label><span class="txt_impt">*</span>活动地点</label>
+
+                  <div class="c2">
+
+                    <input type="hidden" id="current" />
+
+                    <input type="text" name="city" value="{$city}" class="text w3 tbox1"  size="30" id="selectarea" readonly placeholder="选择城市" onclick="selectArea()"/>
+
+                    <input type="text" name="address" value="{$address}" class="text w2 wr"  size="30" id="address"  placeholder="填写详细地址"/>
+
+                  </div>
+
+                  <div class="c"></div>
+
+                </dd>
+
+                <dd>
+
+                  <label><span class="txt_impt">*</span>活动时间</label>
+
+                  <div class="c2">
+
+                    <input name="sTime" type="text" class="text w3 tbox2" id="sTime"  onFocus="core.rcalendar(this,'full');" value="" readonly placeholder="开始时间"/>
+
+                   <span class="lineIcon">-</span>
+
+                    <input name="eTime" type="text" class="text w3 tbox2 wr" id="eTime"  onFocus="core.rcalendar(this,'full');" value="" readonly placeholder="结束时间" style="float: right;"/>
+
+                  </div>
+
+                  <div class="c"></div>
+
+                </dd>                
+
+                <dd>
+
+                  <label><span class="txt_impt">*</span>活动分类</label>
+
+                  <div class="c2">
+                      <span class="seltctBox2 tbox6">
+                            <select name="type" id="type" class="w0 tbox3 select1">
+
+                              <option value="0">请选择活动分类</option>
+
+                              <?php foreach($category as $k=>$cate){ ?>
+
+                              <option value="{$k}"
+
+                              <php>if( $cate === $type ) {echo "selected";}</php>
+
+                              >{$cate}
+
+                              </option>
+
+                              <?php } ?>
+
+                            </select>
+                      </span>
+                  </div>
+
+                  <div class="c"></div>
+
+                </dd>
+
+                <dd class="d2">
+
+                  <label><span class="txt_impt">*</span>活动海报</label>
+
+                  <div class="c2">
+
+                  <img src="__ROOT__/apps/event/_static/images/hdfm.png" id="cover_yulan"/>
+
+                  <div class="r">
+
+                  	<input type="file" name="cover" id="cover" class="b"  placeholder="" onchange="handleFiles(this)">
+
+                    <input name="old_cover" type="hidden" value='{$coverId}'>
+
+                    <p style="height:108px;">图片小于500k（jpg、gif、png、bmp）推荐尺寸944*560<br />px的图片！</p>
+                 
+                  	<p>
+
+                    温馨提示：一张漂亮的海报，会起到意想不到的效果，它会<br />
+
+                    让你的活动显得更加有吸引力，更有品质;<br />
+
+                    这将会为您的活动带来更多的用户报名哦！
+
+                    </p>
+
+                  </div>
+
+                  </div>
+
+                  <div class="c"></div>
+
+                </dd>
+
+                <dd class="d3" style="height:auto;">
+
+                  <label>活动详情</label>
+
+                  <div class="c2">
+
+                    <!-- <textarea id="explain" name="explain" style="width:100%; height:350px;">{$explain}</textarea> -->
+
+                    {:W('Editor',array('contentName'=>'explain','value'=>$explain,'heigth'=>'400'))}
+
+                  </div>
+
+                  <div class="c"></div>
+
+                </dd>
+
+                
+<div class="in-mina-title blue1 border-down1 title2" style="left:0px">活动详细设置</div>
+                <dd style="margin-top:90px;">
+
+                  <label> 活动经费</label>
+
+                  <div class="c2">
+                    <span class="selectBox tbox5">
+                        <select name="cost" id="cost" class="select1 w6 tbox4">
+                         <!--<select name="cost" id="cost" class="select1 tbox4">-->
+
+                          <option value="0">免费</option>
+
+                          <option value="1">AA制</option>
+
+                          <option value="2">50元以下</option>
+
+                          <option value="3">50-200元</option>
+
+                          <option value="4">200-500元</option>
+
+                          <option value="5">500-1000元</option>
+
+                          <option value="6">1000元以上</option>
+
+                        </select>
+                    </span>
+                    <script type="text/javascript" charset="utf-8">
+
+                    $( "#cost option[value='{$cost}']" ).attr( 'selected',true );
+
+                    </script>
+
+                    <input name="costExplain" type="text" class="text w2 wr" id="textfield2"  size="30" value="{$costExplain}" placeholder="资费说明"/>
+
+                  </div>
+
+                  <div class="c"></div>
+
+                </dd>             
+
+                
+
+                <dd>
+
+                  <label><span class="txt_impt">*</span>报名截止</label>
+
+                  <div class="c2">
+
+                    <input name="deadline" type="text" class="text w3 tbox2"  onFocus="rcalendar(this,'full');" id="deadline"  value="" readonly placeholder="活动报名截止时间" />
+
+                  </div>
+
+                  <div class="c"></div>
+
+                </dd>
+
+                
+
+                <dd>
+
+                  <label><span class="txt_impt">*</span>活动人数</label>
+
+                  <div class="c2">
+
+                    <input name="limitCount" type="text" class="text w1" id="limitCount"  size="5" value="" onKeyUp="this.value=this.value.replace(/\D/g,'')" placeholder="活动人数上限，设0表示无限制"/>
+
+                     </div>
+
+                    <div class="c"></div>
+
+                </dd>
+
+                
+
+                <dd>
+
+                  <label>联系方式</label>
+
+                  <div class="c2">
+
+                    <input name="contact" type="text" class="text w1" id="textfield3"  size="30" value="{$contact}" placeholder="填写联系人电话，如：张小姐，1346665XXXX" />
+
+                    <br />
+
+                </dd>
+
+                <?php 
+
+                $allow = "";
+
+                $friend = "";
+
+                  if( $opts['allow'] ){
+
+                    $allow = "checked";
+
+                  }
+
+                  if( $opts['friend'] ){
+
+                    $friend = "checked";
+
+                  }
+
+                ?>
+
+                <dd class="d4">
+
+                  <label>报名设置</label>
+
+                  <div class="c2">
+
+                    <div class="itm">
+
+                      <input type="checkbox" name="friend" id="choice1" value="1" {$friend}/>
+
+                      只允许我关注的人参加该活动</div>
+
+                    <div class="itm">
+
+                      <input type="checkbox" name="allow" id="choice2" value="1" {$allow}/>
+
+                      活动参加人员需要审批</div>
+
+                  </div>
+
+                </dd>
+
+                <!-- <li>
+
+                <div class="c1">将图片上传到：</div> 
+
+                   <div class="c2">
+
+                {:W('AlbumList',array( 'uid'=>$mid , 'form_name'=>'albumId' , 'selected'=>intval($_GET['albumId']) ) )}
+
+                </div>
+
+              </li> -->
+
+                <dd>
+
+                  <label>&nbsp;</label>
+
+                  <div class="c2">
+
+                    <input type="hidden" name="id" value="{$id}">
+
+                    <input type="hidden" name="optsId" value="{$optsId}">
+
+                    <input event-node="submit_btn" name="button" type="submit" class="btn_b" id="button" value="发起活动" />
+
+                  </div>
+
+                </dd>
+
+              </dl>
+
+            </form>
+
+          </div>
+
+          <div class="c"></div>
+
+        </div>
+
+
+
+</div>
+
+<!--HTML5 图片预览 -->
+<script>
+	window.URL = window.URL || window.webkitURL;
+	var fileElem = document.getElementById("cover");
+	function handleFiles(obj) {
+		var files = obj.files,
+			img = new Image();
+		if(window.URL){
+			$('#cover_yulan').attr('src',window.URL.createObjectURL(files[0]))
+		}else if(window.FileReader){
+			//opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+			var reader = new FileReader();
+			
+			$('#cover_yulan').attr('src',this.result)
+			
+		}else{
+			//ie
+			obj.select();
+			obj.blur();
+			var nfile = document.selection.createRange().text;
+			document.selection.empty();
+			img.src = nfile;
+			$('#cover_yulan').attr('src',nfile)
+			
+			//fileList.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='image',src='"+nfile+"')";
+		}
+	}
+</script>
+
+
+<include file="__THEME__/footer" />

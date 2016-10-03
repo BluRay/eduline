@@ -1,0 +1,91 @@
+<include file="__THEME__/public_header" />
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+            <a href="javascript:;" type="getWenda" class="onactive">我的问题</a>
+            <a href="javascript:;" type="getAnswer" >我的回答</a>
+        <!--问答内容-->
+        </div>
+        <ul class="user-wenda" style="padding-top:20px;"></ul>
+        <div class="more" style="display:none;"><a id="getWenda" page="0" href="javascript:void(0)">查看更多</a></div>
+    </div>
+    
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+        <script>
+            $(function(){
+                //异步加载我的问题
+                var url="{:U('classroom/Home/getWenda')}";
+                $.ajax({
+                    type:"POST",
+                    url:url,
+                    dataType:"json",
+                    success:function(data){
+                        appendHtml(data);
+                    }
+                });
+              //点击查看更多事件
+                $(".more").click(function(){
+                    var page = $(this).find('a').attr('page');
+                    var type = $(".user-con-title a[class='onactive']").attr('type');
+                    $.post("{:U('classroom/Home/"+type+"')}",{page:page},function(data){
+                        appendHtml(data,type);
+                    },'json');
+                });
+                //头部点击
+                $(".user-con-title a").click(function(){
+                    $(".more").hide();
+                    var page = 0;
+                    $(".user-wenda").html("");
+                    $("a").removeClass("onactive");
+                    $(this).addClass("onactive");
+                    var type = $(this).attr('type');
+                    console.log(type);
+                    $.post("{:U('classroom/Home/"+type+"')}",{page:page},function(data){
+                        appendHtml(data,type);
+                    },'json');
+                });
+                
+                
+            });
+            //追加html
+            function appendHtml(data,type){
+                if(data.data=="" || data.data.html==""){
+                	if( type == 'getWenda' ) {
+                		var text = '你还没有发布问题哦~';
+                	} else {
+                		var text = '你还没有回答哦~';
+                	}
+                    $(".user-wenda").append("<span>"+text+"</span>");
+                }else{
+                    $(".user-wenda").append(data.data.html);
+                    $(".more a").attr("page",data.data.page);
+                    if(data.data.page == 0){
+                        $("body").data('count',data.data.count);
+                    }
+                    if(data.data.count > $(".user-wenda li").size()){
+                        $(".more").show();
+                    }else{
+                    	$(".more").hide();
+                    }
+                }
+            }
+
+            //删除问答
+            function delWenda(id){
+            var id=id;
+           $.post("{:U('wenda/Index/delWenda')}", {id:id}, function(res){
+                   if(res==200){
+                       location.reload();
+                   }else{
+                       notes('对不起，删除失败请重试!','failure');
+                   }
+                });
+            }
+        </script>
+<!--footer-->
+<include file="__THEME__/public_footer" />

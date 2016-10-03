@@ -1,0 +1,105 @@
+<include file="__THEME__/public_header" />
+
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+            <a <?php echo $type!='follower'?' class="onactive"':''?> href="{:U('classroom/User/fans', array('type'=> 'following'))}">关注（{$count['following']}）</a>
+            <a <?php echo $type=='follower'?' class="onactive"':''?> href="{:U('classroom/User/fans', array('type'=>'follower'))}">粉丝（{$count['follower']}）</a>
+        </div>
+        <!--下面这个盒子user-Release 内容都要被替换-->
+        <div class="user-Release" >
+            <?php if($type != 'follower'):?>
+            <div class=" clearfix Manage_all" style="display:block">
+            	<?php if($count['following']<=0):?>
+            	<p class=" ">暂时还没有关注他人</p>
+                <p class=" ">去<em class="green_txt ft20">邀请好友</em>页面和朋友们打个招呼吧~</p>
+                <?php else:?>
+                <div class="clearfix">
+                	<?php foreach($data['data'] as $i=>$rs):?>
+            		<div class="box_block">
+                        <img src="{$rs['user']['avatar_middle']}"width="90" height="90">
+                        <div class="clearfix " style="width:570px; float:right;">
+                            <a class="daren_name_a fl " href="javascript:;"{:empty($rs['user']['user_group'])?' style="background:none;"':''}>{$rs['user']['uname']}</a>
+                            <div class="box_gf fr" style="width:105px; text-align:center;float:right;">
+                                <a href="javascript:;">{$followState[$rs['fid']]['follower']==1?'相互关注':'已关注'}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="green_txt" href="javascript:;" onclick="setFollow({$rs['fid']}, false)">取消</a>
+                            </div>  
+                            <p  style="width:570px; float:right;">{:mb_substr($rs['user']['intro'], 0, 60, 'utf-8');}</p>                  
+                        </div>                        
+                        
+                	</div>
+                    <?php endforeach;?>
+                    <div class="follow_page">共关注{$data.totalRows}人{$data.html}</div>
+            	</div>
+                <?php endif;?>
+            </div>
+            <?php else:?>
+            <div class="clearfix Manage_all" style="display:block">
+            	<?php if($count['follower']<=0):?>
+            	<p class="">暂时还没有被他人关注</p>
+                <p class="">快告诉朋友<em class="green_txt">求粉丝</em>~</p>
+                <?php else:?>
+                <div class="clearfix">
+                	<?php foreach($data['data'] as $i=>$rs):?>
+            		<div class="box_block">
+                        <img src="{$rs['user']['avatar_middle']}" width="90" height="90">
+                        <div class="clearfix " style="width:570px; float:right;">
+                            <a class="daren_name_a fl" href="javascript:;"{:empty($rs['user']['user_group'])?' style="background:none;"':''}>{$rs['user']['uname']}</a>
+                            <?php if($followState[$rs['fid']]['following']==1):?>
+                            <div class="box_gf fr" style="width:105px; text-align:center;float:right;">
+                                <a href="javascript:;">相互关注</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="green_txt" href="javascript:;" onclick="setFollow({$rs['fid']}, false)">取消</a>
+                            </div>
+                            <?php else:?>
+                            <div class="box_gf" style="width:40px;float:right;">
+                                <a class="green_txt" href="javascript:;" onclick="setFollow({$rs['fid']}, true)">+关注</a>
+                            </div>
+                            <?php endif;?>
+                             <p  style="width:570px; float:right;">{:mb_substr($rs['user']['intro'], 0, 60, 'utf-8');}</p>
+                        </div>                        
+                       
+                	</div>
+                    <?php endforeach;?>
+                    <div class="follow_page">共{$data.totalRows}个粉丝{$data.html}</div>
+            	</div>
+                <?php endif;?>
+            </div> 
+            <?php endif;?>
+        </div>
+		<!--关注页面---------------
+        <div class="user-gz-box">
+        <p>暂时还没有关注他人 </p>
+        <p>去邀请好友页面和朋友们打个招呼吧~</p>
+      <ul>
+        <li class="user-gz"><img src="../image/img/th2.jpg"  class="img fl">
+          <div class="user-gzcon-box">
+            <h2><a href="#">zhuyudong@higher-edu.cn</a></h2>
+            <p>账户信息或这非法所得故更好反感很反感账户信息或这非法所得故更好反感很反感</p>
+          </div>
+          <a href="#" class="gz-submit fr">+ 关注</a></li>
+    </ul>
+    <div class="p fl">共1个粉丝</div>
+    </div>
+        -->
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+
+<script type="text/javascript">
+function setFollow(uid, follow){
+	action = follow?'doFollow':'unFollow';
+	$.post(U('public/Follow/'+action), {fid:uid}, function(data){
+		if(data.status){
+			notes('操作成功', 'success');
+			setTimeout('window.location.reload()', 1500);
+		}else{
+			notes('操作失败', 'failure');
+		}
+	}, 'json');
+}
+
+</script>
+
+<include file="__THEME__/public_footer" />

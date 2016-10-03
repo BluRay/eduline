@@ -1,0 +1,33 @@
+<div class="user-nav">
+    <h2>管理</h2>
+    <dl>
+        <dt id="dshow"><a href="javascript:;" onclick="magbtn(this)">内容管理</a></dt>
+        <dd <php>if(ACTION_NAME=="video"){echo "class='hover'";}</php>><a href="{:U('classroom/Home/video')}">课程</a></dd>
+        <dd <php>if(ACTION_NAME=="album"){echo "class='hover'";}</php>><a href="{:U('classroom/Home/album')}">专辑</a></dd>
+        <dd <php>if(ACTION_NAME=="course"){echo "class='hover'";}</php>><a href="{:U('classroom/Home/course')}">约课</a></dd>
+        <dd <php>if(ACTION_NAME=="wenda"){echo "class='hover'";}</php>><a href="{:U('classroom/Home/wenda')}">问答</a></dd>
+        <dd <php>if(ACTION_NAME=="wenti"){echo "class='hover'";}</php>><a href="{:U('classroom/Home/wenti')}">提问</a></dd>
+        <dd <php>if(ACTION_NAME=="review"){echo "class='hover'";}</php>><a href="{:U('classroom/Home/review')}">点评</a></dd>
+        <dd <php>if(ACTION_NAME=="note"){echo "class='hover'";}</php>><a href="{:U('classroom/Home/note')}">笔记</a></dd>
+        <php>if($GLOBALS['ts']['teacher'] == 1){</php>
+        <dd <php>if(ACTION_NAME=="teacher_course"){echo "class='hover'";}</php> ><a href="{:U('classroom/Home/teacher_course')}">我的授课</a>
+        <dd <php>if(ACTION_NAME=="teacherVideo"){echo "class='hover'";}</php> ><a href="{:U('classroom/User/teacherVideo')}">我上传的课程</a>
+        <php>}</php>
+    </dl>
+    
+    <dl>
+        <dt id="dshow"><a href="javascript:;" onclick="magbtn(this)">财富管理</a></dt>
+        <dd <php>if(ACTION_NAME=="recharge"){echo "class='hover'";}</php> ><a href="{:U('classroom/User/recharge')}">充值</a></dd>
+        <dd <php>if(ACTION_NAME=="account"){echo "class='hover'";}</php> ><a href="{:U('classroom/User/account')}">余额</a></dd>
+        <dd <php>if(ACTION_NAME=="card"){echo "class='hover'";}</php> ><a href="{:U('classroom/User/card')}">绑定银行卡</a></dd>
+    </dl>
+
+    <dl>
+        <dt id="dshow"><a href="javascript:;" onclick="magbtn(this)">账户管理</a></dt>
+        <dd <php>if(ACTION_NAME=="setInfo"){echo "class='hover'";}</php> ><a href="{:U('classroom/User/setInfo')}">账户设置</a></dd>
+        <php>if($GLOBALS['ts']['teacher'] == 1){</php>
+        <dd <php>if(ACTION_NAME=="teachcourse"){echo "class='hover'";}</php> ><a href="{:U('classroom/User/teachcourse')}">授课课程设置</a>
+        <dd <php>if(ACTION_NAME=="teacherDeatil"){echo "class='hover'";}</php> ><a href="{:U('classroom/User/teacherDeatil')}">教师信息设置</a>
+        <php>}</php>
+    </dl>
+</div>

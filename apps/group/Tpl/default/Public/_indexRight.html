@@ -1,0 +1,21 @@
+<ul class="wenda-tab wenda-absolute">
+ <li><a href="{:U('group/Index/index')}" <php>if(!$_GET['cid0']){</php>class="active" <php>}</php>>全部小组</a></li>
+       <volist name="catelist" id="cate">
+             <li><a href="{:U('group/Index/index',array('cid0'=>$cate['id']))}" <php>if($_GET['cid0']==$cate['id']){</php>class="active" <php>}</php>>{$cate.title}</a></li>
+        </volist>
+ <li><a href="javascript:;" onclick="addXiaozu()" target="_blank"><div class="sk_btn1">+申请小组</div></a></li>
+</ul>
+
+<script>
+    function addXiaozu(){
+        if(MID=='0'){
+            reg_login();
+            return;
+        }
+        window.location="{:U('group/Index/add')}";
+    }
+
+
+</script>
+
+

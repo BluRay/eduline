@@ -1,0 +1,28 @@
+
+<foreach name="data" item="l">
+<li class="li position-rt">
+          <div class="width">
+            <div class="li-fl">
+            <a href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}">
+            <img src="{:getUserFace($l['uid'],'m')}"/></a></div>
+            <div class="li-fr">
+              <div class="reply-star clearfix">
+                <label class="form-label  fl f3" for="score"><a href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}" class="f3">{$l.uname}</a> <span class=" f9">的笔记</span></label>
+              </div>
+              <a <eq name="l['type']" value="2"> href="{:U('classroom/Album/view',array('id'=>$oid))}"<else /> href="{:U('classroom/Video/view',array('id'=>$oid))}"</eq> ><p>{:limitNumber($l['note_title'],30)}</p></a>
+              <div class="replymegfooter">
+                <div class="wenda-time"> <em>时间：{:getDateDiffer($l['ctime'])}</em> </div>
+                 <div class="qa-comment-addon-r">
+                 <span class="qa-total-reply">
+                 <i class="qa-icon"></i>
+                 <span class="js-qa-tr-num">{$l.note_comment_count} 条评论</span>
+                 </span> 
+                 <span  class=" qa-comment-support ">
+                 <i class="qa-icon"></i><span>{$l.note_help_count}</span>
+                 </span></div>
+              </div>
+            </div>
+          </div>
+         
+        </li>
+</foreach>

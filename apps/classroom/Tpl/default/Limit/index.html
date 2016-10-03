@@ -1,0 +1,68 @@
+<include file="__THEME__/public_header" />
+<div class="time-main">
+    限时免费
+</div>
+<div class="worap time-main-worap">
+    <ul class="in-minatop-time fl">
+
+    </ul>
+</div>
+
+</div>
+        <script>
+            var limit=0;
+           //页面加载完毕执行
+           $(function(){
+               $.ajax({
+                   type: "POST",
+                   url:"{:U('classroom/Limit/getList')}",
+                   data:"limit=10",
+                   dataType:"json",
+                   success:function(data){
+
+                     appendHtml(data);
+                   }
+
+               });
+
+
+             //页面中间最低高度
+               var headHeight = $('.header-worap').height();
+               var footHeight = $('.footer-worap').height();
+               var miniHeight = (parseInt($(document).height()-headHeight-footHeight))
+               $('.worap').css({"min-height":(miniHeight-163)+'px'});
+
+           });
+           //追加html
+            function appendHtml(data){
+                $(".in-minatop-time").html("");
+               $(".in-minatop-time").append(data.data);
+
+                if(data.nowPage+1>data.totalPages){
+                    return;
+                }else{
+                var html="<div class=\"more\" ><a href=\"javascript:void(0)\" id=\"getList\">查看更多</a></div>"
+                    $(".in-minatop-time").append(html);
+                    var limit=(data.nowPage+1)*data.totalRows;
+                }
+
+            }
+            $("#getList").live("click",
+                    function(){
+                        $.ajax({
+                            type: "POST",
+                            url:"{:U('classroom/Limit/getList')}",
+                            data:"limit="+limit,
+                            dataType:"json",
+                            success:function(data){
+
+                                appendHtml(data);
+                            }
+                        });
+                    }
+
+            );
+
+
+        </script>
+<include file="__THEME__/public_footer" />

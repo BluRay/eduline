@@ -1,0 +1,25 @@
+<script>
+    var p="{$p}";//定义页码
+    var course_teacher="{$course_teacher}";
+</script>
+<foreach name="listData" item="ld">
+<dl class="teacher-dp">
+	<dt>
+    	<div class="pic"><a href="javascript:void(0);"><img src="{:getUserFace($ld['uid'],'m')}" class="lazyloading"/></a></div>
+        <div class="name"><a href="javascript:void(0);">{$ld.user_info.uname}</a></div>
+    </dt>
+    <dd>
+    	<div class="tit">
+            <div class="star">
+                <span class= <if condition="$ld.star GT 0">""<else />"no"</if>></span>
+                <span class= <if condition="$ld.star GT 1">""<else />"no"</if>></span>
+                <span class= <if condition="$ld.star GT 2">""<else />"no"</if>></span>
+                <span class= <if condition="$ld.star GT 3">""<else />"no"</if>></span>
+                <span class= <if condition="$ld.star GT 4">""<else />"no"</if>></span>
+            </div>专业水平：<if condition="$ld.Professional eq 1">优<elseif condition="$ld.Professional eq 2"/>良<else /> 好</if>
+                  分授课技巧：<if condition="$ld.skill eq 1">优<elseif condition="$ld.skill eq 2"/>良<else /> 好</if>
+                  教学态度：<if condition="$ld.attitude eq 1">优<elseif condition="$ld.attitude eq 2"/>良<else /> 好</if>
+        <div class="txt">{$ld.description}</div>
+    </dd>
+</dl>
+</foreach>

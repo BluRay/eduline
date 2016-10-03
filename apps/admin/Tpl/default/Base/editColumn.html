@@ -1,0 +1,87 @@
+<include file="__THEME__/admin_header" />
+<div style="margin-top:50px;margin-left:100px;margin-bottom:100px;">
+		<center><h1>编辑栏目信息</h1></center>
+		
+</div>
+<span style="margin-top:150px;margin-left:50px;">
+	<form action="{:U('admin/base/doEditColumn')}" method="post" id="frm_js">
+		<tr>
+			<td>名称：</td>
+			<td><input type="text" name="name" value="{$info['name']}" size="50" id="name_js"><input type="hidden" name="column_id" value="{$id}"></td>
+		</tr>
+		<br><br>
+		<tr width="150px;" size="50">
+			<td>状态：</td>
+			<td>
+			未审核：<input type="radio" name="status" value="0">&nbsp;<B>|</B>&nbsp;
+			已审核：<input type="radio" name="status" value="1">&nbsp;<B>|</B>&nbsp;
+			未通过：<input type="radio" name="status" value="2">
+			</td>
+		</tr>
+		<br><br>
+		<tr>
+			<td>
+			    一级栏目：
+				<select name="first" id="first_js" onchange="secColumn()">
+					<volist name="firsts" id="first" key="m">	
+					 <option value="{$first['typeid']}">{$first['name']}</option>
+					</volist>
+				</select>
+			</td>
+		</tr>
+		<br><br>
+		<tr>
+			<td>描述：</td>
+			<td>
+				<textarea cols="25" rows="4" type="text" name="desc" id="desc_js">{$info['desc']}</textarea>
+			</td>
+		</tr>
+		<br><br>
+		<tr>
+			<td>备注：</td>
+			<td>
+				<textarea cols="25" rows="4" type="text" name="remark" id="remark_js">{$info['remark']}</textarea>
+			</td>
+		</tr>
+		<br><br>
+		<tr>
+			<td><a href="javascript:viod(0);" onclick="submit_check();"><input type="submit" name="submit" value="提交"></a><td>
+			<td><input type="reset" name="reset" value="重置"></td>
+		</tr>
+		</form>
+</span>
+<input type="hidden" name="_catid" value="{$info['topid']}" id="_id_js">
+<input type="hidden" name="_catid" value="{$info['status']}" id="_status_js">
+<include file="__THEME__/admin_footer"/>
+<script type="text/javascript"> 
+	$(document).ready(function(res){
+		
+		var topid    = $("#_id_js").val();
+		var status   = $("#_status_js").val();
+		
+		$("#first_js option[value='"+topid+"']").attr("selected", "selected"); 
+		$("input[name='status'][value='"+status+"']").attr("checked","checked");
+	})
+	
+	function submit_check(){
+		var name   = $("#name_js").val();
+		var desc   = $("#desc_js").val();
+		
+		var err    = '';
+		
+		if(name == ''){
+			err += '栏目名称不能为空;';
+		}
+		
+		if(desc ==''){
+			err += '栏目描述不能为空;';
+		}
+		
+		if(err !=''){
+			ui.error(err);
+			return false;
+		}else{
+			$("#frm_js").submit();
+		}
+	}
+</script>

@@ -1,0 +1,56 @@
+<include file="__THEME__/public_header" />
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+            <a href="javascript:;" class="onactive">邀请链接</a>
+        </div>
+        <div class="user-Release" >
+            <div class="invite-links" style="margin:20px;float:left">
+              <ul>
+                <volist name="codeList" id="vo">
+                <li style="margin-bottom:10px; float:left;">
+                  <div class="left" style="float:left;">
+                    <input type="text"  class="text" style="width:400px; height:22px;" onfocus="this.className='text2'" onblur="this.className='text'"  name="intro[{$vo.field}]" value="{:SITE_URL}/index.php?invite={$vo.code}"/>
+                  </div>
+                  <div class="left ml5" style="float:left;">
+                    <embed width="62" height="24" align="middle" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer" allowscriptaccess="sameDomain" wmode="transparent" quality="high" src="__APP__/copy.swf" flashvars="txt={:SITE_URL}/index.php?invite={$vo.code}">
+                  </div>
+                </li>
+                </volist>
+              </ul>
+            </div>
+            <div class="invite-user-list" style="float:left;margin:0px 20px 20px 20px;width:100%;">
+             <php>if(empty($inviteList['data'])):</php>
+              <p class="f9">当前无邀请好友</p>
+              <php>else:</php>
+              <h4>已邀请好友：</h4>
+              <ul>
+                <li style="width:100%;float:left;">
+                  <div class="w3">昵称</div>
+                  <div class="w1">邮箱</div>
+                </li>
+                <volist name="inviteList.data" id="vo">
+                <li style="width:100%;float:left; margin-top:5px;">
+                  <div class="w3"><a href="" class="mr5"><img src="{$vo.avatar_small}" width="30" height="30"/></a><a href="">{$vo.uname}</a></div>
+                  <div class="w1 line-h">{$vo.email}</div>
+                </li>
+                </volist>
+              </ul>
+              <style>
+              	.page a{top:10px; position:relative; padding:3px;}
+              	.page .current{background:#85C155; color:#fff;}
+              </style>
+              <div class="page">{$inviteList.html}</div>
+              <php>endif;</php>
+            </div>
+        </div>
+
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+
+<include file="__THEME__/public_footer" />

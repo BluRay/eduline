@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>
+	<neq name='_title' value=''>
+		{$_title} - {$site.site_name}
+	<else />
+		{$site.site_name} - {$site.site_slogan}
+	</neq>
+</title>
+<meta content="<neq name= '_keywords' value=''>{$_keywords}<else />{$site.site_header_keywords}</neq>" name="keywords">
+<meta content="<neq name= '_description' value=''>{$_description}<else />{$site.site_header_description}</neq>" name="description">
+<meta name="viewport" charset="UTF-8" content="user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+<meta property="qc:admins" content="0540645511715620111306375" />
+<meta property="wb:webmaster" content="06f27823f54630cf" />
+<meta property="qc:admins" content="05406453557630517515663757" />
+
+<link href="__THEME__/image/favicon.ico?v={$site.sys_version}" type="image/x-icon" rel="shortcut icon">
+<!-- 站点css -->
+<link href="__THEME__/css/css.php?t=css&f=base.css,common.css,index.css,logincss.css,media.css,style.css,wenda.css&v={$site.sys_version}.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/js/tbox/box.css?20110820" rel="stylesheet" type="text/css" />
+<script>
+//全局变量
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var UPLOAD_URL= '<php> echo UPLOAD_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var MID		  = '<php> echo $mid;</php>';
+var UID		  = '<php> echo $uid;</php>';
+var initNums  =  '<php> echo $initNums;</php>';
+var SYS_VERSION = '<php> echo $site["sys_version"];</php>';
+var _ROOT_    = '__ROOT__';
+// Js语言变量
+var LANG = new Array();
+//注册登录模板
+var REG_LOGIN="{:U('public/Passport/regLogin')}";
+//邮箱验证地址
+var CLICK_EMIL="{:U('public/Passport/clickEmail')}";
+//异步注册地址
+var REG_ADDRESS="{:U('public/Passport/ajaxReg')}";
+//异步登录
+var LOGIN_ADDRESS="{:U('public/Passport/ajaxLogin')}";
+//退出登录
+var LOGINOUT_ADDRESS="{:U('public/Passport/logout')}";
+</script>
+<php>if(!empty($langJsList)) {</php>
+<volist name="langJsList" id="vo">
+	<script src="{$vo}?v={$site.sys_version}"></script>
+</volist>
+<php>}</php>
+<!-- 站点js -->
+<!--[if lt IE 9]><script src="js/html5.js" type="text/javascript"></script><![endif]-->
+<script src="__THEME__/js/js.php?t=js&f=jquery-1.7.1.min.js,jquery.form.js,common.js,core.js,module.js,module.common.js,jwidget_1.0.0.js,jquery.atwho.js,jquery.caret.js,ui.core.js,ui.draggable.js,jquery.qrcode.min.js,plugins/core.comment.js,plugins/core.digg.js&v={$site.sys_version}.js"></script>
+<script src="__THEME__/js/plugins/core.comment.js?v={$site.sys_version}"></script>
+<script src="__THEME__/js/user/user.js"></script>
+<script src="__THEME__/js/cyjs/title_common.js"></script>
+<script src="__THEME__/js/cyjs/cyjs_common.js"></script>
+<script src="__THEME__/js/cyjs/offlights.js"></script>
+
+</head>
+<body>
+
+

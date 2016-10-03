@@ -1,0 +1,79 @@
+<include file="__THEME__/admin_header" />
+<div>
+		<br><br><br>
+		<h1>添加栏目</h1>
+		<hr>
+		<br><br><br>
+		<form method="POST" action="{:U('admin/base/js_AddColumn',array('topid'=>$topid,'reid'=>$reid))}">
+		<!--
+		<tr>
+			<td>选择分类:</td>
+			<td>
+				<select name="caId">
+					<volist name="lists" id="list" key="k">
+						<option value="{$list['caId']}">{$list['name']}</option>
+					</volist>
+				</select>
+			</td>
+		</tr>
+		<br><br>
+		-->
+		<tr>
+			<td>标题:</td>
+			<td><input name="name" type="text" size="20" id="js_name"></td>
+		</tr>
+		<br><br>
+		<tr>
+			<td>编码:</td>
+			<td><input name="code" type="text" size="20" id="js_code"></td>
+		</tr>
+		<br><br>
+		<tr>
+			<td>描述:</td>
+			<td>
+				<textarea cols="20" rows="10" type="text" name="desc" id="js_desc"></textarea>
+			</td>
+		</tr>
+		<br><br>
+		<tr>
+			<td>备注:</td>
+			<td>
+				<textarea cols="20" rows="10" type="text" name="remark" id="js_remark"></textarea>
+			</td>
+		</tr>
+		<br><br>
+		<tr>
+			<td><a href="javascript:viod(0);" onclick="addColumn()"><input type="submit" name="submit" value="提交"></a></td>
+			<td><input type="reset" name="reset" value="重置"></td>
+		</tr>
+		</form>
+</div>
+<include file="__THEME__/admin_footer"/>
+<script type="text/javascript"> 
+	//获取子栏目
+	function addColumn(){
+		var name  =  $("#js_name").val();
+		var desc  =  $("#js_desc").val();
+		var code  =  $("#js_code").val();
+		var err   =  '';
+		
+		if(name == ''){
+			err +="名称为空；";
+		}
+		
+		if(code == ''){
+			err +="编码为空；";
+		}
+		
+		if(desc == ''){
+			err +='描述为空；';
+		}
+		
+		if(err !=''){
+			alert(err);
+			return false;
+		}else{
+			
+		}
+	}
+</script>

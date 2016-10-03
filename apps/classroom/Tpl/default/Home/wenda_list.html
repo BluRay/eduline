@@ -1,0 +1,26 @@
+<volist name="list" id="vo">
+<li class="li" <php> if($key == 0) echo "style='padding:0 0 20px;'"</php> >
+   <div class="discusslist"> <a target="_blank" title="{:getUserName($vo['uid'])}" href="{:U('classroom/UserShow/index',array('uid'=>$vo['uid']))}" class="otherHead" ><img width="40" height="40" src="{:getUserFace($vo['uid'],'m')}"></a>
+      <div class="detailmeg">
+          <div class="mynote"><a title="{:getUserName($vo['uid'])}" href="{:U('classroom/UserShow/index',array('uid'=>$vo['uid']))}">{:getUserName($vo['uid'])}</a> <em> 提问</em></div>
+          <div class="Operation-wd">
+              <php>if($wenda!="meque"){</php>
+
+              <a href="javascript:;" onclick="ui.confirm(this,'确定要删除该问答吗？');return false;" callback="delWenda({$vo['id']})" ><i></i><span>删除</span></a>
+              <php>}</php>
+          </div>
+          <p class="mynote"><a target="_blank" href="{:U('wenda/Index/detail',array('id'=>$vo['id']))}">{$vo['wd_title']}</a> </p>
+          <php>if(!empty($vo['duid'])){</php>
+          <div class="firendreply"> <a  title="Sunflower" class="firendHead" ><img src="{:getUserFace($vo['duid'],'s')}"></a>
+              <div class="lzreply"> <span><a title="{:getUserName($vo['duid'])}">{:getUserName($vo['duid'])}</a> 回答:</span> <em>{:limitNumber($vo['description'],150)}</em> </div>
+          </div>
+          <php>}</php>
+          <div class="fbtime">时间：<span>{$vo['ctime']|friendlyDate}</span>
+              <php>if($wenda!="meque"){</php>
+              <a href="{:U('wenda/Index/editWenda',array('wid'=>$vo['id']))}" class="fr"><i class="bianji-ico"></i>编辑</a>
+              <php>}</php>
+          </div>
+      </div>
+   </div>
+</li>
+</volist>

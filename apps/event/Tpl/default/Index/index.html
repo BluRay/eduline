@@ -1,0 +1,121 @@
+<include file="__THEME__/public_header" />
+<script type="text/javascript" src="__APP__/js/event.js"></script>
+<!--content start-->
+<div class="content bgb">
+	<div class="wrap">
+    	<dl class="content-dl">
+        	<dt>活动分类：</dt>
+            <dd>
+            	<a <php>if( !isset( $_GET['cid'] ) ){echo "class = 'on'";}</php>  href="{:U('//')}">全部活动</a>
+            	<volist name="category" id="vo">
+            		<a <eq name="key" value="$_GET['cid']"> class="on" </eq> href="{:U('//', array('cid'=>$key))}">{$vo}</a>
+            	</volist>
+            </dd>
+        </dl>
+        <div class="content-con">
+        	<div class="content-main padding border">
+                <ul class="activity-list">
+                	<php> if(!empty($data)): </php>
+					<volist name="data" id="vo">
+                		<li>
+	                    	<div class="pic"><a href="{:U('event/Index/eventDetail', array('id'=>$vo['id'], 'uid'=>$vo['uid']))}"><img src="{:getCover($vo['coverId'],234,144)}" class="lazyloading"></a></div>
+	                        <div class="tit"><a href="{:U('event/Index/eventDetail', array('id'=>$vo['id'], 'uid'=>$vo['uid']))}">{$vo['title']}</a></div>
+	                        <div class="info">
+	                        	<div class="info_left">
+	                            	<div><span><i class="icon-time"></i>{$vo['time']}</span><span><i class="icon-author"></i>{$vo['user_info']['space_link']}</span></div>
+	                                <div><span><i class="icon-place"></i>{$vo['address']} {$vo['area']}</span></div>
+	                            </div>
+	                            <div class="ebtn">
+	                            <php> if( $vo['eTime']>time()){ </php>
+	                            	<php> if( $vo['follow'] ){ </php>
+	                            		<php> if( $vo['canJoin'] ){ </php>
+				                              <!-- 判断名额 -->
+		                                      <php> if( $vo['limitCount'] >0 ){ </php>
+		                                      <a href="javascript:EventAction( {$vo['id']},{$vo['opts']['allow']},'joinIn',1)" rel="我要报名" norel="我要报名">我要报名</a>
+		                                      <php> }else{ </php>
+		                                              <a href="javascript:;" rel="名额已满" norel="名额已满">名额已满</a>
+		                                      <php> } </php>  
+				                               <!-- 判断名额结束 -->
+				                        <php> }else if( false == $vo['admin'] ){ </php>
+				                               <!-- 判断是否需要审核 -->
+	                                          <?php if( $vo['opts']['allow'] == 1 && $vo['hasMember'] != 1){ ?>
+	                                             <a href="javascript:EventDelAction( {$vo['id']},{$vo['opts']['allow']},'joinIn' ,1)" rel="取消申请" norel="等待审核" >等待审核</a>
+	                                          <?php }else if($GLOBALS['ts']['mid']){ ?>
+	                                             <a href="javascript:EventDelAction( {$vo['id']},null,'joinIn' ,1)"  rel="取消报名" norel="已报名">已报名</a>
+	                                          <?php }else{ ?>
+				                                  <a href="javascript:EventAction( {$vo['id']},{$vo['opts']['allow']},'joinIn',1)"  rel="我要报名" norel="我要报名">我要报名</a>
+				                         	  <?php }?>
+				                               <!-- 判断是否需要审核结束 -->
+				                        <php> } </php>  
+	                            	<php>}</php>     
+	                            <php> }else{ </php>
+	                            	<a href="javascript:;">活动结束</a>
+						        <php> } </php>
+                            
+	                            </div>
+	                        </div>
+	                    </li>
+                	</volist>
+                	<php> else: </php>
+					<span class="activity_reminder" style="font-size:14px;">暂无此类活动</span>
+					<php> endif; </php>
+                </ul>
+            </div>
+            <div class="content-sider padding border">
+            	<div class="sider-top"><a onclick="addPost()" href="javascript:;"><span class="icon-release"></span>发布活动</a></div>
+                <php>if($is_hot_list){</php>
+                <h3 class="sider-title">推荐活动</h3>
+                <ul class="sider-activity">
+                	<volist name="is_hot_list" id="vo"> 
+                	<li><a href="{:U('//eventDetail',array(uid=>$vo['uid'],id=>$vo['id']))}"><img src="{$vo['coverId']}" class="lazyloading"></a></li>
+                	</volist>
+                </ul>
+                <php>}</php>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function addPost(){
+        if(MID=='0'){
+            reg_login();
+            return;
+        }
+        window.location="{:U('/Index/addEvent')}";
+    }
+</script>
+<include file="__THEME__/public_footer" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

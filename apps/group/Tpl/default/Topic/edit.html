@@ -1,0 +1,88 @@
+<include file="__THEME__/public_header" />
+<include file="__THEME__/editor" />
+<script type="text/javascript" src="__APP__/Js/common.js"></script>
+<link  href="__APP__/group.css" rel="stylesheet" type="text/css"/>
+<style>
+.user-set-sz span {height:16px;}
+</style>
+<script>
+	function checkform(v_form){
+		if (getLength(v_form.title.value) == 0) {
+			v_form.title.focus();
+			ui.error('标题不能为空');
+			return false;
+		} else if (getLength(v_form.title.value) >30) {
+			v_form.title.focus();
+			
+			ui.error('标题内容不能超过30个字');
+			
+			return false;
+		}
+	    var content = E.getData();
+	    content = removeHTMLTag(content);
+	    if(checkPostContent(content) < 10) {
+			ui.error('内容不能小于10个字');
+			return false;
+		}
+		return true;
+	}
+	
+</script>
+
+
+<div class="breadcrumb"> <a href="{:U('group')}" style="padding-left:0;">小组首页</a>&gt;<a href="{:U('group/Topic/index',array('gid'=>$gid))}">{$groupinfo.name}</a>&gt;
+    <a>《编辑帖子》</a>
+</div>
+<div class="sk_main">
+
+<div class="newpost">
+<a href="javascript:;"  class="quealltab onactive">编辑帖子</a>
+
+
+
+</div>
+<div class="sk_l2" style="width:100%">
+            <form method="post" action="{:U('/Topic/edit',array('gid'=>$gid,'tid'=>$thread['id']))}" onbeforesubmit="checkform(this);">
+
+<ul class="user-set-sz" style="padding-left:0px;margin-top:30px;width:100%">
+     <li>
+        <label class="label"><em>*</em> 标题：</label>
+                      <input name="title" class="text" style="width:60%;" value="{$thread.title}" onBlur="this.className='text'" onFocus="this.className='text2'" type="text">
+    </li>
+	   <li>
+        <label class="label"><em>*</em> 内容：</label>
+	        {:W('Editor',array('contentName'=>'content','value'=>$thread['content']))}
+      </li>
+       <li>
+        <label class="label">&nbsp;</label>
+                    <input type="hidden" name="editsubmit" value="do" >
+        <input class="user-submit" type="submit"  name="button" value="保 存">
+      </li>
+      </ul>
+</form>
+
+
+</div>
+
+
+<div class="sk_cl"></div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<include file="__THEME__/public_footer" />

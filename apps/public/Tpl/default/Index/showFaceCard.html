@@ -1,0 +1,61 @@
+ <dl class="name clearfix">
+   	<dt><a href="{$userInfo.space_url}" target="_blank"><img src="{$userInfo.avatar_small}" /></a></dt>
+       <dd>
+           <p><a href="{$userInfo.space_url}" target="_blank">{$userInfo.uname}</a>
+
+           <a href="{:U('public/Index/scoredetail')}" target="_blank"></a>
+          </p>
+        	<php>if(CheckPermission('core_normal','read_data')){</php>
+          <div class="grade"><if condition="$userInfo['sex'] eq 1"><i class="ico-male"></i><else /><i class="ico-female"></i></if>&nbsp;{$userInfo['location']}</div>
+          <php>}</php>
+           <div>
+               <ul class="userdata clearfix">
+                   <li><a href="{:U('classroom/UserShow/fans',array('type'=>'following','uid'=>$uid))}" target="_blank">{:L('PUBLIC_FOLLOWING')}</a> {$count_info.following_count|default=0}</li>
+                   <li class="vline">|</li>
+                   <li><a href="{:U('classroom/UserShow/fans',array('type'=>'follower','uid'=>$uid))}" target="_blank">{:L('PUBLIC_FOLLOWERS')}</a> {$count_info.follower_count|default=0}</li>
+                   <li class="vline">|</li>
+                   <li><a href="{:U('classroom/UserShow/index',array('uid'=>$uid))}" target="_blank">课程</a> {$count_info.video_count|default=0}</li>
+                   <li class="vline">|</li>
+                   <li><a href="{:U('classroom/UserShow/wenda',array('uid'=>$uid))}" target="_blank">问答</a> {$count_info.wenda_count|default=0}</li>
+               </ul>
+           </div>
+           <p class="address">{$department.title}</p>
+       </dd>
+   </dl>
+<dl class="info clearfix">
+   <!-- 认证信息 start -->
+  <php>if($verifyInfo){</php>
+    <dd class="tag"><span>认证：</span>
+     <div class="tag-inner">{$verifyInfo}</div>
+    </dd>   
+  <php>}</php>
+  <!-- 认证信息  end -->
+  <php>if(CheckPermission('core_normal','read_data')){</php>
+	  <neq name='user_tag' value=''>
+       <dd class="tag"><span>{:L('PUBLIC_TAG')}：</span> <div class="tag-inner">{$user_tag}</div></dd>
+    </neq>
+   		<neq name='userInfo.intro' value=''>
+        <dd class="tag"><span>简介：</span>
+         <div class="tag-inner">{$userInfo['intro']|getShort=60,'...'}</div>
+        </dd>   
+    </neq>
+<php>}</php>
+</dl>
+
+<dl class="links">
+       <div class="right">
+        {:W('FollowBtn', array('fid'=>$uid, 'uname'=>$userInfo['uname'], 'follow_state'=>$follow_state, 'type'=>'normal'))}
+       </div>
+   	<p class="left">
+
+   	<php>if(CheckPermission('core_normal','send_message')){</php>
+      <eq name='UserPrivacy.message' value='0'>
+      <span><a href="javascript:ui.sendmessage({$uid}, 0)">{:L('PUBLIC_SEND_PRIVATE_MESSAGE')}</a></span>
+      </eq>
+      <php>}</php>
+   	<!-- <span class="vline">|</span><span><em class="icons ico_set"></em>
+   </span> --> </p>
+   </dl>
+<script>
+	M(document.getElementById('face_card'));
+</script>

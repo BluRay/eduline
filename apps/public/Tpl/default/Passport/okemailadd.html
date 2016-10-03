@@ -1,0 +1,57 @@
+<include file="__THEME__/public_header" />
+<script>
+var FASEMAIL="{:U('public/Passport/fasemail')}";
+</script>
+<!--main-->
+<div class="worap-login back ">
+  <div class="Mailbox font12 ">
+    <h1>验证邮件已发送，请前往邮箱点击激活链接完成注册</h1>
+    <p class="f999999">注册邮箱：{$email} </p>
+    <div class="again-box">
+    <a class="width97" ><i id="dtime"></i>后重新发送</a>
+    <a class="width80"  style="display: none;" onclick="fasEmail()" href="javascript:;" >重新发送</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="http://mail.{$emailhr}" target="_blank" class="f3359D5">前往邮箱 >></a></div>
+    <p class="f999999">收不到邮件？看看是否作为垃圾邮件处理</p>
+  </div>
+</div>
+
+<include file="__THEME__/public_footer_g" />
+<script>
+var timerc; 
+$(function(){ 
+	timerc="{$time}";
+	dtime();
+	}); 
+function dtime(){
+    if(timerc > 1){ 
+    	timerc=timerc-1; 
+        $("#dtime").text(timerc);
+        setTimeout("dtime()", 1000); //设置1000毫秒以后执行一次本函数
+    }else{
+    	$('.width97').css("display","none");
+		$('.width80').removeAttr("style");
+    }
+}
+
+/**
+ * 重新发送邮件
+ */
+function fasEmail(){
+	 $.ajax({
+		 type: "POST",
+		 url:FASEMAIL,
+		 dataType:"json",
+		 success:function(data){
+		 if(data.status=='0'){
+		        notes(data.info,'failure');
+		       	return;
+		 }else{
+			 	timerc=60;
+		        dtime();
+		        notes(data.info,'success');
+		        
+		  }
+		  }
+		}); 
+}
+</script>

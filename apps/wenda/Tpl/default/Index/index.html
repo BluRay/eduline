@@ -1,0 +1,90 @@
+<include file="__THEME__/public_header" />
+<!--content start-->
+<div class="content">
+	<div class="wrap">
+    	<ul class="content-nav">
+        	<li <php>if($_GET['wdtype']==0 &&ACTION_NAME!='question'){echo "class='active'";}</php> ><a href="{:U('wenda/Index/index')}" >全部问答</a></li>
+		    <li <php>if($_GET['wdtype']==1){echo "class='active'";}</php> ><a href="{:U('wenda/Index/index',array('wdtype'=>1))}">技术问答</a></li>
+		    <li <php>if($_GET['wdtype']==2){echo "class='active'";}</php> ><a href="{:U('wenda/Index/index',array('wdtype'=>2))}">技术分享</a></li>
+		    <li <php>if($_GET['wdtype']==3){echo "class='active'";}</php> ><a href="{:U('wenda/Index/index',array('wdtype'=>3))}" >活动建议</a></li>
+		    <li <php>if(ACTION_NAME=='question'){echo "class='active'";}</php> ><a href="{:U('wenda/Index/question')} " >课程问答</a></li>
+        </ul>
+        <div class="content-con">
+        	<div class="content-main">
+            	<ul class="content-lei">
+            		<php>if(ACTION_NAME=="question"){</php>
+            			<li <php>if($_GET['type']==0){echo "class='active'";}</php>><a href="{:U('wenda/Index/question',array('type'=>0))}" >最新</a></li>
+					    <li <php>if($_GET['type']==1){echo "class='active'";}</php>><a href="{:U('wenda/Index/question',array('type'=>1))}">热门</a></li>
+					    <php>if($wdtype!=3){</php>
+					    <li <php>if($_GET['type']==2){echo "class='active'";}</php>><a href="{:U('wenda/Index/question',array('type'=>2))}" >等待回复</a></li>
+            			<php>}</php>
+            		<php>}else{</php>
+            			<li <php>if(ACTION_NAME=="index"){echo "class='active'";}</php>><a href="{:U('wenda/Index/index',array('wdtype'=>$wdtype))}" >最新</a></li>
+					    <li <php>if(ACTION_NAME=="classifywd" && $_GET['type']==1){echo "class='active'";}</php>><a href="{:U('wenda/Index/classifywd',array('type'=>1,'tpid'=>$wdtype,'wdtype'=>$wdtype))}">热门</a></li>
+					    <php>if($wdtype!=3){</php>
+					    <li <php>if(ACTION_NAME=="classifywd" && $_GET['type']==2){echo "class='active'";}</php>><a href="{:U('wenda/Index/classifywd',array('type'=>2,'tpid'=>$wdtype,'wdtype'=>$wdtype))}" >等待回复</a></li>
+            			<php>}</php>
+            		<php>}</php>
+                </ul>
+                <ul class="question-list">
+                	<volist name="data" id="vo">
+                		<li><span>{$vo.wd_comment_count} 回答<em>|</em>{$vo.ctime}</span><a href="{:U('wenda/Index/detail',array('id'=>$vo['id']))}"><font  style="color:#fb8700;">[置顶] </font> <php>echo limitNumber( t($vo['wd_description']) , 45)</php></a></li>
+                	</volist>
+                	<volist name="wendaList.data" id="vo">
+                		<li><span>{$vo.wd_comment_count} 回答<em>|</em>{$vo.ctime}</span><a href="{:U('wenda/Index/detail',array('id'=>$vo['id']))}"><php>echo limitNumber( t($vo['wd_description']) , 45)</php></a></li>
+                	</volist>
+                </ul>
+                <div class="pagebox">
+	                {$wendaList.html}
+	            </div>
+            </div>
+            <div class="content-sider">
+            	<div class="sider-top"><a href="javascript:;" onclick="addwenda()"><span class="icon-question"></span>提问</a></div>
+                <div class="page-tit">
+                    <div class="page-tit-box"><div class="fl">推荐问题</div></div>
+                </div>
+                <ul class="sider-question">
+                	<volist name="hotwd" id="vo">
+                		<li><a href="{:U('wenda/Index/detail',array('id'=>$vo['id']))}"><php>echo limitNumber(h($vo['wd_description']),'30')</php></a></li>
+            		</volist>
+                </ul>
+                <php>if($nblist) {</php>
+                <div class="page-tit">
+                    <div class="page-tit-box"><div class="fl">问答牛人</div></div>
+                </div>
+                <ul class="sider-daren">
+                	
+                	<volist name="nblist" id="vo">
+                		<php>$sum=1;</php>
+                		<li>
+	                    	<div class="pic"><a href="{:U('classroom/UserShow/index',array('uid'=>$vo['uid']))}"><img src="{:getUserFace($vo['uid'],'m')}" class="lazyloading"></a></div>
+	                        <div class="info">
+	                        	<div class="name"><a href="{:U('classroom/UserShow/index',array('uid'=>$vo['uid']))}">{:getUserName($vo['uid'])}</a></div>
+								<div class="txt">
+								<php>if($vo['count'] >= 100){</php>
+                    			强势围观你们
+                   				<php>}else{</php>
+                    			我牛X啥都知道
+                    			<php>}</php></div>
+	                        </div>
+	                        <p class="num">回答数<br>{$vo.count}</p>
+	                    </li>
+	                    <php>$sum+=1;</php>
+                	</volist>
+                	 
+                </ul>
+                <php>}</php>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function addwenda(){
+        if(MID=='0'){
+            reg_login();
+            return;
+        }
+        window.open("{:U('wenda/Index/addWenda')}");
+    }
+</script>
+<include file="__THEME__/public_footer" />

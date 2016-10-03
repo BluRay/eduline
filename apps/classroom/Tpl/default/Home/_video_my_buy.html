@@ -1,0 +1,11 @@
+<foreach name="data" item="l">
+    <li>
+        <div class="position-rt">
+            <div class="Operation-list" >
+                <a href="javascript:;" onclick="delalbum(this,{$l.oid})">删除<span></span></a>
+            </div>
+            <a href="{:U('classroom/Video/view',array('id'=>$l['id']))}" class="img"><img src="{:getCover($l['cover'] , 222,144)}"> </a> </div>
+        <h2><a href="{:U('classroom/Video/view',array('id'=>$l['id']))}">{$l.video_title}</a></h2>
+        <div class="user-imglistbt"><span>{$l.video_order_count}人购买</span></div>
+    </li>
+</foreach>

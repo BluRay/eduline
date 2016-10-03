@@ -1,0 +1,74 @@
+<div class="head_l">
+        <div class="log_x" href="javascript:;">
+            <!--
+            <a id="go_logn_in2" class="fl" href="javascript:;">登录&nbsp;</a>
+            <a id="go_logn_in2" class="mr15 fl" href="javascript:;">注册&nbsp;&nbsp;&nbsp;&nbsp;|</a>
+            <a class="mr15 information" href="javascript:;">消息&nbsp;&nbsp;&nbsp;&nbsp;|</a>
+            -->
+            <div class="guanzhu">&nbsp;
+            	<!--
+                <a class="spanbg_gz">＋关注</a>
+                <div class="erw_n">
+                    <div class="erw_n_n">
+                        <div class="clearfix mb10">
+                            <div class="fl">
+                                <img src="__THEME__/images/erw_n.jpg">
+                                <span>官方微信</span>
+                            </div>
+                            <div class="fl">
+                                <img src="__THEME__/images/ew_wb.jpg">
+                                <span>腾讯微博</span>
+                            </div>
+                        </div>
+                        <div class="fx clearfix">
+                            <a href="http://weibo.com/u/2767015325/home?topnav=1&wvr=5" target="_blank" class="bds_tsina share3" data-cmd="tsina" title="关注新浪微博"></a>
+                            <a href="http://user.qzone.qq.com/2047776927/main" target="_blank" class="bds_qzone share2" data-cmd="qzone" title="关注QQ空间"></a>
+                            <a href="http://t.qq.com/gaojiaowan1169?preview" target="_blank" class="bds_tqq share4" data-cmd="tqq" title="关注腾讯微博"></a>
+                        </div>
+                    </div>
+                </div>
+                -->
+            </div>
+            
+        </div>
+        <div class="clearfix h80">
+            <a class="fl btn_ind" href="/">首页</a>
+            <div class="logo fl">
+                <a href="/" title="Eduline">Eduline</a>
+            </div>
+        </div>
+        <p class="lh30 ft18">-----系列连载</p>
+        <ul class="nav_x">
+        	<li id="txtmzindex" class="sel"><a class="txt_c" href="{:U('classroom/Serial/serial')}">首&nbsp;&nbsp;&nbsp;页</a></li>
+            <volist name="zyLzCategory" id="vo">
+                <if condition=" $vo.type eq 1 ">
+                	<li id="txtmzlz{$vo['id']}"><a href="{:U('classroom/Serial/slist','type=1&cid='.$vo['id'])}">{$vo.display}</a></li>
+                <elseif condition=" $vo.type eq 2 " />
+                	<li id="txtmzlz{$vo['id']}"><a href="{:U('classroom/Serial/alist','type=2&cid='.$vo['id'])}">{$vo.display}</a></li>
+                <else />
+                	<li id="txtmzlz{$vo['id']}"><a href="{:U('classroom/Serial/vlist','type=3&cid='.$vo['id'])}">{$vo.display}</a></li>
+                </if>
+            </volist>
+        </ul>
+    </div>
+    
+    
+    
+    
+<script>
+var surl = 'cid={$cid}';
+var cid  = '{$cid}';
+var navicatHref = function(){
+	$('ul.nav_x li').removeClass('sel');
+	
+	var $pathname = window.location.href;
+	
+	if($pathname.indexOf(surl) !== -1){
+		$('#txtmzlz'+cid).addClass('sel');
+	}else{
+		$('#txtmzindex').addClass('sel');
+	}
+};
+navicatHref();
+
+</script>

@@ -1,0 +1,91 @@
+<include file="__THEME__/public_header" />
+<!--content start-->
+<div class="content">
+	<div class="wrap">
+    	<ul class="content-nav">
+    		<li class="active"><a href="javascript:;" onclick="cateBang(this,0)"><span>全部课程</span></a></li>
+    		<volist name="selCate" id="vo">
+	        	<li>
+	        		<a href="javascript:;" onclick="cateBang(this,{$vo.zy_video_category_id})">{$vo.title}</a>
+	        		<php>if($vo['childlist']){</php>
+			        	<div class="content-nav-child">
+			        		<foreach name="vo.childlist" item="li">
+		                    	<a href="javascript:;" id="sona" onclick="cateBang(this,{$li.zy_video_category_id})">{$li.title}</a>
+		                    </foreach>
+		        		</div>
+	        		<php>}</php>
+	        	</li>
+        	</volist>
+        </ul>
+        <div class="content-con">
+            <ul class="ind-list"></ul>
+            <div class="pagebox">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //页面加载完毕执行
+    $(function(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('classroom/Album/getList')}",
+            data:"p=1",
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+      //页面中间最低高度
+        var headHeight = $('.header-worap').height();
+        var footHeight = $('.footer-worap').height();
+        var miniHeight = (parseInt($(document).height()-headHeight-footHeight))
+        $('.worap').css({"min-height":(miniHeight-60)+'px'});
+    });
+    //请求事件
+    function ajaxBang(){
+        $.ajax({
+            type: "GET",
+            url:"{:U('classroom/Album/getList')}",
+            data:"p="+p+"&cateId="+cateId+"&tagId="+tagId,
+            dataType:"json",
+            success:function(data){
+                appendHtml(data);
+            }
+        });
+    }
+    //追加html
+    function appendHtml(data){
+        $(".more").remove();
+        if(data.data!=""){
+        $(".ind-list").append(data.data);
+        if(data.nowPage+1>data.totalPages){
+            return;
+        }else{
+            var html="<div class=\"more\" ><a href=\"javascript:void(0)\" id=\"getList\">查看更多</a></div>"
+            $(".ind-list").append(html);
+            p=data.nowPage+1;//下一页
+
+        }
+    }else{
+        $(".ind-list").append("<script>对不起，暂无此分类课程T_T<\/script>");
+    }
+    }
+    //查看更多点击事件
+    $("#getList").live("click",
+            function(){
+                ajaxBang();
+            }
+    );
+    //分类点击
+    function cateBang(cate,id){
+        $(".ind-list").html("");
+        $(cate).parent('li').addClass('active').siblings('li').removeClass('active');
+        cateId=id;
+        p=1;
+        ajaxBang();
+    }
+
+
+</script>
+<include file="__THEME__/public_footer" />

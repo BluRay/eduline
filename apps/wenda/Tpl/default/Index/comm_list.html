@@ -1,0 +1,28 @@
+<foreach name="data" item="l" >
+    <div  class="qa-reply-item"> <a title="{:getUserName($l['uid'])}" target="_blank" href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}" class="qa-reply-item-author"><img width="40" height="40" src="{:getUserFace($l['uid'],'m')}"></a>
+        <div class="qa-reply-item-inner">
+            <p>
+                <php>if($l['fid']==0){</php>
+                <a class="qa-reply-nick" href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}" id="uname{$l.uid}">{:getUserName($l['uid'])}</a> :
+            <php>}else{</php>
+                <a class="qa-reply-nick"  target="_blank" href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}" id="uname{$l.uid}">{:getUserName($l['uid'])}</a> 回复 :<a class="qa-reply-nick" target="_blank" href="{:U('classroom/UserShow/index',array('uid'=>$l['fid']))}">{:getUserName($l['fid'])}</a>
+                <php>}</php>
+            </p>
+            <p class="q-reply-item-c" id="description{$l.uid}"> {$l.description} </p>
+            <div class="qa-reply-item-foot clearfix">
+                <span class="reply-item-index r" >#{$l.ctime}</span>
+                <span class="qa-reply-item-reply js-reply-item-reply" onclick="sonCommBang(this,{$l.uid},{$l.wid},{$pid},{$l.id})">
+                    <i class="qa-icon" ></i>回复
+                </span>
+                <if condition="$l.uid eq $mid">
+                <span class="qa-reply-item-reply js-reply-item-reply" onclick="updateCommBang(this,{$l.uid},{$l.wid},{$pid},{$l.id})">
+                    <i class="qa-icon" ></i>编辑
+                </span> 
+                <span class="qa-reply-item-reply js-reply-item-reply" onclick="delCommBang(this,{$pid},{$l.id})">
+                    <i class="qa-icon" ></i>删除
+                </span> 
+                </if>
+            </div>
+        </div>
+    </div>
+</foreach>

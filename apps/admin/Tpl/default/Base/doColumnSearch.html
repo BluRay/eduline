@@ -1,0 +1,53 @@
+<include file="__THEME__/admin_header" />
+<h1><a href="{:U('admin/base/contentManageAdd',array('typeid'=>$typeid))}">添加操作：添加内容记录</a></h1>
+<hr><br><br>
+	<input type="text" name="search" id="js_search"/> <input type="button" name="button" onclick="frm_search()" value="搜索">
+<div style="margin-top:10px;margin-left:10px;">
+	<table width="1000" height="118" cellpadding="0" cellspacing="0">
+		<tr>
+			<th width="40" height="20">操作</th><th width="5" height="20">名称</th><th width="5" height="20">审核</th><th width="5" height="20">状态</th>
+		</tr>
+		<volist name="lists" id="list" key="k">	
+			<tr>
+			    <td width="40" height="20"><a href="javascript:void(0);" onclick="son_list({$list['typeid']})">查看</a></td>
+				<td width="5" height="20">{$list['name']}</td>
+				<td width="5" height="20">
+					<if condition="$list['status'] eq 0">
+					      待审核...
+					<elseif condition="$list['status'] eq 1"/>
+					     <font color="red">已审核</font>
+				    <elseif condition="$list['status'] eq 2"/>
+					     <font color="blue">未通过</font>
+					</if>
+				</td>
+				<td width="5" height="20">
+					<if condition="$list['status'] eq 1">
+					    <font color="red">已通过</font>
+					<else/>
+					    <a href="javascript:viod(0);" onclick="examine_video({$list['typeid']},1)">通过</a>&nbsp;&nbsp;<a href="javascript:viod(0);" onclick="examine_video({$list['typeid']},2)"><font color="blue">未通过</font></a>
+					</if>
+				</td>
+				<td width="5" height="20"><a href="{:U('admin/base/contentManageList',array('id'=>$list['typeid']))}">内容管理</a></td>
+			</tr>
+		</volist>
+		<tr>{$show}</tr>
+	</table>
+</div>
+<include file="__THEME__/admin_footer"/>
+<script type="text/javascript">
+	function frm_search(){
+		var search   = $("#js_search").val();
+		var err      = "";
+		
+		if(search==""){
+			err +="搜索标题不能为空;";
+		}
+		
+		if(err!=""){
+			ui.error(err);
+			return false;
+		}else{
+			location.href="{:U('admin/base/doColumnSearch',array('search'=>'"+search+"'))}";
+		}
+	}
+</script>

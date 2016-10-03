@@ -1,0 +1,185 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Eduline&nbsp;|&nbsp;让所有网站轻松应用视频&nbsp;|&nbsp;中国领先的视频云服务提供商</title>
+<meta name="viewport" charset="UTF-8" content="user-scalable=no"/>
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">-->
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link href="__THEME__/css/index.css" type="text/css" rel="stylesheet">
+<link href="__THEME__/css/logincss.css" type="text/css" rel="stylesheet">
+<script>
+/**
+ * 全局变量
+ */
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var UPLOAD_URL= '<php> echo UPLOAD_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var MID		  = '<php> echo $mid;</php>';
+var UID		  = '<php> echo $uid;</php>';
+var initNums  =  '<php> echo $initNums;</php>';
+var SYS_VERSION = '<php> echo $site["sys_version"];</php>';
+var _ROOT_    = '__ROOT__';
+// Js语言变量
+var LANG = new Array();
+
+</script>
+<script src="__THEME__/js/gjwjs/jquery-1.7.1.min.js" type="text/javascript"></script>
+<script src="__THEME__/js/gjwjs/title_common.js" type="text/javascript"></script>
+<script>
+window.onload=function()
+{
+	(function(){
+		login_focus(); 
+	})();
+	(function(){
+		 check_from();
+	})();
+	(function(){
+		Invited_Login();
+	})();
+	(function(){
+		var oTopics=getByClass(document,'topics1')[0]; 
+		oTopics_a(oTopics);
+	})();
+}
+</script>
+<!--[if lt IE 9]><script src="__THEME__/js/gjwjs/html5.js" type="text/javascript"></script><![endif]-->
+</head>
+<body>
+<!--登录注册开始-->
+<div class="bg_f">
+    <div class="main">
+        <div class="logo_log ptb20">
+            <a href="/" title="Eduline">Eduline</a>
+        </div>
+    </div>
+</div>
+</header>
+<div class="pic_log_bg">
+	<div class="log_box">
+    	<div class="Sign_In_s clearfix">
+            <div id="pageflip">
+                <img class="pageflip_img" src="__APP__/images/page_flip.png" />
+                
+                <if condition=" $isregok eq 1 ">
+                    <span class="text_singn_In">登录</span>
+                    <div class=msg_block>
+                        <img src="__APP__/images/subscribe_yelow.png" />
+                    </div> 
+                <else />
+                    <span class="text_singn_In">注册</span>
+                    <div class=msg_block>
+                        <img src="__APP__/images/subscribe_green.png" />
+                    </div> 
+                </if>
+            </div>
+            <div id="longin_com_a" class="longin_com_a" <if condition=" $isregok eq 1 ">style="display:block"<else />style="display:none"</if>>
+                <h3 class="text_index_h3">注册</h3>
+                <if condition=" $is_invite ">
+                <div class="user-info">
+                    <img src="{$inviteInfo.avatar_small}" width="30" height="30"/>Hi，我是{$inviteInfo.uname}，邀请你加入这里，随时分享我的最新动态。
+                </div>
+                </if>
+                <div class="longin_com_bar1">
+                	<input type="hidden" id="txtinvate" name="invate" value="{$is_invite}" />
+					<input type="hidden" id="txtinvate_key" name="invate_key" value="{$invite_code}" />
+                    <ul class="Sign_In_ul">
+                        <li>
+                            <em class="fl ft14 Sign_In_em">手&nbsp;&nbsp;机&nbsp;&nbsp;号</em>
+                            <div class="input_sbox fl">
+                            <div class="input_div fl">
+                               <input id="Mobile" type="text">
+                               <span style="display:block;">手机号..</span>
+                            </div>
+                            <input type="button" class="getCaptcha_s" id="getCaptcha" value="获取验证码">
+                            <!--<span class="fl m_l_10 bor_lan" id="getCaptcha">获取验证码</span>-->
+                            </div>
+                        </li>
+                        <li>
+                           <em class="fl ft14 Sign_In_em">验&nbsp;&nbsp;证&nbsp;&nbsp;码</em>
+                           <div class="input_sbox fl">
+                                <div class="input_div fl"><input  type="text" id="reg_captcha"><span  style="display: block;">验证码..</span></div>
+                           </div>
+                        </li>
+                        <li>
+                            <em class="fl ft14 Sign_In_em">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱</em>
+                             <div class="input_sbox fl">
+                                <div class="input_div fl">
+                                <input id="emil" type="text"><span style="display: block;">邮箱..</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <em class="fl ft14 Sign_In_em">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</em>
+                            <div class="input_sbox fl">
+                                <div class="input_div fl"><input  id="reg_pwd" type="password"><span  style="display: block;">密码..</span></div>
+                                <span class="ml20 Prompt0 color_wen9"><b class="zuosj fl"></b><em>请输入密码长度8~16位，数字、字母、字符至少包含两种</em></span>
+                            </div>
+                        </li>
+                        <li style="margin-bottom:0;">
+                            <em class="fl ft14 Sign_In_em">确认密码</em>
+                            <div class="input_sbox fl">
+                                <div class="input_div  fl">
+                                    <input id="reg_confirmPwd" type="password">
+                                    <span  style="display: block;">确认密码..</span>
+                                </div>
+                            </div> 
+                        </li>
+                         <li style="margin-bottom:0;"><p class="Prompt1_p"><span class="Prompt1 color_wen9"><em class="Error">提示信息</em></span></p></li>
+                        <li>
+                            <input type="button" id="email_register" class="ljzc_li ml85 cursor sel_w color_lv" value="立&nbsp;即&nbsp;注&nbsp;册">
+                            <div class="info_box_s" id="info"></div>
+                        </li>
+                        <li class="Agreement1">点击“立即注册”， 即表示您同意并愿意遵守Eduline&nbsp;&nbsp;<a class="color_wen">用户协议</a>&nbsp;&nbsp;和&nbsp;&nbsp;<a class="color_wen">隐私策略</a></li>
+                    </ul>
+                    <div class="book_img_b"></div>
+                </div>
+            </div>
+            <div id="longin_com_b" class="longin_com_a" <if condition=" $isregok eq 0 ">style="display:block"<else />style="display:none"</if>>
+                <h3 class="text_index_h3">登录</h3>
+                <div class="longin_com_bar2">
+                   <ul class="Sign_In_ul">
+                        <li>
+                         <em class="fl ft14 Sign_In_em">帐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</em>
+                            <div class="input_sbox fl">
+                                <div class="input_div fl "><input  id="login_uname" type="text"><span >帐号..</span></div>
+                                <span class="ml20 Prompt0 color_wen9"><b class="zuosj fl"></b><em>请输入邮箱，手机号或者用户名</em></span>
+                            </div>    
+                        </li>
+                        <li>
+                         <em class="fl ft14 Sign_In_em">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</em>
+                            <div class="input_sbox fl">
+                                 <div class="input_div  fl"><input  type="password" id="login_pwd"><span>密码..</span></div>
+                            </div>
+                        </li>
+                        <li>
+                        <a id="buy-s-1r" class="topics1 cursor color_wen9 ml80 fl"><b class="Text_error"></b>下次自动登录（两周内）</a>
+                        </li>
+                        <li>
+                            <input type="button" id="login" data-args="ispage" class="ljzc_li ml85 sel_w cursor color_lv fl" value="登&nbsp;录">
+                            <a class="color_wen cursor wjmm1 fl" style="padding-left:0;">忘记密码？</a>
+                        </li>
+                        <li class="bor_t_das"><p class="Sign_in_p">可以使用一下帐号快速登录</p></li>
+                        <li>
+                            <ol class="ml20 log_ol">
+                             <a><img src="__APP__/images/favicon_48x48.png" /></a>
+                              <a><img src="__APP__/images/Renren_logo_48×48.png"/></a>
+                              <a><img src="__APP__/images/LOGO_48x48.png" /></a>
+                              <a><img src="__APP__/images/QQ_Logo_wiki4848.png" /></a>
+                            </ol>
+                        </li>
+                    </ul>
+                    <div class="book_img_a"></div>
+                </div>
+            </div>
+        <div>
+
+</div>
+</div>
+    </div>
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

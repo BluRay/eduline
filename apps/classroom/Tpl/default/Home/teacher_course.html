@@ -1,0 +1,91 @@
+<include file="__THEME__/public_header" />
+<div id="Goods"></div>
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+            <a href="javascript:;" class="onactive" onclick="navClick(this,'getTeachercourselist')">未完成的课程</a>
+            <a onclick="navClick(this,'getisdelcourselist')" href="javascript:;">已完成的约课</a>
+        </div>
+        <!--图片列表-->
+        <ul class="user-imglist">
+
+        </ul>
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+<script>
+var btnclick="getTeachercourselist";
+var fdata;
+var magstatus;
+var mid = "{$mid}";
+$(function(){
+    var url="{:U('classroom/Home/getTeachercourselist')}";
+	//异步加载我购买的课程
+    $.ajax({
+        type: "POST",
+        url:url,
+        data:"p=1&is_del=0",
+        dataType:"json",
+        success:function(data){
+            appendHtml(data,btnclick,'getTeachercourselist');
+        }
+    });
+});
+    //头部点击事件
+    function navClick(cate,type){
+        $("#magsta").text("管理");
+        $(".Operation-list").css("display","none");
+        $(".user-imglist").html("");
+        btnclick=type;
+        magstatus=false;
+        url="{:U('classroom/Home/getTeachercourselist')}";
+        if(type=="getTeachercourselist"){
+           fdata="is_del=0";
+        }else{
+            fdata="is_del=1";
+        }
+        $("a").removeClass("onactive");
+        $(cate).addClass("onactive");
+        p=1;
+        ajaxBang(url,type,fdata);
+    }
+//点击查看更多事件
+function fallBang(cate){
+    var clickid=$(cate).attr('id');
+    var url="{:U('classroom/Home/"+clickid+"')}";
+    ajaxBang(url,clickid,fdata,function(){
+        if(magstatus==true){
+            $(".Operation-list").css("display","block");
+        }else{
+            $(".Operation-list").css("display","none");
+
+        }
+    });
+
+}
+/**
+ * 删除课程方法
+ * @param id
+ */
+function delcourse(cate,id){
+    var id=id;
+    url="{:U('classroom/Home/delCourse')}";
+    fdata="id="+id;
+    $.ajax({
+        type: "POST",
+        url:url,
+        data:fdata,
+        dataType:"json",
+        success:function(data){
+           if(data.status==1){
+               $(cate).parent().parent().parent().fadeOut();
+           }
+        }
+    });
+}
+</script>
+<include file="__THEME__/public_footer" />

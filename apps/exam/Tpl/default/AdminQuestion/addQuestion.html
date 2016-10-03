@@ -1,0 +1,316 @@
+<include file="__THEME__/admin_header" />
+<php>
+ set_time_limit(0);
+</php>
+	<style type="text/css">
+		.ico_top, .ico_btm {
+		    background: url("__THEME__/admin/image/ico_top_btm.gif") no-repeat scroll 0 0 transparent;
+		    height: 14px;
+		    width: 12px;
+		}
+		.ico_top, .ico_btm { display: inline-block; vertical-align: middle;
+		}
+		.ico_top { background-position: -12px 0;}
+		.ico_btm {background-position: -24px 0;}
+		.ico_top:hover { background-position: 0 0;}
+		.ico_btm:hover { background-position: -35px 0;}
+		.lineadd { margin-left:23px;}
+		.submit { margin:5px 0 0 35px;}
+		.displayNone { display:none;}
+		.lineD ol{width:900px;}
+		.lineD ol li{width:400px; margin-right:20px; float:left;}
+				
+		.box-answer{width:900px;margin:5px;}
+		.box-answer li{width:430px;float:left;margin-right:20px;} 
+		.box-answer li input{width:265px;margin:0 5px;} 
+		.box-answer li i{cursor:pointer;} 
+		
+	</style>
+	
+	<div id="container" class="so_main">
+    <div class="page_tit">
+        <div class="right">
+            <neq name="back_id" value="-1"><a href="{:U('exam/AdminQuestion/index')}" class="btn_a"><span>返回</span></a></neq>
+        </div>
+        {$pageTitle}
+    </div>
+    <php>if(!empty($pageTab)):</php>
+    
+    <div class="tit_tab">
+        <ul>
+        <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+        <volist name='pageTab' id='t'>
+            <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+        </volist>
+        </ul>
+    </div>
+    <php>endif;</php>
+    <form method="POST" action="{:U('exam/AdminQuestion/doAddQuestion')}" id="detail_form" name="detail_form" onsubmit="return checkForm(this);">
+    	<input type="hidden" name="question_id" value="{$_GET['question_id']}" />
+    	<div class="form2">
+    		<dl class="lineD" id="question_category">
+		      	<dt><font color="red"> * </font>试题分类：</dt>
+				<dd>
+					<select name="question_category" id="question_category" class="s-select" style="width:200px;">
+						<option value="0" >选择试题分类</option>
+						<foreach name="question_category" item="vo">
+							<option value="{$vo.question_category_id}" <php> if($vo['question_category_id'] == $question['question_category']){</php> selected <php>}</php> >{$vo.question_category_name}</option>
+						</foreach>
+					</select>
+				</dd>
+				
+		    </dl>
+		    <dl class="lineD">
+		    	<dt><font color="red"> * </font>试题类型：</dt>
+		    	<dd>
+		    		<select name="question_type" id="question_type" class="s-select" style="width:200px;" onchange="showlist()">
+			    		<option value="0" selected >选择试题类型</option>
+						<foreach name="question_type" item="vo">
+							<option value="{$vo.question_type_id}" <php> if($vo['question_type_id'] == $question['question_type']){ </php>selected<php>}</php> >{$vo.question_type_title}</option>
+						</foreach>
+					</select>
+				</dd>
+		    </dl>
+			
+		    <dl <php> if($question && $question['question_type']!=3): </php> class="lineD" <php> else: </php> class="lineD displayNone" <php> endif; </php> id="question_option_count">
+				<dt><font color="red"> * </font>选项数目：</dt>
+		    	<dd>
+			    	<select name="question_option_count" id="option_count" class="s-select" style="width:200px;" onchange="optionList(this);">
+						<option value="2" <php> if($option_count == '2'): </php> selected <php> endif; </php>>2</option>
+						<option value="3" <php> if($option_count == '3'): </php> selected <php> endif; </php>>3</option>
+						<option value="4" <php> if($option_count == '4'): </php> selected <php> endif; </php>>4</option>
+						<option value="5" <php> if($option_count == '5'): </php> selected <php> endif; </php>>5</option>
+						<option value="6" <php> if($option_count == '6'): </php> selected <php> endif; </php>>6</option>
+					</select>
+				</dd>
+			</dl>
+			
+			<dl class="lineD" id="question_status">
+				<dt><font color="red"> * </font>试题状态：</dt>
+		    	<dd>
+			    	<select name="question_status" id="question_status" class="s-select" style="width:200px;">
+						<option value="1" <php> if($question['question_status'] == '1'): </php> selected <php> endif; </php>>可用</option>
+						<option value="2" <php> if($question['question_status'] == '2'): </php> selected <php> endif; </php>>禁用</option>
+					</select>
+				</dd>
+				
+			</dl>
+			
+			<dl class="lineD linepoint" id="question_point">
+				<dt><font color="red"> * </font>默认分数：</dt>
+				<dd><input type="text" class="s-txt" style="width:200px;" <php> if($question['question_point']): </php> value="{$question['question_point']}" <php> else: </php> value="2" <php> endif; </php> id="question_point" name="question_point" /> 分</dd>
+				
+			</dl>
+			
+			<dl class="lineD" id="question_qsn_guide">
+				<dt>答案解析：</dt>
+				<dd><textarea  cols="80" rows="10" id="question_qsn_guide" name="question_qsn_guide">{$question['question_qsn_guide']}</textarea></dd>
+			</dl>
+			
+			<dl class="lineD linecontent" >
+				<dt><font color="red"> * </font>题干描述：</dt>
+				<dd>
+					{:W('Editor',array('contentName'=>'question_content','tool'=>'custom','value'=>$question['question_content'],'width'=>'772px'))}
+					<ul id="box_answer" class="box-answer">	
+						<php>if($_GET['question_id'] && $question['question_type'] == 3 ){</php>
+						<volist name="option" id="vo">
+							<li style="width:400px;">
+								<em>答案{$vo.option_item_id}</em>
+								<input name="tk_question_answer{$vo.option_item_id}" type="text" value="{$vo.option_content}">
+								<i data-num="{$vo.option_item_id}" style="cursor:pointer" onclick="removeLi(this)" href="javascript:void(0)">删除</i>
+							</li>
+						</volist>
+						<php>}</php>
+					</ul>
+				</dd>
+			</dl>
+			
+			<dl <php> if( $question && ($question['question_type']==1 || $question['question_type']==4) ): </php> class="lineD" <php> else: </php> class="lineD displayNone" <php> endif; </php>  id="single_option">
+				<dt><font color="red"> * </font>答案选项：</dt>
+				<php>if($_GET['question_id']){</php>
+					<dd>
+						<ol type="A">
+							<volist name="option" id="vo">
+							<li>
+								<input type="radio" name="opt" <php>if($vo['is_right'] == 1) echo 'checked';</php> value="{$vo.option_item_id}">
+								<input style="width:300px;" type="text" value="{$vo.option_content}"  name="single_question_answer{$vo.option_item_id}" class="text0{$vo.option_item_id}">
+							</li>
+							</volist>
+						</ol>
+					</dd>
+				<php>}else{</php>
+					<dd><ol type="A"></ol></dd>
+				<php>}</php>
+			</dl>
+			
+ 			<dl <php> if($question && $question['question_type']==2): </php> class="lineD" <php> else: </php> class="lineD displayNone" <php> endif; </php> id="many_option">
+				<dt><font color="red"> * </font>答案选项：</dt>
+				<php>if($_GET['question_id']){</php>
+					<dd>
+						<ol type="A">
+							<volist name="option" id="vo">
+							<li>
+								<input type="checkbox" name="opt[]" <php>if($vo['is_right'] == 1) echo 'checked';</php> value="{$vo.option_item_id}">
+								<input style="width:300px;" type="text" value="{$vo.option_content}" name="many_question_answer{$vo.option_item_id}" class="text0{$vo.option_item_id}">
+							</li>
+							</volist>
+						</ol>
+					</dd>
+				<php>}else{</php>
+					<dd><ol type="A"></ol></dd>
+				<php>}</php>
+			</dl>
+			
+			<div class="page_btm">
+		         <input type="submit" class="btn_b" value="保存">
+		    </div>
+    	</div>
+    </form>
+    <script type="text/javascript">
+		var single=document.getElementById('single_option');
+		var many=document.getElementById('many_option');
+		var olBox=single.getElementsByTagName('ol')[0];
+		var emBox=many.getElementsByTagName('ol')[0];
+		var selNum=document.getElementById('option_count').value;
+		var qid = {$_GET['question_id']|default=0};
+		if( qid == 0 ) {
+			for(var i=0;i<selNum;i++){
+				olBox.innerHTML+='<li><input type="radio" name="opt" value="'+(i+1)+'"><input style="width:300px;" type="text" name="single_question_answer'+(i+1)+'" class="text0'+(i+1)+'"></li>';
+				emBox.innerHTML+='<li><input type="checkbox" name="opt[]" value="'+(i+1)+'"><input style="width:300px;" type="text" name="many_question_answer'+(i+1)+'" class="text0'+(i+1)+'"></li>';
+			}
+		}
+		function optionList(element){
+			var selNum=element.value;
+			olBox.innerHTML='';	
+			emBox.innerHTML='';
+			for(var i=0;i<selNum;i++){
+				olBox.innerHTML+='<li><input type="radio" name="opt" value="'+(i+1)+'"><input style="width:300px;" type="text" name="single_question_answer'+(i+1)+'" class="text0'+(i+1)+'"></li>';
+				emBox.innerHTML+='<li><input type="checkbox" name="opt[]" value="'+(i+1)+'"><input style="width:300px;" type="text" name="many_question_answer'+(i+1)+'" class="text0'+(i+1)+'"></li>';
+			}
+		}
+		var ans=document.getElementById('box_answer');
+		function removeLi(elem){
+			var elementLi=elem.parentNode;				//获取当前a元素的父节点
+			ans.removeChild(elementLi);				    //删除这个li节点
+			var val = $(elem).data('num');
+			var str = E.getData();
+			if( str.indexOf(val) != -1 ) {
+				E.setData(str.replace('<img class="tkimg" alt="'+val+'" />' , ''));
+			}
+		}
+		
+		function showlist(){
+            var o = document.getElementById('question_type');
+            var strValue = o.options[o.options.selectedIndex].value;
+            if(strValue == "1" || strValue == "4") {
+                document.getElementById('question_option_count').style.display = "block";
+                document.getElementById('single_option').style.display = "block";
+                document.getElementById('many_option').style.display = "none";
+                if( strValue == "4" ) {
+                	document.getElementById('option_count').disabled = true;
+                }
+            }
+            else if(strValue == "2") {
+                document.getElementById('question_option_count').style.display = "block";
+                document.getElementById('single_option').style.display = "none";
+                document.getElementById('many_option').style.display = "block";
+                document.getElementById('option_count').disabled = false;
+            }
+			else if (strValue == "0") {
+				document.getElementById('question_option_count').style.display = "none";
+                document.getElementById('single_option').style.display = "none";
+                document.getElementById('many_option').style.display = "none";
+			}
+			else {
+                document.getElementById('question_option_count').style.display = "none";
+                document.getElementById('single_option').style.display = "none";
+                document.getElementById('many_option').style.display = "none";
+            }
+        }
+
+		function checkForm(form){
+			var _this = $(form);
+			var question_category = _this.find('select[name="question_category"]').val();
+			var question_type     = _this.find('select[name="question_type"]').val();
+			var question_content  = E.getData();
+			var opt               = _this.find('input[name="opt"]').val();
+			if(question_category == '0'){
+				ui.error("请选择试题分类");
+				return false;
+			}
+			if(question_type == '0'){
+				ui.error("请选择试题类型");
+				return false;
+			}
+			if( !question_content ){
+				ui.error("请填写题干描述");
+				return false;
+			}
+			
+			if(question_type == '1' || question_type == '4'){
+				if(  !$("input:radio[name='opt']:checked").length ){
+					ui.error("请选择正确答案");
+					return false;
+				}
+			}
+			
+			if( question_type == '2' ){
+				if(  !$("input:checkbox[name='opt[]']:checked").length ){
+					ui.error("请选择正确答案");
+					return false;
+				}
+			}
+			
+		}
+
+		
+    	function callback(data){
+    		$("#"+data.input_id+"_cover").remove();
+    		$("#image_"+data.input_id).append(
+    			'<div id='+data.input_id+'_cover>'
+    			+'<img style="max-width:100px;padding:2px; border:1px solid #ccc" src='+UPLOAD_URL+'/'+data.src+' />'
+    			+'</div>'
+    		).find('input:file').val('');
+    		$("#"+data.input_id+"_ids").val(data.attach_id);
+    	}
+    	function filecallback(data){
+    		$("#old_coursefile_ids").remove();
+    		$("#coursefile_ids").val(data.attach_id);
+    	}
+    	$(document).ready(function(){
+			$('#detail_form input:file').click(function(){
+				$('input:file').val('');
+			});
+    		$('#original_recommend').change(function(){ 
+    			var che = $("#original_recommend").attr("checked");
+			   	if(che == true){
+			   		$("#re_sort").removeAttr("readonly");
+			   	} else {
+			   		$("#re_sort").attr("readonly",'readonly');
+			   	}
+			});
+			$('#best_recommend').change(function(){ 
+    			var che = $("#best_recommend").attr("checked");
+			   	if(che == true){
+			   		$("#be_sort").removeAttr("readonly");
+			   	} else {
+			   		$("#be_sort").attr("readonly",'readonly');
+			   	}
+			});
+			
+			$('#is_tlimit').change(function(){ 
+    			var che = $("#is_tlimit").attr("checked");
+			   	if(che == true){
+			   		$("#form_limit_discount,#form_starttime,#form_endtime").show();
+			   		$("#limit_discount,#starttime,#endtime").removeAttr("readonly");
+			   	} else {
+			   		$("#form_limit_discount,#form_starttime,#form_endtime").hide();
+			   		$("#form_limit_discount,#form_starttime,#endtime").attr("readonly","readonly");
+			   		$("#limit_discount,#starttime,#endtime").val('');
+			   	}
+			});
+    	});
+
+		
+	</script>
+<include file="__THEME__/admin_footer" />

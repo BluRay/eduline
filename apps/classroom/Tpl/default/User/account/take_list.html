@@ -1,0 +1,99 @@
+<include file="__THEME__/public_header" />
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+        <include file="_tab" />
+        </div>
+        <div class="user-Release" >
+            <div class="box_block Manage_all" style="display:block">
+            	<div class="mt10b20 clearfix h55">
+                		<form method="get" action="{:U('classroom/User/account', array('tab'=>3))}" id="account-find-form">
+                            <span class="selected_title fl">
+                           	 时间：
+                            </span>
+                            <div class="myInput1 fl w130" style="padding:0;height:30px">
+                            <input type="text" style="height:30px;top:0" onfocus="core.rcalendar(this,'');" class="rcalendar_select" readonly name="st" value="{$_GET['st']}" />
+                            </div>
+                            <span class="fl"> &nbsp;&nbsp;到&nbsp;&nbsp;</span>
+                            <div class="myInput1 fl w130" style="padding:0;height:30px">
+                                <input type="text" style="height:30px;top:0" onfocus="core.rcalendar(this,'');" class="rcalendar_select" readonly name="et" value="{$_GET['et']}" />
+                            </div>
+                            <a class="sel_w fl ml15" id="find-submit" href="javascript:;">查询</a>
+                        </form>
+                  </div>
+                   <style>
+		  table.table_ye tr td{border-top:1px solid #e3e3e3;border-left:1px solid #e3e3e3;}
+		  </style>
+                  <table class="table_ye" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-right:1px solid #e3e3e3;border-bottom:1px solid #e3e3e3;">
+                  	<thead>
+                    	<tr><td width="10%">序号</td>
+                        <td width="25%">申请时间</td>
+                        <td width="25%">提现金额</td>
+                        <td width="40%">状态</td>
+                    </tr></thead>
+                    <tbody>
+                    <?php
+                    $statusTxts = array('处理中', '处理中', '完成', '失败', '取消');
+                    foreach($data['data'] as $i=>$rs):?>
+                    <tr>
+                    	<td><?php echo ($i+1)*$data['nowPage']?></td>
+                        <td>{:friendlyDate($rs['ctime'])}</td>
+                        <td>{:unLast0($rs['wnum'])}学币</td>
+                        <td{$rs['status']<2?' class="lan_txt"':''}><?php echo $statusTxts[$rs['status']];echo $rs['status']==0?'　<a href="javascript:;" onclick="cancelWithdraw('.$rs['id'].');" style="color:#06A7E1">取消</a>':'';?></td>
+                    </tr>
+                    <?php endforeach;?>
+                  </tbody></table>
+                  <div class="mt10 account_page">累计成功提现：<em class="red_txt">{:unLast0($total)}</em>学币<p>共{$data.totalRows}条　{$data.html}</p></div>
+            </div>
+        </div>
+
+        <!--图片列表-->
+        <ul class="user-imglist">
+        </ul>
+
+    </div>
+    <!--右-->
+    <include file="../../User/_right" />
+</div>
+
+<script type="text/javascript">
+$('input.rcalendar_select,#rcalendar_y,#rcalendar_m,#ryears,#rmonths').live('click',function(e){
+	return false;
+});
+$(document).click(function(){
+	typeof rcalendar_close != 'undefined' && rcalendar_close();
+});
+$('#account-find-form').submit(function(e) {
+	if($("input.rcalendar_select").val() == '') notes('请选择查询时间', 'failure');
+    var url = $(this).attr('action')+'';
+	if(url.indexOf('?')>-1){
+		window.location = url+'&'+$(this).serialize();
+	}else{
+		window.location = url+'?'+$(this).serialize();
+	}
+	return false;
+}).find('#find-submit').click(function(){
+	$(this).parents('form').submit();
+});
+function cancelWithdraw(id){
+	if(!confirm('确认取消提现？')) return false;
+	$.get('{:U("classroom/User/account",array("tab"=>3,"id"=>"'+id+'"))}',null, function(data){
+		if(data.status){
+			notes('取消成功', 'success');
+			setTimeout(function(){
+				window.location.reload();
+			}, 2000);
+		}else{
+			var errMsgs = ['取消失败',null,'没有找到提现记录',null,'学币解冻失败',null,'提现已完成或已经关闭'];
+			data.info = parseInt(data.info);
+			var msg  = errMsgs[data.info] ? errMsgs[data.info] : '未知错误';
+			notes('错误：'+msg, 'failure');
+		}
+	}, 'json');
+}
+</script>
+
+<include file="__THEME__/public_footer" />

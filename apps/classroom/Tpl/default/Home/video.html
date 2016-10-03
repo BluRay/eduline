@@ -1,0 +1,229 @@
+<include file="__THEME__/public_header" />
+<div id="Goods"></div>
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+            <a href="javascript:;" class="onactive" onclick="navClick(this,'getbuyvideoslist')">我购买的课程</a>
+            <a onclick="navClick(this,'getcollectvideolist')" href="javascript:;">我收藏的课程</a>
+            <div class="user-Release-l"> 
+	            <a href="javascript:;" class="operation" onclick="manageBang(this)">
+	            	<i></i><span class="fl" id="magsta">管理</span>
+	            </a> 
+            </div>
+        </div>
+        <!--图片列表-->
+        <ul class="user-imglist">
+        </ul>
+
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+
+
+<script>
+
+var btnclick="getbuyvideoslist";
+var fdata;
+var magstatus;
+var mid = "{$mid}";
+$(function(){
+    var url="{:U('classroom/Home/getbuyvideoslist')}";
+    $(".user-Release").hide();
+	//异步加载我购买的课程
+    $.ajax({
+        type: "POST",
+        url:url,
+        data:"p=1",
+        dataType:"json",
+        success:function(data){
+            appendHtml(data,btnclick,'getbuyvideoslist');
+        }
+    });
+
+
+    //加入购物车
+    $('.user-imglistbt .text_wrong').live('click',function(){
+                if(mid <=0){
+                    reg_login();
+                    return false;
+                }
+                var _this = $(this);
+                var startObj  = $('#Goods');  //开始飘动元素
+                var arriveObj = $('#albumShop');  //到达的购物车
+                var left = arriveObj.offset().left;
+                var top  = arriveObj.offset().top;
+                if(_this.data('locked')){
+                    return;
+                }
+                if(_this.attr('type')){
+                    notes('你已购买','failure');
+                    return false;
+                } 
+                _this.data('locked', true);
+                $.get(U('classroom/Video/addVideoMerge'),{id:_this.attr('data-id')},function(data){
+                    if(data.status <=0){
+                        notes(data.info,'failure');
+                        _this.data('locked', false);
+                        return false;
+                    }
+                    _this.removeClass('text_wrong').addClass('text_true');
+                    startObj.css({"left":_this.offset().left+'px',"top":_this.offset().top+'px'}).show().stop().animate({"left":(left+15)+'px',"top":top+'px'},500,function(){
+                        startObj.stop().animate({'top':(top+20)+'px'},300,function(){
+                            startObj.fadeOut();//飘动淡出
+                            var albumNum = $('#albumNum').text();
+                            $('#albumNum').text(parseInt(albumNum)+1);
+                            _this.data('locked', false);
+                        }); //arriveObj
+                    });//start
+                  },'json')    //getjson
+                }); //click
+
+
+
+              //从课程组合中删除
+                $('.user-imglistbt .text_true').live('click',function(){
+                    if(mid <=0){
+                        reg_login();
+                        return false;
+                    }
+                    var _this = $(this);
+                    if(_this.data('locked')){
+                        return;
+                    }
+                    if(_this.attr('type')){
+                        notes('你已购买','failure');
+                        return false;
+                    }
+                    _this.data('locked', true);
+                    $.get(U('classroom/Video/delVideoMerge'),{id:_this.attr('data-id')},function(data){
+                        if(data.status <=0){
+                            notes(data.info,'failure');
+                            _this.data('locked', false);
+                            return false;
+                        }
+                        _this.removeClass('text_true').addClass('text_wrong');
+                        var albumNum = $('#albumNum').text();
+                        $('#albumNum').text(parseInt(albumNum)-1);
+                        _this.data('locked', false);
+                     },'json')
+                  })
+
+    
+});
+    //头部点击事件
+    function navClick(cate,type){
+        $("#magsta").text("管理");
+        $(".Operation-list").css("display","none");
+        $(".user-imglist").html("");
+        btnclick=type;
+        magstatus=false;
+        if(type!="getuploadvideoslist"){
+            $(".user-Release").hide();
+        }
+        if(type=="getbuyvideoslist"){
+            url="{:U('classroom/Home/getbuyvideoslist')}";
+        }else if(type=="getcollectvideolist"){
+
+            url="{:U('classroom/Home/getcollectvideolist')}";
+        }else if(type=="getuploadvideoslist"){
+            $("#sel_ok").removeClass("current");
+            $("#sel_w").addClass("current");
+            $(".user-Release").show();
+            fdata="type=1";
+            url="{:U('classroom/Home/getuploadvideoslist')}"
+        }else{
+            url="{:U('classroom/Home/getbuyvideoslist')}";
+        }
+        $("a").removeClass("onactive");
+        $(cate).addClass("onactive");
+        p=1;
+        ajaxBang(url,type,fdata);
+    }
+
+    
+function manageBang(cate){
+	var manageval=$(cate).find('#magsta').text();
+    if(manageval=="管理"){
+        magstatus=true;
+        $(cate).find('#magsta').text("完成");
+        $(".Operation-list").css("display","block");
+    }else{
+        magstatus=false;
+        $(cate).find('#magsta').text("管理");
+        $(".Operation-list").css("display","none");
+    }
+}
+//点击查看更多事件
+function fallBang(cate){
+    var clickid=$(cate).attr('id');
+    var url="{:U('classroom/Home/"+clickid+"')}";
+    ajaxBang(url,clickid,fdata,function(){
+        if(magstatus==true){
+            $(".Operation-list").css("display","block");
+        }else{
+            $(".Operation-list").css("display","none");
+
+        }
+    });
+
+}
+function sewBang(cate){
+    url="{:U('classroom/Home/getuploadvideoslist')}";
+    $("#magsta").text("管理");
+    $(".Operation-list").css("display","none");
+    var sewId=$(cate).attr("id");
+    magstatus=false;
+    if(sewId=="sel_ok"){
+        fdata="type=0";
+        $(".user-imglist").html("");
+        p=1;
+        $("#sel_w").removeClass("current");
+        $("#sel_ok").addClass("current");
+    }else{
+        fdata="type=1";
+        $(".user-imglist").html("");
+        p=1;
+        $("#sel_ok").removeClass("current");
+        $("#sel_w").addClass("current");
+    }
+    clickid="getuploadvideoslist";
+
+    ajaxBang(url,clickid,fdata);
+}
+/**
+ * 删除课程方法
+ * @param id
+ */
+function delalbum(cate,id){
+    var id=id;
+    url="{:U('classroom/Album/delalbum')}";
+    //删除我购买的专辑
+    if(btnclick=="getbuyvideoslist"){
+        fdata="type=1&rtype=1&id="+id;
+    }else if(btnclick=="getcollectvideolist"){
+        fdata="type=1&rtype=2&id="+id;
+    }else if(btnclick=="getuploadvideoslist"){
+        fdata="type=1&rtype=3&id="+id;
+    }
+    $.ajax({
+        type: "POST",
+        url:url,
+        data:fdata,
+        dataType:"json",
+        success:function(data){
+           if(data.status==1){
+               $(cate).parent().parent().parent().fadeOut();
+           }
+        }
+    });
+
+
+
+}
+
+</script>
+<include file="__THEME__/public_footer" />

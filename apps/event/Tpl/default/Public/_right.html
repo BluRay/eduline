@@ -1,0 +1,75 @@
+
+
+<div class="fr wenda-slider"> <a  id="js-newques" class="newques-btn " onclick="addPost()" href="javascript:;"><i></i>发新活动</a>
+    
+<div class="wenda-mkclass wenda-form clearfix" style="padding:10px 0px 10px 10px;">
+        <form name="myForm" target="_blank" action="{:U('event/Index/index')}" class="searchresult course-sidebar-search " method="post" onclick="return checkWendaSearch()" style="margin-bottom:0">
+         
+            <input type="text" value="" placeholder="输入你感兴趣的活动" id="stu_wdsearch" autocomplete="off" class="searchcon" name="title">
+            <input type="submit" class="btn_search js-search" value="">
+        </form>
+        <div class="wenda-mkclasscon clearfix">
+            <foreach name="taglist" item="t">
+            <a class="hot-label" href="{:U('classroom/Search/wenda',array('searchtid'=>$t['tag_id'],'type'=>1))}" target="_blank">{$t.name}</a>
+            </foreach>
+        </div>
+    </div>
+    <php>if($is_hot_list){</php>
+    <div class="wenda-mkclass">
+        <h2>推荐活动</h2>
+        <div class="reevents clearfix">
+        <volist name="is_hot_list" id="li"> 
+             <div class="e-list-box">
+                  <div class="image"><a href="{:U('//eventDetail',array(uid=>$li['uid'],id=>$li['id']))}"><img src="{$li['coverId']}" /></a></div>
+                  <div class="content">
+                      <dl>
+                        <dt><strong><a href="{:U('//eventDetail',array(uid=>$li['uid'],id=>$li['id']))}"  title="{$li.title}" >{:limitNumber($li['title'],9)}</a></strong></dt> 
+                        <dd>类型：{$li.type}</dd>
+                        <dd>地点：{$li.address}</dd>
+                      </dl>
+                  </div>
+             </div>
+	     </volist>
+        </div>
+    </div>
+    <php>}</php>
+    <div style="margin:10px 0px 10px 0px;">
+        <div id="inner" style="height:150px;">
+            <div class="switch-nav">
+            <a href="#" onclick="return false;" class="prev"><i class="ico i-prev"></i><span class="hide-clip">上一个</span></a>
+            <a href="#" onclick="return false;" class="next"><i class="ico i-next"></i> <span class="hide-clip">下一个</span></a>
+            </div>
+               <volist name="ad_list" id="vo">
+                <div class="event-item" style="<eq name="i" value="1">display: block;<else /> display:none</eq> "> 
+                    <a target="_blank" href="{$vo.bannerurl}"> <img src="{:getAttachUrlByAttachId($vo['banner'])}" style="width:260px;height:150px;"/></a>
+                </div>
+               </volist>
+            <div class="switch-tab">
+                <php>$i=0;</php>
+                <foreach name="ad_list" item="al">
+                <php>$i+=1;
+                if($i==1){
+                </php>
+                <a href="#" onclick="return false;">{$i}</a>
+                <php>}else{</php>
+                <a href="#" onclick="return false;">{$i}</a>
+                <php>}</php>
+                </foreach>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__THEME__/js/jquery.nav.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $('#inner').nav({ t: 6000, a: 1000});
+</script>
+<script>
+    function addPost(){
+        if(MID=='0'){
+            reg_login();
+            return;
+        }
+        window.location="{:U('/Index/addEvent')}";
+    }
+
+</script>

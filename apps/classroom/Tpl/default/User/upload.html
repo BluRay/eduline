@@ -1,0 +1,59 @@
+<include file="__THEME__/public_header" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+<script>
+window.onload=function()
+{
+	 //公用库
+	higher_common();
+	//个人中心左侧菜单
+	(function(){
+	  home_titlista();
+	})();
+	
+    //导航
+	/*(function(){
+		var oNavBar=getByClass(document,'Nav_bar')[0];
+		var aBtn=getByTagName(oNavBar,'li');
+		
+		for(var i=0; i<aBtn.length; i++)
+		{
+			aBtn[i].onclick=function()
+			{
+				for(var i=0; i<aBtn.length; i++)
+				{
+					aBtn[i].className='';
+				}
+				this.className='sel_cent_r';
+			}
+		}
+	})(); */
+};
+</script>
+
+<div class="main mt35 clearfix">
+	<div class="plr40 main_box_index fl">
+        <h4 class="ft18 pt20">个人中心</h4>
+        <include file="_left" />
+        <div class="cent_r_box clearfix">
+            <div class="nva_cent">
+                <ul class="Nav_bar fl">
+                    <li class="sel_cent_r">上传课程</li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <div class="pb40 txt_c clearfix">
+                <a type="file" class="up_pic" href="{:U('classroom/User/upload_z')}">
+                上传视频课程
+                </a>
+                <p>上传视频课程，即表示您已同意<a class="green_txt" href="javascript:;">Eduline上传服务条款</a>，请勿上传色情，反动等违法视频</p>
+                <p class="lh30 mt20"><a class="green_txt" href="javascript:;">哪些视频课程是禁止发布的</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="green_txt" href="javascript:;">上传原创视频课程获得分成</a></p>
+                <p class="bor_t mt20 pt20 plr20 ml20 txt_l lh30">本网站主办方已经对本网站内全部正版授权的视频课程内容，采取了必要的反盗版和防盗链等技术措施，并且添加、设置权利管理电子信息。任何单位或个人，未经本网站主办方的许可，不得以任何形式（包括但不限于：盗链，冗余盗取等）直接或间接地盗取相关视频课程内容、不得以任何方式（包括但不限于：隐藏或者修改本网站域名、播放器软件、Eduline标识等）删除或者改变相关视频课程内容的权利管理电子信息。否则，本网站主办方将保留进一步追究侵权者法律责任的权利。</p>
+            </div>  
+        </div>
+    </div>
+    <include file="_right" />
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

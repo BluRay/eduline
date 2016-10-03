@@ -1,0 +1,15 @@
+<div class="user-nav">
+    <h2>消息管理</h2>
+
+    <dl>
+
+        <dd <php>if((MODULE_NAME=="Message" && ACTION_NAME=="index") || ACTION_NAME=="detail"){echo "class='hover'";}</php> ><a href="{:U('public/Message/index')}">我的私信</a></dd>
+        <dd  <php>if(MODULE_NAME=="Message" && ACTION_NAME=="comment"){echo "class='hover'";}</php>>
+        <a href="{:U('public/Message/comment')}">收到的评论</a>
+        </dd>
+        <dd  <php>if(MODULE_NAME=="Message" && ACTION_NAME=="notify"){echo "class='hover'";}</php>>
+        <a href="{:U('public/Message/notify')}">系统消息</a>
+        </dd>
+    </dl>
+
+</div>

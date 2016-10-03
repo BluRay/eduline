@@ -1,0 +1,227 @@
+<include file="__THEME__/public_header" />
+<div class="worap position-rt"> 
+  <!--左--> 
+  <include file="../User/_left" /> 
+  <!--中 -->
+  <div class="user-con fl user-pbottom">
+    <div class="user-con-title"> <a href="javascript:;" class="onactive">学币充值</a> <a href="javascript:;" class="">会员充值</a> </div>
+    <div class="user-Release" >
+      <div class="rec_box_r Manage_all" style="display:block;">
+        <form action="{:U('classroom/Pay/recharge')}" method="post" target="_blank">
+          <input type="hidden" value="alipay" name="pay" />
+          <input type="hidden" value="0" name="money" />
+          <div class="clearfix zfb_zxzf h55"> <a class="zfb mr15" href="javascript:;" val="alipay">支付宝<em class="ch_z"></em></a> <a class="zxzf mr15" href="javascript:;" val="unionpay">在线支付<em></em></a> </div>
+          <span class="selected_title selected_title_a color_hui fl"> 充值金额: </span>
+          <div class="btn_je_box clearfix">
+            <?php $array = explode("\n",getAppConfig('rechange_default'));?>
+            <?php foreach($array as $i=>$val):?>
+            <?php if($i>3) break;?>
+            <?php $val = intval(trim($val));?>
+            <a class="btn_hui_h" href="javascript:;" val="{$val}">{$val}元</a>
+            <?php endforeach;?>
+          </div>
+          <p class="red_txt ml100">备注：1学币=1元人民币</p>
+          <div class="clearfix h55 mt15"> <span class="selected_title selected_title_a color_hui fl"> 自定义金额: </span>
+            <div class="myInput1 border fl w175">
+              <input type="text" class="head_search upload_input_a" id="custom_money" rel="请输入学币数量">
+              <span class="w175"> 请输入学币数量...</span> </div>
+            <span class="lh30 ml15">学币</span> </div>
+          <hr class="das_l">
+          </hr>
+          <p>需要花费:<em id="lan_txt_cost" class="lan_txt ft18 ml15">10</em>元</p>
+          <a id="buy-s-1r" class="topics_up color_wen9 fl pos_r"> <b class="Test_True"></b> 同意<em class="green_txt">《Eduline虚拟货币服务协议》</em> </a> <a id="btn_ljcz" class="btn_big mt30" onclick="rechange(this);">立即充值</a>
+        </form>
+      </div>
+      <!-- 会员充值 -->
+      <div class="rec_box_r Manage_all" style="display:none;">
+        <form action="{:U('classroom/Pay/rechargeVip')}" method="post" target="_blank">
+          <input type="hidden" value="alipay" name="pay" />
+          <input type="hidden" value="0" name="type" />
+          <div class="clearfix h55">
+            <p > <span class="selected_title f9 fl">Eduline帐号:</span><em class="fb ">{$user['uname']}</em> </p>
+            <p class="lh30 ml100">您当前身份：
+              <?php if($learnc['vip_type']==0):?>
+              非VIP会员
+              <?php else: echo $learnc['vip_type']==1?'月费VIP会员':'年费VIP会员';echo $learnc['vip_expire']>0?date('，过期时间：Y-m-d', $learnc['vip_expire']):'';endif;?>
+            </p>
+          </div>
+          <div class="clearfix mt15 h55"> <span class="selected_title selected_title_a color_hui fl">支付方式: </span>
+            <div class="clearfix zfb_zxzf h55"> <a class="zfb mr15" href="javascript:;" val="alipay">支付宝<em class="ch_z"></em></a> <a class="zxzf mr15" href="javascript:;" val="unionpay">在线支付<em></em></a> </div>
+          </div>
+          <span class="selected_title selected_title_a mt10 color_hui fl"> 开通时长: </span>
+          <!---
+          <div class="mt10 nf_bg_div h78 clearfix">
+            <div class="nf_bg nf_bg1 border_bg fl select_time" val="0" price="{$vipPrice[0]}"><a href="javascript:;">&nbsp;&nbsp;年费<em class="red_txt">{$vipPrice[0]}</em>元(原价{$vipPrice[1]})</a><b class="nf_bg_em"></b></div><p class="nf_bg_p">&nbsp;&nbsp;&nbsp;推荐购买，仅{$vipPrice[3]}元/月，节省{$vipPrice[1]-$vipPrice[0]}元</p>
+            <div class="nf_bg nf_bg2 fl select_time" val="1" price="{$vipPrice[2]}"><a class="f_p" href="javascript:;"><em class="fl">&nbsp;&nbsp;按月</em>
+              <input class="w70" id="recharge_month" name="month" type="text" maxlength="2">
+              个月</a><b></b></div>
+            
+            <p class="nf_bg_p" style="display:none">按月购买，每月只需{$vipPrice[2]}元</p>
+          </div>--->
+          
+          <div class="mt10 nf_bg_div clearfix">
+
+                                 <div class="nf_bg nf_bg1 border_bg fl select_time" val="0" price="{$vipPrice[0]}" style="margin-right:15px; width:145px;"><a href="javascript:;" class="font12" >&nbsp;&nbsp;年费<em class="red_txt">{$vipPrice[0]}</em>元(原价{$vipPrice[1]})</a><b class="nf_bg_em"></b></div>
+                                 <div class="nf_bg nf_bg2 fl select_time" val="1" price="{$vipPrice[2]}"><a class="f_p font12 " href="javascript:;" style="background:none;"><span class="vip_month">按月<input class="w70" id="recharge_month" name="month" type="text" maxlength="2">月</span></a><b></b></div>
+                             <p class="nf_bg_p">推荐购买，仅{$vipPrice[3]}元/月，节省{$vipPrice[1]-$vipPrice[0]}元</p>
+                             <p class="nf_bg_p" style="display:none">按月购买，每月只需{$vipPrice[2]}元</p>
+                            </div>
+                            
+          <div class="clearfix h55 mt15" style="display:none"> <span class="selected_title selected_title_a color_hui fl"> 使用优惠码: </span>
+            <div class="myInput1 fl w175">
+              <input type="text" class="head_search upload_input_a" rel="输入关键字">
+            </div>
+          </div>
+          <div class="clearfix h55 mt15"> <span class="selected_title selected_title_a color_hui fl"> 需要花费: </span>
+            <p><em class="red_txt ft18" id="price_show">0</em>元</p>
+          </div>
+          <a id="buy-s-1r" class="topics_up color_wen9 fl pos_r"> <b class="Test_True"></b> 同意<em class="green_txt">《Eduline虚拟货币服务协议》</em> </a> <a id="btn_ljcz" class="btn_big mt30" onclick="rechangeVip(this)">立即充值</a>
+        </form>
+      </div>
+      <!-- 会员充值 --> 
+    </div>
+  </div>
+  <!--右--> 
+  <include file="../User/_right" /> </div>
+<script type="text/javascript">
+$(function(){
+	//头部选择充值VIP类型
+	$(".user-con-title a").click(function(){
+		$(this).siblings().removeClass('onactive');
+		$(this).addClass('onactive');
+		if($(this).index() == 1){
+			$(".user-Release").find("div.rec_box_r").hide().eq(1).show();
+			
+		}else if($(this).index() == 0){
+			$(".user-Release").find("div.rec_box_r").hide().eq(0).show();
+		}
+	});
+	//输入框	
+	$("html,body").click(function(){
+		if($('input#custom_money').val()==''){
+			$('span.w175').show();
+		}
+	});
+	$('div.w175').click(function(){
+		$('input#custom_money').focus();
+		$(this).find('span.w175').hide();
+		return false;
+	});
+	//协议
+	$("a.topics_up").click(function(){
+		$(this).find('b').attr('class') == 'Test_True' ? $(this).find('b').attr('class','Text_error') : $(this).find('b').attr('class','Test_True');
+	});
+});
+
+$('.zfb_zxzf a').click(function(){
+	$(this).siblings().find('em').removeClass('ch_z');
+	$(this).find('em').addClass('ch_z');
+	$(this).parents('form').find('input:hidden[name="pay"]').val($(this).attr('val'));
+});
+$('.zfb_zxzf a:first').click();
+$('.btn_je_box a.btn_hui_h').click(function(){
+	$(this).siblings().removeAttr('style');
+	$(this).css('background', '#65addd');
+	$(this).parents('form').find('input:hidden[name="money"]').val($(this).attr('val'));
+	$('#lan_txt_cost').text($(this).attr('val'));
+	$('input#custom_money').val('').blur();
+});
+$('.btn_je_box a.btn_hui_h:eq(1)').click();
+$('input#custom_money').val('');
+$('input#custom_money').change(function(e) {
+    $('.btn_je_box a.btn_hui_h').removeAttr('style');
+	$(this).parents('form').find('input:hidden[name="money"]').val($(this).val());
+	$('#lan_txt_cost').text($(this).val());
+});
+//选择充值VIP类型
+$('div.select_time').click(function(){
+	$('div.select_time').removeClass('border_bg');
+	$(this).addClass('border_bg');
+	$(this).parents('form').find('input:hidden[name="type"]').val($(this).attr('val'));
+	$('div.select_time').find('b').removeClass('nf_bg_em');
+	$(this).find('b').addClass('nf_bg_em');
+	if($(this).index()==1){
+		$('#price_show').text(0);
+		$(this).find('input').focus();
+		$(this).parent().find('p').hide().eq(1).show();
+	}else if($(this).index()==0){
+		$(this).next().find('input').val('');
+		$('#price_show').text($(this).attr('price'));
+		$(this).parent().find('p').hide().eq(0).show();
+	}
+});
+$('div.select_time:first').click();
+//输入月数
+$('input#recharge_month').keyup(function(){
+	var val = parseInt($(this).val());
+	if(val <= 0 || isNaN(val)){
+		$(this).val('');$('#price_show').text(0);return ;
+	}else if(val > 99){
+		$(this).val(99);
+	}else{
+		$(this).val(val);
+	}
+	val = $(this).val();
+	$('#price_show').text(val*parseInt($(this).parents('div.select_time').attr('price')));
+});
+
+//充值学币
+function rechange(sbt){
+	var rechange_base = parseFloat('{:getAppConfig("rechange_basenum")}');
+	var form  = $(sbt).parents('form');
+	var pay   = form.find('input:hidden[name="pay"]').val();
+	var money = form.find('input:hidden[name="money"]').val();
+	if(pay!='alipay'&&pay!='unionpay'){
+		notes('支付方式错误', 'failure');
+		return false;
+	}
+	if(money <= 0){
+		notes('请选择或填写充值金额', 'failure');
+		return false;
+	}
+	if(rechange_base>0 && money%rechange_base != 0){
+		if(rechange_base == 1){
+			notes('充值金额必须为整数', 'failure');
+		}else{
+			notes('充值金额必须为'+rechange_base+'的倍数', 'failure');
+		}
+		return false;
+	}
+	if(form.find('#buy-s-1r b').hasClass('Text_error')){
+		notes('请同意《Eduline虚拟货币服务协议》', 'failure');
+		return false;
+	}
+	form.submit();
+}
+//充值VIP
+function rechangeVip(sbt){
+	var form  = $(sbt).parents('form');
+	var pay   = form.find('input:hidden[name="pay"]').val();
+	var type  = form.find('input:hidden[name="type"]').val();
+	
+	if(pay!='alipay'&&pay!='unionpay'){
+		notes('支付方式错误', 'failure');
+		return false;
+	}
+	if(type != 0 && type !=1){
+		notes('充值类型错误', 'failure');
+		return false;
+	}
+	if(type == 1){
+		var month = form.find('input:[name="month"]').val();
+		month = parseInt(month);
+		if(month <= 0 || isNaN(month)){
+			notes('请输入充值月数', 'failure');
+			form.find('input:[name="month"]').focus();
+			return false;
+		}
+	}
+	if(form.find('#buy-s-1r b').hasClass('Text_error')){
+		notes('请同意《Eduline虚拟货币服务协议》', 'failure');
+		return false;
+	}
+	form.submit();
+}
+//border_bg
+</script> 
+<include file="__THEME__/public_footer" />

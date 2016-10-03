@@ -1,0 +1,212 @@
+<include file="__THEME__/public_header" />
+<!--banner-->
+<script src="__THEME__/js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
+<script>
+	$(document).ready(function(){
+		jQuery(".fullSlide").slide({ titCell:".hd ul", mainCell:".bd ul", effect:"fold",  autoPlay:true, autoPage:true, trigger:"click" });
+		jQuery(".new-actives").slide({ mainCell:".tab-bd-in", effect:"left", delayTime:400,pnLoop:false,easing:"easeOutCubic" });
+	});
+</script>
+<div class="fullSlide">
+    <div class="bd">
+        <ul>
+        	<volist name="ad_list" id="vo">
+	            <li style="background:url({:getAttachUrlByAttachId($vo['banner'])}) center 0 no-repeat;">
+	                <div class="siteWidth"><a target="_blank" href="{$vo.bannerurl}"></a></div>
+	            </li>
+            </volist>
+        </ul>
+    </div>
+	<div class="hd"><ul></ul></div>
+</div>
+
+<div class="content">
+	<div class="item-box">
+        <div class="wrap">
+            <ul class="ind-list">
+                <li>
+                    <div class="ind-box t-center">
+                        <a href="{:U('classroom/Limit/index')}">
+                            <span></span>
+                            <p class="big">限时免费</p>
+                            <p>查看更多</p>
+                        </a>
+                    </div>
+                </li>
+                <volist name="free_limit_list" id="vo">
+                	<li>
+	                    <div class="pic">
+	                    	<a href="{:U('classroom/Video/view',array('id'=>$vo['id']))}">
+		                    	<img src="{:getCover($vo['cover'],266,170)}" class="lazyloading" />
+		                    	<div class="bg">{$vo.video_title}</div>
+		                    </a>
+	                    </div>
+	                    <div class="info">
+	                        <div class="tit"><a href="{:U('classroom/Video/view',array('id'=>$vo['id']))}">{:limitNumber($vo['video_intro'],54)}</a></div>
+	                        <div class="con">
+	                            <div class="price"><php>if($vo['mzprice']['price'] > 0){</php>{$vo['mzprice']['price']}学币<php>}else{echo '免费';}</php></div>
+	                            <div class="star">评分：
+	                            <if condition="floor($vo['video_score']/20) GT 0 "> <span></span>
+	                            <else /><span class="no"></span></if>
+	                            <if condition="floor($vo['video_score']/20) GT 1 "> <span></span>
+	                            <else /><span class="no"></span></if>
+	                            <if condition="floor($vo['video_score']/20) GT 2 "> <span></span>
+	                            <else /><span class="no"></span></if>
+	                            <if condition="floor($vo['video_score']/20) GT 3 "> <span></span>
+	                            <else /><span class="no"></span></if>
+	                            <if condition="floor($vo['video_score']/20) GT 4 "> <span></span>
+	                            <else /><span class="no"></span></if>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </li>
+                </volist>
+            </ul>
+            
+            <div class="ind-tit">
+                <div class="ind-tit-box">
+                    <div class="fr"><a href="{:U('classroom/Album/index')}">更多</a></div>
+                    <div class="fl">精选专辑</div>
+                </div>
+            </div>
+            <ul class="ind-list">
+            	 <volist name="br_list.big_list" id="vo">
+                	<li>
+	                    <div class="pic">
+	                    	<a href="{:U('classroom/Album/view',array('id'=>$vo['id']))}">
+		                    	<img src="{:getCover($vo['cover'],266,170)}" class="lazyloading" />
+		                    	<div class="bg">{$vo.album_title}</div>
+		                    </a>
+	                    </div>
+	                    <div class="info">
+	                        <div class="tit"><a href="{:U('classroom/Album/view',array('id'=>$vo['id']))}">{:limitNumber($vo['album_intro'],54)}</a></div>
+	                        <div class="con">
+	                            <div class="price">{$vo.v_price}</div>
+	                            <div class="star">评分：
+	                            <if condition="floor($vo['score']/20) GT 0 "> <span></span>
+	                            <else /><span class="no"></span></if>
+	                            <if condition="floor($vo['score']/20) GT 1 "> <span></span>
+	                            <else /><span class="no"></span></if>
+	                            <if condition="floor($vo['score']/20) GT 2 "> <span></span>
+	                            <else /><span class="no"></span></if>
+	                            <if condition="floor($vo['score']/20) GT 3 "> <span></span>
+	                            <else /><span class="no"></span></if>
+	                            <if condition="floor($vo['score']/20) GT 4 "> <span></span>
+	                            <else /><span class="no"></span></if>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </li>
+                </volist>
+                <li>
+                    <div class="ind-box">
+                        <dl>
+                        	<volist name="br_list.title_list" id="vo" offset="0" length="6">
+                        		<dd><a href="{:U('classroom/Album/view',array('id'=>$vo['id']))}">{$vo['album_title']}</a></dd>
+				            </volist>
+                        </dl>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="indbg">
+    <div class="item-box">
+        <div class="wrap">
+        	<div class="ind-tit">
+                <div class="ind-tit-box">
+                    <div class="fr"><a href="{:U('classroom/Video/index')}">更多</a></div>
+                    <div class="fl">畅销榜单</div>
+                </div>
+            </div>
+            <div class="ind-con">
+            	<div class="ind-left">
+                    <ul class="ind-list">
+                    	<volist name="sw_list" id="vo" offset="0" length='6'>
+		                	<li>
+			                    <div class="pic">
+			                    	<a href="{:U('classroom/Video/view',array('id'=>$vo['id']))}">
+				                    	<img src="{:getCover($vo['cover'],266,170)}" class="lazyloading" />
+				                    	<div class="bg">{$vo.video_title}</div>
+				                    </a>
+			                    </div>
+			                    <div class="info">
+			                        <div class="tit"><a href="{:U('classroom/Video/view',array('id'=>$vo['id']))}">{:limitNumber($vo['video_intro'],54)}</a></div>
+			                        <div class="con">
+			                            <div class="price"><php>if($vo['money_data'] > 0){</php>{$vo.money_data}学币<php>}else{echo '免费';}</php></div>
+			                            <div class="star">评分：
+			                            <if condition="floor($vo['video_score']/20) GT 0 "> <span></span>
+			                            <else /><span class="no"></span></if>
+			                            <if condition="floor($vo['video_score']/20) GT 1 "> <span></span>
+			                            <else /><span class="no"></span></if>
+			                            <if condition="floor($vo['video_score']/20) GT 2 "> <span></span>
+			                            <else /><span class="no"></span></if>
+			                            <if condition="floor($vo['video_score']/20) GT 3 "> <span></span>
+			                            <else /><span class="no"></span></if>
+			                            <if condition="floor($vo['video_score']/20) GT 4 "> <span></span>
+			                            <else /><span class="no"></span></if>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </li>
+		                </volist>
+                    </ul>
+        		</div>
+                <div class="ind-right">
+                	<h2>畅销排行榜</h2>
+                    <dl>
+                    	<volist name="sw_list" id="vo" offset="0" length='10'>
+                    		<dd><a href="{:U('classroom/Video/view',array('id'=>$vo['id']))}"><em <php>if($key==0){echo "class='fri'";}elseif($key==1){echo "class='sec'";}elseif($key==2){echo "class='thr'";}</php> >{$key+1}</em>{:limitNumber($vo['video_title'],52)}</a></dd>
+                    	</volist>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+    <div class="item-box">
+        <div class="wrap">
+            <div class="ind-tit">
+                <div class="ind-tit-box">
+                    <div class="fr"><a href="{:U('wenda/Index/index')}">更多</a></div>
+                    <div class="fl">热门问答</div>
+                </div>
+            </div>
+            <ul class="ind-question">
+            	<volist name="wenda" id="vo">
+            		<li>
+	                	<h3><span></span><a href="{:U('wenda/Index/detail',array('id'=>$vo['id']))}">{:limitNumber($vo['wd_description'],36)}</a></h3>
+	                    <dl class="info">
+	                    	<dt>{$vo['wd_comment_count']?$vo['wd_comment_count']:0}评论<span>|</span>{$vo['wd_browse_count']?$vo['wd_browse_count']:0}浏览</dt>
+	                    	<dd>{$vo.ctime}</dd>
+	                    </dl>
+	                </li>
+            	</volist>
+            	
+            </ul>
+            <div class="ind-tit">
+                <div class="ind-tit-box">
+                    <div class="fr"><a href="{:U('classroom/Teacher/index')}">更多</a></div>
+                    <div class="fl">推荐讲师</div>
+                </div>
+            </div>
+            <ul class="ind-teacher">
+            	<volist name="beTeacher" id="vo">
+            		<li>
+	                	<div class="info"><a href="{:U('classroom/Teacher/view',array('id'=>$vo['teacher_id']))}">
+	                        <div class="pic"><img src="{:getCover($vo['head_id'],105,105)}" class="lazyloading" /></div>
+	                        <h3>{$vo.name}</h3>
+	                        <p>{:limitNumber($vo['inro'],65)}</p>
+	                    </a></div>
+	                    <div class="txt">热门课程：<eq name="vo['video_title']" value="">Ta还没有课程<else /><a href="{:U('classroom/Video/view',array('id'=>$vo['id']))}">{$vo.video_title}</a></eq></div>
+	                </li>
+            	</volist>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<include file="__THEME__/public_footer" />

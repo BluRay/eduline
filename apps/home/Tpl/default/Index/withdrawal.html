@@ -1,0 +1,382 @@
+<include file="__THEME__/public_header" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+<script>
+window.onload=function()
+{
+	 //公用库
+	higher_common();
+	//个人中心左侧菜单
+	(function(){
+	  home_titlista();
+	})();
+   
+	//input输入
+	 (function(){
+		var oMyInput=getByClass(document,'Album_Title_s');
+		for(var i=0; i<oMyInput.length; i++)
+		{
+			Album_Title_input(oMyInput[i]);     
+		}
+	 })();
+	 (function(){
+		objshow('sygz','tan_rec','xxguan_a','transparent'); 
+	  })();
+	   //导航
+	(function(){
+	    nav_bar_tab('Nav_bar', 'Manage_all','sel_cent_r');
+	 })();
+	  (function(){
+		var oNavBar=getByClass(document,'Nav_bar')[0];
+		var aBtn=getByTagName(oNavBar,'li');
+		var oManageAll=getByClass(document, 'Manage_all'); 
+		var oYsjl=getByClass(document,'ysjl')[0];
+		
+		for(var i=0; i<aBtn.length; i++)
+		{
+			aBtn[i].index=i;
+			aBtn[i].onclick=function()
+			{
+				for(var i=0; i<aBtn.length; i++)
+				{
+					aBtn[i].className='';
+					oManageAll[i].style.display='none';
+				}
+				this.className='sel_cent_r';
+				oManageAll[this.index].style.display='block';
+			}
+			
+		} 
+		oYsjl.onclick=function()
+		{
+			for(var i=0; i<aBtn.length; i++)
+			{
+				aBtn[i].className='';
+				oManageAll[i].style.display='none';
+			}
+			aBtn[1].className='sel_cent_r';
+			oManageAll[1].style.display='block';
+			
+		}
+	  })();
+};
+</script>
+<div id="tan_rec" class="tan_rec shadow">
+<div id="xxguan_a" class="xxguan">x</div>
+	<div class="fl w50b">
+    	<p class="txt_c">积分（U）</p>
+        <table class="table_ye w175 mt10"  cellpadding="0" cellspacing="1" border="1">
+        	<tr>
+            	<td width="50%">u>5000</td>
+                <td width="50%">30%</td>
+            </tr>
+            <tr>
+            	<td>3000<u<5000</td>
+                <td>20%</td>
+            </tr>
+            <tr>
+            	<td>u<3000</td>
+                <td>10%</td>
+            </tr>
+        </table>
+    </div>
+    <div class="fl w50b">
+    	<p class="txt_c">营收（L）</p>
+        <table class="table_ye w175 mt10"  cellpadding="0" cellspacing="1" border="1">
+        	<tr>
+            	<td>L>5000</td>
+                <td>30%</td>
+            </tr>
+            <tr>
+            	<td>3000<L<5000</td>
+                <td>20%</td>
+            </tr>
+            <tr>
+            	<td>L<3000</td>
+                <td>10%</td>
+            </tr>
+        </table>
+    </div>
+    <p class="lh30">[积分（U）对应权重 + 营收（L）对应权重] * 兑换金额 - 增值税收 = 实收金额</p>
+</div>
+<div class="main mt35 clearfix">
+	<div class="plr40 main_box_index fl">
+        <h4 class="ft18 pt20">个人中心</h4>
+        <div class="fl cent_l_box cent_l_box_a">
+            <h3 class="tit_list tit_list_a">内容管理</h3>
+            <ul>
+                <li><a href="{:U('home/Index/index')}">课程</a></li>
+                <li><a href="{:U('home/Index/index_zj')}">专辑</a></li>
+                <li><a href="{:U('home/Index/qanda')}">问答</a></li>
+                <li><a href="{:U('home/Index/note')}">笔记</a></li>
+                <li><a href="{:U('home/Index/comments')}">评论</a></li>
+                <li><a href="{:U('home/Index/upload')}">上传课程</a></li>
+            </ul>
+            <h3 class="tit_list tit_list_a">财富管理</h3>
+            <ul>
+                <li><a href="{:U('home/Index/recharge')}">充值</a></li>
+                <li class="sel_cent"><a href="{:U('home/Index/withdrawal')}">余额</a></li>
+                <li><a href="{:U('home/Index/card')}">绑定银行卡</a></li>
+            </ul>
+             <h3 class="tit_list tit_list_a">账户管理</h3>
+            <ul>
+                <li><a href="{:U('home/Index/upload_z_Setup')}">账户设置</a></li>
+                <li><a href="{:U('home/Index/fans')}">关注/粉丝</a></li>
+            </ul>
+        </div>
+        <div class="cent_r_box clearfix">
+        	<div class="nva_cent">
+                <ul class="Nav_bar fl">
+                	<li class="sel_cent_r">余额</li>
+                    <li>营收记录</li>
+                    <li>支付记录</li>
+                    <li>提现记录</li>
+                </ul>
+                <!--<a class="Manage fr gl_cent" href="javascript:;">管理</a>-->
+            </div>
+        	<div class="tx_r_m Manage_all" style="display:block;">
+                <p class="txt_r ft24 mb20">可余额<em class="green_txt ft30 mlr22">1210</em>学币<a class="green_txt ft14 ml20" href="javascript:;">绑定银行卡</a></p>
+                <div class="fr">
+                    <a class="green_txt ysjl ft14 ml20" href="javascript:;">营收记录</a>
+                    <a id="sygz" class="green_txt ft14 ml20" href="javascript:;">营收规则</a>
+                    <a class="green_txt ft14 ml20" href="{:U('home/Index/withdrawal_tx')}">提现￥</a>
+                </div>
+            </div>
+            <div class="box_block Manage_all">
+            	<div class="mt10b20 clearfix h55">
+                            <span class="selected_title fl">
+                            时间：
+                            </span>
+                            <div class="myInput1 fl mr20 w130" style="padding:0; height:auto">
+                                <select class="select_r  edittxt_cent">
+                                    <option value="1">
+                                        2013-09-10
+                                    </option>
+                                    <option value="2">hhehe</option>
+                                    <option value="3">hhehe</option>
+                                    <option value="4">hhehe</option>
+                                    <option value="5">hhehe</option>
+                                </select>
+                            </div>
+                            <span class="selected_title mr10 fl">
+                            到
+                            </span>
+                            <div class="myInput1 fl w130" style="padding:0; height:auto">
+                                <select class="select_r edittxt_cent">
+                                    <option value="1">
+                                        2013-09-10
+                                    </option>
+                                    <option value="2">hhehe</option>
+                                    <option value="3">hhehe</option>
+                                    <option value="4">hhehe</option>
+                                    <option value="5">hhehe</option>
+                                </select>
+                            </div>
+                            <a class="sel_w fl ml15" href="javascript:;">查询</a>
+                  </div>
+                  <table class="table_ye" cellpadding="0" cellspacing="1" border="1" width="100%">
+                  	<thead>
+                    	<td width="10%">序号</td>
+                        <td width="25%">交易时间</td>
+                        <td width="25%">交易金额</td>
+                        <td width="40%">营收课程名称</td>
+                    </thead>
+                    <tr>
+                    	<td>1</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td class="green_txt">马克思主义基本原理概论</td>
+                    </tr>
+                    <tr>
+                    	<td>2</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td class="green_txt">马克思主义基本原理概论</td>
+                    </tr>
+                    <tr>
+                    	<td>3</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td class="green_txt">马克思主义基本原理概论</td>
+                    </tr>
+                    <tr>
+                    	<td>4</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td class="green_txt">马克思主义基本原理概论</td>
+                    </tr>
+                  </table>
+                  <p class="mt10">营收总额：<em class="red_txt">4000</em>学币</p>
+            </div>
+            <div class="box_block Manage_all">
+            	<div class="mt10b20 clearfix h55">
+                            <span class="selected_title fl">
+                            时间：
+                            </span>
+                            <div class="myInput1 fl mr20 w130" style="padding:0; height:auto">
+                                <select class="select_r  edittxt_cent">
+                                    <option value="1">
+                                        2013-09-10
+                                    </option>
+                                    <option value="2">hhehe</option>
+                                    <option value="3">hhehe</option>
+                                    <option value="4">hhehe</option>
+                                    <option value="5">hhehe</option>
+                                </select>
+                            </div>
+                            <span class="selected_title mr10 fl">
+                            到
+                            </span>
+                            <div class="myInput1 fl w130" style="padding:0; height:auto">
+                                <select class="select_r edittxt_cent">
+                                    <option value="1">
+                                        2013-09-10
+                                    </option>
+                                    <option value="2">hhehe</option>
+                                    <option value="3">hhehe</option>
+                                    <option value="4">hhehe</option>
+                                    <option value="5">hhehe</option>
+                                </select>
+                            </div>
+                            <a class="sel_w fl ml15" href="javascript:;">查询</a>
+                  </div>
+                  <table class="table_ye" cellpadding="0" cellspacing="1" border="1" width="100%">
+                  	<thead>
+                    	<td width="10%">序号</td>
+                        <td width="25%">交易时间</td>
+                        <td width="25%">交易金额</td>
+                        <td width="40%">营收课程名称</td>
+                    </thead>
+                    <tr>
+                    	<td>1</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td class="green_txt">马克思主义基本原理概论</td>
+                    </tr>
+                    <tr>
+                    	<td>2</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td class="green_txt">马克思主义基本原理概论</td>
+                    </tr>
+                    <tr>
+                    	<td>3</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td class="green_txt">马克思主义基本原理概论</td>
+                    </tr>
+                    <tr>
+                    	<td>4</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td class="green_txt">马克思主义基本原理概论</td>
+                    </tr>
+                  </table>
+                  <p class="mt10">营收总额：<em class="red_txt">4000</em>学币</p>
+            </div>
+            <div class="box_block Manage_all">
+            	<div class="mt10b20 clearfix h55">
+                            <span class="selected_title fl">
+                            时间：
+                            </span>
+                            <div class="myInput1 fl mr20 w130" style="padding:0; height:auto">
+                                <select class="select_r  edittxt_cent">
+                                    <option value="1">
+                                        2013-09-10
+                                    </option>
+                                    <option value="2">hhehe</option>
+                                    <option value="3">hhehe</option>
+                                    <option value="4">hhehe</option>
+                                    <option value="5">hhehe</option>
+                                </select>
+                            </div>
+                            <span class="selected_title mr10 fl">
+                            到
+                            </span>
+                            <div class="myInput1 fl w130" style="padding:0; height:auto">
+                                <select class="select_r edittxt_cent">
+                                    <option value="1">
+                                        2013-09-10
+                                    </option>
+                                    <option value="2">hhehe</option>
+                                    <option value="3">hhehe</option>
+                                    <option value="4">hhehe</option>
+                                    <option value="5">hhehe</option>
+                                </select>
+                            </div>
+                            <a class="sel_w fl ml15" href="javascript:;">查询</a>
+                  </div>
+                  <table class="table_ye" cellpadding="0" cellspacing="1" border="1" width="100%">
+                  	<thead>
+                    	<td width="10%">序号</td>
+                        <td width="25%">交易时间</td>
+                        <td width="25%">交易金额</td>
+                        <td width="40%">营收课程名称</td>
+                    </thead>
+                    <tr>
+                    	<td>1</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td class="lan_txt">处理中</td>
+                    </tr>
+                    <tr>
+                    	<td>2</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td>完成</td>
+                    </tr>
+                    <tr>
+                    	<td>3</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td>完成</td>
+                    </tr>
+                    <tr>
+                    	<td>4</td>
+                        <td>2013-09-10</td>
+                        <td>300学币</td>
+                        <td>完成</td>
+                    </tr>
+                  </table>
+                  <p class="mt10">营收总额：<em class="red_txt">4000</em>学币</p>
+            </div>
+        </div>
+    </div>
+    <div class="main_box_index w200 plr10 pt20 fr">
+    	<div class="fk_pic txt_c">
+            <a href="javascript:;" target="_blank">
+                <img src="__THEME__/images/xq/xq_50.jpg"></img>
+            </a>
+        </div>
+        <p class="daren_name txt_c lh30">
+            <a class="daren_name_a" target="_blank" href="">
+                向新兰
+                <em class="daren_name_img"></em>
+            </a>
+        </p>
+        <p class="txt_c">关注1000|粉丝1000</p>
+        <a class="btn_lan_h" href="javascript:;">答题高手7段</a>
+        <a class="btn_lan_h" href="javascript:;">数学百晓生</a>
+        <a class="btn_lan_h" href="javascript:;">腰缠万贯</a>
+        <a class="btn_lan_h" href="javascript:;">十佳好青年</a>
+        <div class="clearfix">
+            <p class="fl green_txt txt_c plr30 mt20">
+                我的学币</br>
+                1000
+            </p>
+            <p class="fl green_txt txt_c bor_l plr30 mt20">
+                我的学分</br>
+                1000
+            </p>
+        </div>
+        <a class="btn_big_r">打卡赚学分</a>
+        <p class="mt20">连续领取学分，每天+5，最高+40封顶，如中断领取，重新从5开始。</p>
+        <div class="clearfix">
+            <a class="btn_hui_h" href="javascript:;">做任务赚学分</a>
+            <a class="btn_hui_h" href="javascript:;">学分换购列表</a>
+        </div>
+        <p class="mt10 ml20 bg_phone">手机每天再多领40积分</p>
+    </div>
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

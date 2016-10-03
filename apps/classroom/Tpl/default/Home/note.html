@@ -1,0 +1,89 @@
+<include file="__THEME__/public_header" />
+<!--main-->
+<!--畅销榜单-->
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <div class="user-con fl">
+        <div class="user-con-title">
+            <a href="javascript:;" onclick="navClick(this,'me')" class="onactive">我的笔记</a>
+            <!-- <a  href="javascript:;" onclick="navClick(this,'collect')">我收藏的问题</a> --></div>
+        <!--问答内容-->
+        <ul class="user-wenda">
+            <!--提问循环-->
+
+            <!--回答循环-->
+        </ul>
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+<script>
+    var type;
+    var p;
+    var url="{:U('classroom/Home/getnotelist')}";
+    $(function(){
+        type="me"
+        //异步加载我购买的课程
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:"p=1&type="+type,
+            dataType:"json",
+            success:function(data){
+                appendHtml(data,type);
+            }
+        });
+    });
+    //请求事件
+    function ajaxBang(url,type,callback){
+        $.ajax({
+            type: "POST",
+            url:url,
+            data:"p="+p+"&type="+type,
+            dataType:"json",
+            success:function(data){
+                appendHtml(data,type);
+                callback && callback();
+            }
+        });
+    }
+    //头部点击事件
+    function navClick(cate,type){
+
+        $(".user-wenda").html("");
+        type=type;
+        $("a").removeClass("onactive");
+        $(cate).addClass("onactive");
+        p=1;
+        ajaxBang(url,type);
+    }
+    //追加html
+    function appendHtml(data,type){
+        $(".more").remove();
+        if(data.data==""){
+            $(".user-wenda").append("<span>你还没有记笔记哦~</span>");
+        }else{
+            $(".user-wenda").append(data.data);
+        }
+        if(data.nowPage+1>data.totalPages){
+            return;
+        }else{
+            var html="<div class=\"more\" ><a href=\"javascript:void(0)\" onclick='fallBang(this)' id=\""+type+"\" >查看更多</a></div>"
+            $(".user-con").append(html);
+            p=data.nowPage+1;//下一页
+        }
+    }
+    //点击查看更多事件
+    function fallBang(cate){
+        var rtype=$(cate).attr("id");
+        ajaxBang(url,rtype);
+    }
+
+
+
+
+</script>
+<!--footer-->
+<include file="__THEME__/public_footer" />

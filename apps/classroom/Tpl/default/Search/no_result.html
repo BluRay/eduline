@@ -1,0 +1,49 @@
+<include file="__THEME__/public_header" />
+<script>
+window.onload=function()
+{
+	 //公用库
+	  higher_common();
+	  //搜索
+	 (function(){
+		 mysearch('search_input');
+	 })();
+}
+</script>
+</div>
+<div class="main clearfix mt35">
+    <div class="main_box_index w666 fl">
+        <div class="nva_cent pos_r">
+			<h3 class="lh30 ml30 mt10 fl">和 <em class="lan_txt">{$search_key}</em> 相关的课程     共 <em class="lan_txt">{$result_count}</em> 个</h3>
+            <!--<div id="search_input" class="search">
+                  <form action="{:U('classroom/Search/index')}" method="get" id="search_form">
+                    <input type="hidden" name="app" value="classroom" />
+                    <input type="hidden" name="mod" value="Search" />
+                    <input type="hidden" name="act" value="index" />
+                    <input type="text" class="head_search" id="head_search" value="{$search_key}" name="key" placeholder="请输入关键字" />
+                    <!--<span id="s_span">请输入关键字</span>
+                    <input id="search_submit" type="submit" value="" />
+                </form>
+            </div>-->
+        </div>
+        <div class="plr20 mt20 clearfix">
+            <div class="fl"><img src="__APP__/images/u64.png"></div>
+            <div class="fl w398 ml30">
+            	<p class="lh30">对不起，没有找到任何结果！但我们可以一起寻找失踪宝贝</p>
+                <hr class="dal_s"></hr>
+                <p class="lh30"><em class="grey">姓名：</em>sssd</p>
+                <p class="lh30"><em class="grey">性别：</em>男</p>
+                <p class="lh30"><em class="grey">出生日期：</em>1988年6月19日</p>
+                <p class="lh30"><em class="grey">失踪时间：</em>2014年6月19日</p>
+                <p class="lh30"><em class="grey">失踪地点：</em>北京海淀区西二旗领秀新硅谷</p>
+                <p class="lh30"><em class="grey">失踪人特征描述：</em>失踪时身穿草绿色棉衣，下身为蓝色牛仔裤，绿色高筒雨鞋。会说龙泉话和普通话，知道老家住在哪里，知道父母的</p>
+            </div>
+        </div>
+        <hr class="sl_d"></hr>
+        <div class="fl ml30"><img src="__APP__/images/u74.png"></div>
+        <p class="fr mr20 lh30">去<a class="green_txt" href="{:U('classroom/Video/index')}">课程列表</a>看看&nbsp;|<a class="green_txt" href="{:SITE_URL}">返回首页</a></p>
+    </div>
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

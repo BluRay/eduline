@@ -1,0 +1,21 @@
+        <foreach name="data" item="list">
+        <li class="li"><img  src="{:getAttachUrlByAttachId($list['cover'])}">
+            <div class="fr in-minatop-r-con">
+                <h2><a href="{:U('classroom/Video/view',array('id'=>$list['id']))}">{$list.video_title}</a></h2>
+                <p>{:limitNumber($list['video_intro'],60)}</p>
+                <span>原价：<i>{$list.v_price}学习币</i></span>
+                  <label for="score" class="f3 fl">评分：</label>
+              <ul class="star_ul fl">
+                <li class="<if condition="$list['star_score'] GT 0 ">grade-back-set<else />grade-back-default</if>"></li>
+                <li class="<if condition="$list['star_score'] GT 1 ">grade-back-set<else />grade-back-default</if>"></li>
+                <li class="<if condition="$list['star_score'] GT 2 ">grade-back-set<else />grade-back-default</if>"></li>
+                <li class="<if condition="$list['star_score'] GT 3 ">grade-back-set<else />grade-back-default</if>"></li>
+                <li class="<if condition="$list['star_score'] GT 4">grade-back-set<else />grade-back-default</if>"></li>
+              </ul>
+
+            </div>
+            <div class="time-price">
+                <a class="time-price-Start fr" href="{:U('classroom/Album/watch',array('aid'=>$list['id'],'type'=>1))}">开始学习</a> 
+            </div>
+        </li>
+        </foreach>

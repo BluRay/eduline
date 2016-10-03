@@ -1,0 +1,573 @@
+<include file="__THEME__/public_header" />
+<script src="__APP__/upload_page.js" type="text/javascript"></script>
+<script src="__THEME__/js/gjwjs/jquery.mzcategory.js" type="text/javascript"></script>
+<script>
+$(function(){
+	$('#Tree_Menu_Add1').mzcategory({
+		url:U('widget/VideoLevel/getParent'),
+		hiddencid:'fullcategorypath',
+		type:1,
+		navData:'<?php echo $fullcategorypath; ?>'
+	});
+});
+window.onload=function()
+{
+	 //公用库
+	higher_common();
+	 (function(){
+		  //objshow('Tree_Menu_Add','Tree_Menu','Tree_Menu_close','transparent');
+	 })();
+	
+	//个人中心左侧菜单
+	(function(){
+	  home_titlista();
+	})();
+	(function(){
+		var aTopicsUp=getByClass(document,'topics_up');
+		for(var i=0; i<aTopicsUp.length; i++)
+		{
+			oTopics_a(aTopicsUp[i])
+		}
+	 })();
+	 (function(){
+		var oTextA=getByClass(document,'text_A')[0];
+		var oTextarea=getByTagName(oTextA,'textarea')[0];
+		var oLabel=getByTagName(oTextA,'label')[0];
+		oTextarea.onfocus=function()
+		{
+			oLabel.style.display='none';
+			oTextA.style.border='solid 1px #85C155';
+		}
+		oTextarea.onblur=function()
+		{
+			if(oTextarea.value=='')
+			{ 
+			  oLabel.style.display='block';
+			  oTextA.style.border='solid 1px #CECECE';
+			}
+		}
+		oLabel.onclick=function()
+		{
+			oTextarea.focus();
+		}
+	 })();
+   
+	   //搜索
+	 //input输入
+	 (function(){
+		var oMyInput=getByClass(document,'Album_Title_s');
+		for(var i=0; i<oMyInput.length; i++)
+		{
+			Album_Title_input(oMyInput[i]);     
+		}
+	 })();
+	  
+}
+</script>
+<div class="main mt35 clearfix">
+	<div class="plr40 main_box_index fl">
+        <h4 class="ft18 pt20">个人中心</h4>
+		<include file="_left" />
+        <div class="cent_r_box clearfix">
+            <div class="nva_cent">
+                <ul class="Nav_bar fl">
+                    <li class="sel_cent_r">上传课程</li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <div class="upload_up clearfix">
+				<php>if(!$_GET['id']){</php> 
+					<a id="swfDiv" class="upload_pro Save" href="javascript:;"></a>
+					<input class="upload_pro" type="text" id="btn_width" value="选择要上传视频" />
+					<span id="upload_pro" style="float:left;color:red; margin:10px 0">选择前，请确保您填写了标题、简介以及标签!!</span>
+					<input type="hidden"  id="videofile" />
+					<input type="hidden" id="totle_size" />
+					<input type="hidden" value="1" id="totle_time" />
+					<input type="hidden" id="videoid" />
+					<div id="upload_status" style="display:none; float:left">
+						<p class="ft16 lh30" style="padding-left:5px;" id="show_video_title"></p>
+						<div class="clearfix h40">
+							<progress id="progress" class="pro_up fl" value="0" max="100"></progress>
+							<p class="fl"><span id="ratio">0.0%</span></p>
+						</div>
+						<p class="clearfix h40" style="display:inline-block">平均上传速度：<span id="speed">0</span>KB/s &nbsp;&nbsp;&nbsp;&nbsp;已上传：<span id="upload_size">0</span>MB/<span id="show_totle_size"></span>MB &nbsp;&nbsp;&nbsp;&nbsp;剩余时间：<span id="tile">正在计算..</span></p>
+					</div>
+				<php>} else {</php>
+					<a id="swfDiv" style="height:0px;" class="upload_pro Save" href="javascript:;"></a>
+					<input class="upload_pro" style="height:0px;" type="text" id="btn_width" value="选择要上传视频" />
+					<span id="upload_pro" style="float:left;color:red;padding-bottom:10px;display:none;">选择前，请确保您填写了标题、简介以及标签!!</span>
+					<input type="hidden"  id="videofile" />
+					<input type="hidden" id="totle_size" />
+					<input type="hidden" value="1" id="totle_time" />
+					<input type="hidden" id="videoid" value="{$video_id}" />
+					<div id="upload_status" style="float:left">
+						<p class="ft16 lh30" style="padding-left:5px;" id="show_video_title">{$video_title}</p>
+						<div class="clearfix h40">
+							<progress id="progress" class="pro_up fl" value="100" max="100"></progress>
+							<p class="fl"><span id="ratio">100%</span> | <a href="javascript:void(0);" onclick="modifiedVideo();">重新上传</a></p>
+						</div>
+						<p  class="clearfix h40" style="display:inline-block">平均上传速度：<span id="speed">0</span>KB/s &nbsp;&nbsp;&nbsp;&nbsp;已上传：<span id="upload_size">0</span>MB/<span id="show_totle_size"></span>MB &nbsp;&nbsp;&nbsp;&nbsp;剩余时间：<span id="tile">正在计算..</span></p>
+					</div>
+				<php>}</php>
+                <div class="Save_Upload clearfix" style="*clear:both;">
+                    <div class="fl w400">
+                        视频课程信息
+                        <a href="javascript:;" class="green_txt ml20">使用上次上传的课程信息</a>
+                        <div class="mt10b20 clearfix">
+                            <span class="selected_title mr15 color_hui fl">
+                                <font color="red"> * </font>标题
+                            </span>
+                            <div id="Album_Title" class="Album_Title_s myInput1 fl w343">
+                              <input type="text" class="head_search upload_input_a w332" value="{$video_title}" id="video_title" />
+                              <span class="w332" id="s_span" <php>if($_GET['id']){</php>style="display:none"<php>}</php> >请添写专辑标题</span>
+                            </div>
+                        </div>
+                        <div class="mt10b20 clearfix">
+                            <span class="selected_title mr15 color_hui fl"><font color="red"> * </font>简介</span>
+                           
+                            <div class="editwrap text_A fl w333 h65">
+                                <textarea id="video_intro" class="j-edittxt edittxt h65">{$video_intro}</textarea>
+                                 <label <php>if($_GET['id']){</php>style="display:none"<php>}</php> id="auto-id-drt6TisVISpRhnQa" class="h65 w333 j-hint hint" for="edittxt">
+                                    请输入课程简介…
+                                 </label>
+                            </div>
+                        </div>
+                        <div class="mt10b20 clearfix">
+                            <span class="selected_title mr15 color_hui fl">
+                                <font color="red"> * </font>标签
+                            </span>
+                            <div id="Album_Title3" class="Album_Title_s myInput1 fl w343">
+                              <input type="text" class="head_search upload_input_a w332" value="{$video_str_tag}" id="video_tag" />
+                              <span class="w332" id="s_span" <php>if($_GET['id']){</php>style="display:none"<php>}</php>>请添写专辑标签</span>
+                            </div>
+                        </div>
+                        <hr class="das_l"></hr>
+                        <div class="mt10b20 clearfix">
+                            <span class="selected_title mr15 color_hui fl">
+                                <font color="red"> * </font>价格
+                            </span>
+                            <div class="Album_Title_s myInput1 fl w97">
+                              <input type="text" id="v_price" value="{$v_price}" class=" Learn w86" />
+                            </div>
+                            <span class="lh30 ml15">学币&nbsp;&nbsp;（0-1000的整数）</span>
+                            <a id="buy-s-1r" class="pos_r topics_up ml50 green_txt">
+                                <b class="Text_error"></b>
+                                Eduline课程分成协议
+                            </a>
+                            <a id="buy-s-1r" class="pos_r topics_up ml50 green_txt">
+                                <b class="Text_error"></b>
+                                Eduline知识产权条款
+                            </a>
+                        </div>
+                        <div class="mt10b20 clearfix">
+                            <span class="selected_title mr15 color_hui fl">
+                                <font color="red"> * </font>分类
+                            </span>
+                            <a id="Tree_Menu_Add1" class="Attention sel_w fl" href="javascript:;">添加</a>
+                        </div>
+                        <!--MissZhou TODO  这个位置不变  也不能删除--->
+                        <div class="selected_con m5_38 clearfix" style="background:none"></div>
+                        <!--//MissZhou TODO  这个位置不变  也不能删除--->
+                        
+						<div class="mt10b20 clearfix">
+							<span class="selected_title mr15 color_hui fl">
+                                <font color="red"> * </font>下架时间
+                            </span>
+                            <!--<div id="Album_Title3" class="Album_Title_s myInput1 fl w343">-->
+                              <input type="text" id="uctime" readonly name="uctime" value="<php>if($uctime){</php>{:date("Y-m-d H:i:s", $uctime)}<php>}</php>" onfocus="core.rcalendar(this,'full');" />
+                            <!--</div>-->
+                        </div>
+						<div class="mt10b20 clearfix">
+                            <span class="selected_title mr15 color_hui fl">
+                                <font color="red"> * </font>课程封面(276*137)：
+                            </span>
+                            {:W('Upload',array('callback'=>'upload_callback','uploadType'=>'image','limit'=>'1','inputname'=>'middle','inForm'=>'0'))}
+							<php>if($middle_cover){</php>
+								<div id="big_cover">
+									<img style="max-width:100px;padding:2px; border:1px solid #ccc" src="{$middle_cover}" />
+									<input type="hidden" name="middle_ids" data="middle_ids" id="middle_ids" value="{$middle_ids}" />
+								</div>
+							<php>}</php>
+                        </div>
+						<div class="mt10b20 clearfix">
+                            <span class="selected_title mr15 color_hui fl">
+                                <font color="red"> * </font>授课封面1(280*240)：
+                            </span>
+                            {:W('Upload',array('callback'=>'upload_callback','uploadType'=>'image','limit'=>'1','inputname'=>'big','inForm'=>'0'))}
+							<php>if($big_cover){</php>
+								<div id="big_cover">
+									<img style="max-width:100px;padding:2px; border:1px solid #ccc" src="{$big_cover}" />
+									<input type="hidden" name="big_ids" id="big_ids" data="big_ids" value="{$big_ids}" />
+								</div>
+							<php>}</php>
+                        </div>
+						<div class="mt10b20 clearfix">
+                            <span class="selected_title mr15 color_hui fl">
+                                <font color="red"> * </font>  授课场景2( 280*240)：
+                            </span>
+                            {:W('Upload',array('callback'=>'upload_callback','uploadType'=>'image','limit'=>'1','inputname'=>'teaching','inForm'=>'0'))}
+							<php>if($teaching_cover){</php>
+								<div id="teaching_cover">
+									<img style="max-width:100px;padding:2px; border:1px solid #ccc" src="{$teaching_cover}" />
+									<input type="hidden" name="teaching_ids" id="teaching_ids" data="teaching_ids" value="{$teaching_ids}" />
+								</div>
+							<php>}</php>
+                        </div>
+						<div class="mt10b20 clearfix">
+                            <span class="selected_title mr15 color_hui fl">
+                                <font color="red"> * </font>  授课场景3( 280*240)：
+                            </span>
+                            {:W('Upload',array('callback'=>'upload_callback','uploadType'=>'image','limit'=>'1','inputname'=>'small','inForm'=>'0'))}
+							<php>if($small_cover){</php>
+								<div id="small_cover">
+									<img style="max-width:100px;padding:2px; border:1px solid #ccc" src="{$small_cover}" />
+									<input type="hidden" name="small_ids" id="small_ids" data="small_ids" value="{$small_ids}" />
+								</div>
+							<php>}</php>
+                        </div>
+						<div class="mt10b20 clearfix">
+                            <span class="selected_title mr15 color_hui fl">
+                                课程课件(多个文件请打包上传)：
+                            </span>
+                            {:W('Upload',array('callback'=>'course_callback','uploadType'=>'file','limit'=>'1','inputname'=>'video_course','inForm'=>'0'))}
+							<php>if($videofile_ids){</php>
+								<input type="hidden" name="video_course_ids" id="video_course_ids" value="{$videofile_ids}" />
+							<php>}</php>
+                        </div>
+                    </div>
+                    <div class="fl">
+                        <!--<div class="w227 mt10b20 clearfix">
+                                专辑：<a class="green_txt" href="javascript:;">添加到专辑</a>
+                        </div>-->
+                        
+                        <p class="Conditions">上传视频课程，即表示您已同意<em class="green_txt">Eduline上传服务条款</em>，请勿上传色情，反动等违法视频。</p>
+                        <p class="green_txt mt10">哪些视频课程是禁止发布的</p>
+                        <a id="start_creat" <php>if($_GET['id']){</php>onclick="creat_video();"<php>}</php> class="Save btn_big_r" href="javascript:;">创建课程</a>
+                    </div>
+                </div>
+                <p class="Introduction_text">本网站主办方已经对本网站内全部正版授权的视频课程内容，采取了必要的反盗版和防盗链等技术措施，并且添加、设置权利管理电子信息。任何单位或个人，未经本网站主办方的许可，不得以任何形式（包括但不限于：盗链，冗余盗取等）直接或间接地盗取相关视频课程内容、不得以任何方式（包括但不限于：隐藏或者修改本网站域名、播放器软件、Eduline标识等）删除或者改变相关视频课程内容的权利管理电子信息。否则，本网站主办方将保留进一步追究侵权者法律责任的权利。</p> 
+            </div>   
+        </div>
+    </div>
+	<include file="_right" />
+	<script type="text/javascript" src="__APP__/js/swfobject.js"></script>
+	<script type="text/javascript">
+		function upload_callback(data){
+			$("#"+data.key+"_ids").parent().find("ul").append(
+				'<li class="upload_cover"><img src="'+UPLOAD_URL + '/'+data.src+'" width="100">'
+				+'<a onclick="core.uploadFile.removeAttachId(this,\'image\','+data.attach_id+')" href="javascript:void(0)" class="name">删除</a></li>'
+			);
+			$("#"+data.key+"_ids").val(data.attach_id);
+		}
+		function course_callback(data){
+			$("#video_course_ids").parent().find("ul").append(
+				'<li class="upload_cover"><i class="ico-'+data.extension+'-small"></i>'
+				+'<a onclick="core.uploadFile.removeAttachId(this,\'file\','+data.attach_id+')" href="javascript:void(0)" class="ico-close right">删除附件</a>'
+				+data.name+'<span>('+data.size+')</span></li>'
+			);
+			$("#video_course_ids").val(data.attach_id);
+		}
+		function creat_video(){
+			var vid = '<?php echo $_GET["id"]; ?>';
+			var video_id = $("#videoid").val();
+			var video_tag = $("#video_tag").val();
+			var video_title = $("#video_title").val();
+			var video_intro = $("#video_intro").val();
+			var v_price = $("#v_price").val();
+			var big_ids = $("#big_ids").val();
+			var middle_ids = $("#middle_ids").val();
+			var small_ids = $("#small_ids").val();
+			var teaching_ids = $("#teaching_ids").val();
+			var video_course_ids = $("#video_course_ids").val();
+			var video_category = $("[name='fullcategorypath']").val();
+			var uctime = $("#uctime").val();
+			/*if(''==video_id){
+				notes('必须填写课程标题','Notes_red_Icon','Notes_red_text');
+			}*/
+			if(''== vid || undefined == vid){
+				vid = 0;
+			}
+			
+			if(''==video_title){
+				notes('必须填写课程标题','failure');
+				return false;
+			}
+			if(''==video_tag){
+				notes('必须填写课程标签','failure');
+				return false;
+			}
+			if('' == video_intro){
+				notes('必须填写课程简介','failure');
+				return false;
+			}
+			if(''== v_price){
+				notes('必须填写课程价格','failure');
+				return false;
+			}
+			if(undefined == big_ids || ''==big_ids){
+				notes('必须填写课程授课场景1','failure');
+				return false;
+			}
+			if( undefined == middle_ids || ''== middle_ids ){
+				notes('必须填写课程封面','failure');
+				return false;
+			}
+			if(''==teaching_ids || undefined == teaching_ids){
+				notes('必须填写课程授课场景2','failure');
+				return false;
+			}
+			if( undefined == small_ids || ''==small_ids){
+				notes('必须填写课程授课场景3','failure');
+				return false;
+			}
+			if(''==video_category || undefined == video_category){
+				notes('必须选择课程分类','failure');
+				return false;
+			}
+			
+			if($(".Test_True").length < 2){
+				notes('发布课程需要同意Eduline相关协议和条款','failure');
+				return false;
+			}
+			if(undefined == video_course_ids || '' == video_course_ids){
+				video_course_ids = 0
+			}
+			if(undefined == uctime || ''==uctime){
+				notes('请选择下架时间','failure');
+				return false;
+			}
+			$.post(U('classroom/Video/doAddVideo'),{id:vid,uctime:uctime,video_id:video_id,video_title:video_title,video_intro:video_intro,video_tag:video_tag,v_price:v_price,big_ids:big_ids,middle_ids:middle_ids,small_ids:small_ids,teaching_ids:teaching_ids,video_category:video_category,video_course_ids:video_course_ids},
+				function(txt){
+					if(txt.status == '0'){
+						notes(txt.info,'failure');
+					} else {
+						notes(txt.info,'success');
+						window.location.href = U('classroom/Home/video');
+					}
+				}
+			,'json');
+		}
+		// 加载上传flash ------------- start
+		var swfobj=new SWFObject('http://union.bokecc.com/flash/api/uploader.swf', 'uploadswf', '220', '50', '8');
+		swfobj.addVariable( "progress_interval" , 1);	//	上传进度通知间隔时长（单位：s）
+		// var notify_url = "<?php echo urlencode(U('classroom/GetVideoInfo/index')) ?>";
+		var notify_url = SITE_URL+"/api/cc/notify.php";
+		swfobj.addVariable( "notify_url" , notify_url);	//	上传视频后回调接口
+		swfobj.addParam('allowFullscreen','true');
+		swfobj.addParam('allowScriptAccess','always');
+		swfobj.addParam('wmode','transparent');
+		swfobj.write('swfDiv');
+		// 加载上传flash ------------- end
+		
+		function positionUploadSWF() {
+			document.getElementById("swfDiv").style.width = ($(".btn_big_r").width("width")) + 8;
+			document.getElementById("swfDiv").style.height = ($(".btn_big_r").height("width")) + 8 + 8;
+		}
+		function reload(){
+			var filename = $("#videofile").val();
+			var filesize = $("#totle_size").val();
+			on_spark_selected_file(filename,filesize);
+		}
+		function on_spark_selected_file(filename,filesize) {
+			document.getElementById("videofile").value = filename;
+			var show_video_title = $("#video_title").val();
+			var show_video_intro = $("#video_intro").val();
+			var show_video_tag = $("#video_tag").val();
+			if('' == show_video_title){
+				notes('请先填写课程标题','failure');
+				return false;
+			} 
+			if('' == show_video_intro){
+				notes('请先填写课程简介','failure');
+				return false;
+			}
+			if('' == show_video_tag){
+				notes('请先填写课程标签','failure');
+				return false;
+			}
+			if(filesize > 200*1024*1024) {
+				alert("视频大小不能超过200M哦！");
+				$("#up_video").attr("disabled","disabled");
+				return false;
+			}
+			$("#show_totle_size").html((filesize/1024/1024).toFixed(2));
+			$("#totle_size").val(filesize);
+			$("#btn_width").val(filename);
+			$("#show_video_title").html(show_video_title);
+			$("#upload_status").show();
+			$(".upload_pro").height("0px");
+			$("#upload_pro").hide();
+			$('#uploadswf').height("0px").width("0px");
+			submitvideo(filename,show_video_title,show_video_intro,show_video_tag);
+		}
+		//-------------------
+		//调用者：flash
+		//功能：验证上传是否正常进行函数
+		//时间：2014-4-14
+		//说明：用户可以加入相应逻辑
+		//-------------------
+		function on_spark_upload_validated(status, videoid) {
+			if (status == "OK") {
+				//alert("上传正常,videoid:" + videoid);
+				$("#videoid").val(videoid);
+				$("#form_submit").removeAttr("disabled");
+			} else if (status == "NETWORK_ERROR") {
+				alert("网络错误");
+			} else {
+				alert("api错误码：" + status);
+			}
+		}
+
+		//-------------------
+		//调用者：flash
+		//功能：通知上传进度函数
+		//时间：2014-4-14
+		//说明：用户可以加入相应逻辑
+		//-------------------
+		function on_spark_upload_progress(progress) {
+			var totle_time = parseInt($("#totle_time").val());
+			var filesize = $("#totle_size").val();
+			if (progress == -1) {
+				$("#ratio").html("上传出错 | <a href=\"javascritp:void(0);\" onclick=\"reload();\">重新上传</a>");
+			} else if (progress == 100) {
+				var videoid = $("#videoid").val();
+				$("#progress").attr("value",progress);
+				$("#ratio").html("上传完成 | <a href=\"javascript:void(0);\" onclick=\"deletevideo(\'"+videoid+"\');\">重新上传</a>");
+				$("#tile").html('0秒');
+				$("#upload_size").html($("#show_totle_size").html());
+				$("#start_creat").attr("onclick","creat_video();")
+			} else {
+				$("#progress").attr("value",progress);
+				$("#ratio").html(progress+'%');
+				var speed = (progress * filesize / totle_time / 1024 / 100).toFixed(2); //上传速度
+				var upload_size = (filesize * progress /100 / 1024 / 1024).toFixed(2); //已上传大小
+				var l_time = parseInt(filesize * (1 - progress/100) / 1024 / speed);
+				if(l_time > 3600*24){
+					var left_time = '大于1天';
+				} else if(l_time > 3600){
+					var hours = parseInt((l_time/3600));
+					var mins  = parseInt((l_time - hours * 3600) / 60);
+					var seconds = parseInt(l_time - hours* 3600 - mins * 60);
+					var left_time = hours+'小时'+mins+'分钟'+seconds +'秒';
+				} else if(l_time > 60){
+					var mins = parseInt(l_time / 60);
+					var seconds = parseInt(l_time - mins * 60);
+					var left_time = mins+'分钟'+seconds+'秒';
+				} else {
+					var left_time = l_time+'秒';
+				}
+				$("#speed").html(speed);
+				$("#upload_size").html(upload_size);
+				$("#tile").html(left_time);
+			}
+			$("#totle_time").val(parseInt(totle_time+1));
+		}
+
+		//提交创建视频 - dengjb - 20140416
+		function submitvideo(videofile,video_title,video_intro,video_tag) {
+			if(videofile == ''){
+				alert('还没选择上传视频文件!');
+				return false;
+			}
+			if(video_title == ''){
+				alert('课程标题不为空!');
+				return false;
+			}
+			if(video_tag == ''){
+				alert('课程标签不为空!');
+				return false;
+			}
+			if(video_intro == ''){
+				alert('课程简介不为空!');
+				return false;
+			}
+			var url = SITE_URL+"/api/cc/getuploadurl.php?title=" + video_title + "&tag=" + video_tag + "&description=" + video_intro;
+			var req = getAjax();
+			$.get(url,
+				{},
+				function(txt){
+					//获取返回的内容
+					var re = txt;
+					//调用flash上传函数
+					document.getElementById("uploadswf").start_upload(re);
+				});
+		}
+		
+		//删除视频 - dengjb - 20140418
+		function deletevideo(videoId) {
+			var url = SITE_URL+"/api/cc/video_del.php?videoid=" + videoId;
+			$.get(url,{},function(txt){
+				if(txt.status == '1'){
+					$("#upload_status").hide();
+					$(".upload_pro").height("50px");
+					$("#uploadswf").height("50px").width("220px");
+					$("#upload_pro").show();
+					$("#btn_width").val("选择要上传的视频");
+					$("#show_video_title").html('');
+					$("#progress").attr("value","0");
+					$("#ratio").html("");
+					$("#speed").html("0");
+					$("#upload_size").html("0");
+					$("#show_totle_size").html("0");
+					$("#tile").html("正在计算...");
+				} else {
+					notes(txt.info,'failure')
+				}
+			},'json');
+			//var req = getAjax();
+			//req.open("GET", url, true);
+			//req.onreadystatechange = function(videoId) {
+			//	if (req.readyState == 4) {
+			//		if (req.status == 200) {
+			//			var re = req.responseText;//获取返回的内容
+			//			document.getElementById("delete_result").innerHTML = re;
+			//		}
+			//	}
+			//};
+			//req.send(null);
+		}
+		
+		function modifiedVideo(){
+			$("#upload_status").hide();
+			$(".upload_pro").height("50px");
+			$("#uploadswf").height("50px").width("220px");
+			$("#upload_pro").show();
+			$("#btn_width").val("选择要上传的视频");
+			$("#show_video_title").html('');
+			$("#progress").attr("value","0");
+			$("#ratio").html("");
+			$("#speed").html("0");
+			$("#upload_size").html("0");
+			$("#show_totle_size").html("0");
+			$("#tile").html("正在计算...");
+			$("#start_creat").removeAttr("onclick");
+		}
+
+		//异步请求 - dengjb - 20140416
+		function getAjax() {
+			var oHttpReq = null;
+
+			if (window.XMLHttpRequest) {
+				oHttpReq = new XMLHttpRequest;
+				if (oHttpReq.overrideMimeType) {
+					oHttpReq.overrideMimeType("text/xml");
+				}
+			} else if (window.ActiveXObject) {
+				try {
+					oHttpReq = new ActiveXObject("Msxml2.XMLHTTP");
+				} catch (e) {
+					oHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+			} else if (window.createRequest) {
+				oHttpReq = window.createRequest();
+			} else {
+				oHttpReq = new XMLHttpRequest();
+			}
+			return oHttpReq;
+		}
+	</script>
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

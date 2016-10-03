@@ -1,0 +1,118 @@
+<include file="__THEME__/public_header" />
+<script>
+window.onload=function()
+{
+	
+	//公用库
+	higher_common();
+	
+	 //登录 三部曲
+	(function(){
+		Login_Seite();
+	})();
+	(function(){
+		var oManage_All_box=getByClass(document,'Manage_All_box');
+		for(var i=0; i<oManage_All_box.length; i++)
+		{
+			aTab(oManage_All_box[i]);
+		}
+		
+	})();
+	  
+	 
+}
+</script>
+
+<div class="main">
+	<div class="main_box_index plr40 clearfix mb30 mt35">
+       <div class="nva_cent">
+            <ul class="Nav_bar fl">
+                <li class="sel_cent_r green_txt">1.吐槽一下自己？</li>
+                <li>2.你学习的项目？</li>
+                <li>3.关注感兴趣的人并抢夺 ”学习真经“</li>
+            </ul>
+        </div>
+       <div class="box_four_zc Manage_all Manage_all_s clearfix" style="display:block;">
+            <div class="School_for clearfix">                
+            	<a class="four four_zc1" href="javascript:;"><b><input type="hidden" value="1" name="xueshen"></b></a>
+            	<a class="four four_zc2" href="javascript:;"><b><input type="hidden" value="2" name="xueba"></b></a>
+            	<a class="four four_zc3" href="javascript:;"><b><input type="hidden" value="3" name="xuezha"></b></a>
+            	<a class="four four_zc4" href="javascript:;"><b><input type="hidden" value="4" name="xueruo"></b></a>
+            	<a class="four four_zc_y" href="javascript:;"><b class="ml_80"><input type="hidden" value="0" name="xuesheng"></b></a>
+            
+            </div>
+            <div class="btn_box clearfix">
+                <a class="next" href="javascript:;">下一步</a>
+            </div>
+        </div>
+       <div class="Manage_all mt50">
+            <div class="box_btn_zc clearfix">
+                <span class="selected_title w120 color_hui fl">
+                    选择你的学习项目：
+                </span>
+                <div class="ml130 tag_active1 clearfix">
+                    <a class="btn_hui_h" href="javascript:;">考研</a>
+                    <!--<a class="btn_hui_h" href="javascript:;">四六级</a>
+                    <a class="btn_hui_h" href="javascript:;">考公务员</a>
+                    -->
+                    
+                </div>
+            </div>
+            <div class="box_btn_zc clearfix">
+                <span class="selected_title w120 color_hui fl">
+                    选择你的学习阶段：
+                </span>
+                <div class="ml130 tag_active clearfix">
+                    <a class="btn_hui_h" href="javascript:;">准备阶段<input type="hidden" value="1" name="zhunbei"></a>
+                    <a class="btn_hui_h" href="javascript:;">复习阶段<input type="hidden" value="2" name="fuxi"></a>
+                    <a class="btn_hui_h" href="javascript:;">提高阶段<input type="hidden" value="3" name="tigao"></a>
+                    <a class="btn_hui_h" href="javascript:;">冲刺阶段<input type="hidden" value="4" name="chongci"></a>
+                    <a class="btn_hui_h" href="javascript:;">考试阶段<input type="hidden" value="5" name="kaoshi"></a>
+                    <a class="btn_hui_h" href="javascript:;">复试调剂阶段<input type="hidden" value="6" name="fushi"></a>
+                </div>
+            </div>
+            <div class="btn_box mb50 clearfix">
+                <a class="prev" href="javascript:;">上一步</a>
+                <a class="next" href="javascript:;">下一步</a>
+            </div>
+        </div>
+       <div class="plr20 mt50 Manage_all change clearfix">
+        	<div class="tucao">
+                <div class="nva_cent">
+                    <ul class="nva_cent_s">
+                        <li class="tit_list">TA们跟你吐槽相同</li>
+                        <li>TA们与你学习阶段相同</li>
+                    </ul>
+                </div>
+                <div class="Manage_All_box" style="display:block;">
+                    <div class="pos_r">
+                        <a class="course_swap" href="javascript:;" onclick="change_tu()">
+                    	<span class="icon_swap"></span>换一换
+                		</a>
+                    </div>
+                    <div class="clearfix mt20" id="tu"></div>
+                   
+                    <input type="checkbox" name="controlAll" style="controlAll" id="controlAll" />全选
+                </div>
+                <div class="Manage_All_box">
+                    <div class="pos_r">
+                        <a class="course_swap" href="javascript:;" onclick="change_tui()">
+                    	<span class="icon_swap"></span>换一换
+                		</a>
+                    </div>
+                    <div class="clearfix mt20" id="guanzhu"></div>
+                    <input type="checkbox" name="controlAll" style="controlAll" id="controlAll" />全选
+                </div>
+            </div>
+            <p class="bor_t lh30 plr40 green_txt">相传 “学习真经“ 即将重出江湖，江湖众人纷纷摩拳擦掌，无不垂涎三尺，夜不能寐；相传每本真经并非人人适合，真经也并非永恒存在，及早找到适合自己的”学习真经“，勤加苦练，才有可能打通奇经八脉，练就绝世神功，成就传说中的 ” <em class="red_txt">学神</em> “ 。</p>    
+            <p class="ft30 txt_c mt20 grey">最近还没有风声</p>
+             <div class="btn_box mt20 mb50 clearfix">
+                <a class="prev" href="javascript:;">上一步</a>
+                <a class="Complete" href="javascript:;" onclick="guanzhu();">完成</a>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

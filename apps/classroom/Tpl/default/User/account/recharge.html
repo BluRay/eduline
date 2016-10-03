@@ -1,0 +1,77 @@
+<include file="__THEME__/public_header" />
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+        <include file="_tab" />
+        </div>
+        <div class="user-Release" >
+            <div class="box_block Manage_all" style="display:block">
+            	<div class="mt10b20 clearfix h55">
+                		<form method="get" action="{:U('classroom/User/account', array('tab'=>5))}" id="account-find-form">
+                            <span class="selected_title fl">
+                            时间：
+                            </span>
+                            <input type="text" style="height:30px;" onfocus="core.rcalendar(this,'');" class="rcalendar_select border fl" readonly name="st" value="{$_GET['st']}" />
+                            <span class="fl"> &nbsp;&nbsp;到&nbsp;&nbsp;</span>
+                                <input type="text" style="height:30px;" onfocus="core.rcalendar(this,'');" class="rcalendar_select border fl" readonly name="et" value="{$_GET['et']}" />
+                            <a class="sel_w fl ml15" id="find-submit" href="javascript:;">查询</a>
+                        </form>
+                  </div>
+                  <style>
+                  table.table_ye tr td{border-top:1px solid #e3e3e3;border-left:1px solid #e3e3e3;}
+                  </style>
+                  <table class="table_ye" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-right:1px solid #e3e3e3;border-bottom:1px solid #e3e3e3;">
+                  	<thead>
+                    	<tr><td width="8%">序号</td>
+                        <td width="20%">时间</td>
+                        <td width="15%">支付金额</td>
+                        <td width="15%">支付类型</td>
+                        <td width="10%">状态</td>
+                        <td width="35%">备注</td>
+                    </tr></thead>
+                    <tbody>
+                    <?php foreach($data['data'] as $i=>$rs):?>
+                    <tr>
+                    	<td><?php echo ceil($data['totalRows']/$data['totalPages'])*($data['nowPage']-1)+$i+1?></td>
+                        <td>{:friendlyDate($rs['ctime'])}</td>
+                        <td>{:unLast0($rs['money'])}￥</td>
+                        <td><eq name="rs['type']" value="0">学币<else/>会员</eq></td>
+                        <td><eq name="rs[status]" value="1">成功<else/>失败</eq></td>
+                        <td><?php echo str_replace('Eduline-','',$rs['note'])?></td>
+                    </tr>
+                    <?php endforeach;?>
+                  </tbody></table>
+                  <div class="mt10 account_page">累计充值：<em class="red_txt">{:unLast0($total)}</em>￥<p>共{$data.totalRows}条　{$data.html}</p></div>
+            </div>
+        </div>
+
+    </div>
+    <!--右-->
+    <include file="../../User/_right" />
+</div>
+
+<script type="text/javascript">
+$('input.rcalendar_select,#rcalendar_y,#rcalendar_m,#ryears,#rmonths').live('click',function(e){
+	return false;
+});
+$(document).click(function(){
+	typeof rcalendar_close != 'undefined' && rcalendar_close();
+});
+$('#account-find-form').submit(function(e) {
+	if($("input.rcalendar_select").val() == '') notes('请选择查询时间', 'failure');
+    var url = $(this).attr('action')+'';
+	if(url.indexOf('?')>-1){
+		window.location = url+'&'+$(this).serialize();
+	}else{
+		window.location = url+'?'+$(this).serialize();
+	}
+	return false;
+}).find('#find-submit').click(function(){
+	$(this).parents('form').submit();
+});
+</script>
+
+<include file="__THEME__/public_footer" />

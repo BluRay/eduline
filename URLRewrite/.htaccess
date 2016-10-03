@@ -1,0 +1,171 @@
+<IfModule mod_rewrite.c>
+# .htaccess
+# ThinkSNS
+#
+# 为了正常启用URL Rewrite，请将apache配置文件中“LoadModule rewrite_module modules/mod_rewrite.so”
+# 前的注释去掉，并将apache的DocumentRoot开启AllowOverride
+# 
+# 如下所示为apache下httpd.conf的代码片段：
+# <Directory "YourDocumentRoot">
+#   Options Indexes FollowSymLinks ExecCGI Includes
+#   AllowOverride All
+#   Order allow,deny
+#   Allow from all
+# </Directory>
+#
+
+# 是否开启URL Rewrite.
+RewriteEngine On
+
+# 根目录名称 [注意：前后都有"/"]
+# 请将下面的“/thinksns/”替换成您的根目录名称。如：
+# 如果您的站点地址为：http://abc.com，那么请将“/thinksns/”替换为"/"
+# 如果您的站点地址为：http://abc.com/d/e/f，那么请将“/thinksns/”替换为"/d/e/f/"
+
+
+#规则测试
+RewriteRule ^/?rewrite$									public/rewrite.php [L]
+
+#短网址
+RewriteRule ^/?url/([a-zA-Z0-9]+)$                      shorturl.php?url=$1 [L]
+
+#自定义页面
+RewriteRule	^/?page/([0-9a-zA-Z_]+)\.html$		index.php?app=page&mod=Index&act=index&page=$1&%{QUERY_STRING} [L]
+
+#我的首页
+RewriteRule ^/?home$                                    index.php?app=public&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?invite$                					index.php?app=public&mod=Invite&act=invite&%{QUERY_STRING} [L]
+RewriteRule ^/?my(Task|Medal|Rank)$              		index.php?app=public&mod=$1&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?my(Collection|Mention|Comment)$         	index.php?app=public&mod=$1&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?myFeed$                                	index.php?app=public&mod=Index&act=myFeed&%{QUERY_STRING} [L]
+RewriteRule ^/?myFollowing$								index.php?app=public&mod=Index&act=following&%{QUERY_STRING} [L]
+RewriteRule ^/?myFollower$                             	index.php?app=public&mod=Index&act=follower&%{QUERY_STRING} [L]
+RewriteRule ^/?message/([0-9]+)$               			index.php?app=public&mod=Message&act=detail&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?notify$                               	index.php?app=public&mod=Message&act=notify&%{QUERY_STRING} [L]
+RewriteRule ^/?message$                              	index.php?app=public&mod=Message&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?message/([0-9]+)/([0-9]+)$               index.php?app=public&mod=Message&act=detail&type=$1&id=$2&%{QUERY_STRING} [L]
+RewriteRule ^/?setting/([a-zA-Z0-9_]+)$                 index.php?app=public&mod=Account&act=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?(weibo|feed)/([0-9]+)$                  	index.php?app=public&mod=Profile&act=feed&feed_id=$2&%{QUERY_STRING} [L]
+RewriteRule ^/?topic$                  					index.php?app=public&mod=Topic&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?topics/([_a-zA-Z0-9]+)$                  index.php?app=public&mod=Topic&act=index&domain=$1&%{QUERY_STRING} [L]
+
+#我的空间
+RewriteRule ^/?(@|space\/)([_a-zA-Z0-9]+)/?$                   index.php?app=public&mod=Profile&act=index&uid=$2&%{QUERY_STRING} [L]
+RewriteRule ^/?(@|space\/)([_a-zA-Z0-9]+)/profile$           index.php?app=public&mod=Profile&act=data&uid=$2&%{QUERY_STRING} [L]
+RewriteRule ^/?(@|space\/)([_a-zA-Z0-9]+)/following$         index.php?app=public&mod=Profile&act=following&uid=$2&%{QUERY_STRING} [L]
+RewriteRule ^/?(@|space\/)([_a-zA-Z0-9]+)/follower$          index.php?app=public&mod=Profile&act=follower&uid=$2&%{QUERY_STRING} [L]
+
+#登录注册
+RewriteRule ^/?login$                                   index.php?app=public&mod=Passport&act=login&%{QUERY_STRING} [L]
+RewriteRule ^/?welcome$                                 index.php?app=public&mod=Passport&act=login&%{QUERY_STRING} [L]
+RewriteRule ^/?register$                                index.php?app=public&mod=Register&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?activate/([0-9]+)$                       index.php?app=public&mod=Register&act=waitForActivation&uid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?review/([0-9]+)$                         index.php?app=public&mod=Register&act=waitForAudit&uid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?register/upload_photo$  					index.php?app=public&mod=Register&act=step2&%{QUERY_STRING} [L]
+RewriteRule ^/?register/work_information$  				index.php?app=public&mod=Register&act=step3&%{QUERY_STRING} [L]
+RewriteRule ^/?register/follow_interesting$				index.php?app=public&mod=Register&act=step4&%{QUERY_STRING} [L]
+
+RewriteRule ^/?wap$           							index.php?app=wap&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?w3g$           							index.php?app=w3g&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?findfriend$           					index.php?app=people&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?people/?([a-zA-Z0-9_]+)?$                index.php?app=people&mod=Index&act=index&type=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?channel/?([a-zA-Z0-9_]+)?$           	index.php?app=channel&mod=Index&act=index&cid=$1&%{QUERY_STRING} [L]
+
+#微吧
+RewriteRule ^/?weiba$								index.php?app=weiba&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/weibalist$						index.php?app=weiba&mod=Index&act=weibaList&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/postlist$						index.php?app=weiba&mod=Index&act=postList&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/my([a-zA-Z]+)$					index.php?app=weiba&mod=Index&act=myWeiba&type=my$1&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/([0-9]+)$						index.php?app=weiba&mod=Index&act=detail&weiba_id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/([0-9]+)/digest$				index.php?app=weiba&mod=Index&act=detail&weiba_id=$1&type=digest&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/([0-9]+)/post$					index.php?app=weiba&mod=Index&act=post&weiba_id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/post_([0-9]+)/edit$			index.php?app=weiba&mod=Index&act=postEdit&post_id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/post_([0-9]+)$					index.php?app=weiba&mod=Index&act=postDetail&post_id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/reply_([0-9]+)/edit$			index.php?app=weiba&mod=Index&act=replyEdit&reply_id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/([0-9]+)/manage$				index.php?app=weiba&mod=Manage&act=index&weiba_id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/([0-9]+)/manage/member$		index.php?app=weiba&mod=Manage&act=member&weiba_id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/([0-9]+)/manage/notify$		index.php?app=weiba&mod=Manage&act=notify&weiba_id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?weiba/([0-9]+)/manage/log$			index.php?app=weiba&mod=Manage&act=log&weiba_id=$1&%{QUERY_STRING} [L]
+
+# 日志
+RewriteRule ^/?app/blog/?$                              index.php?app=blog&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?app/blog/lastest/?$						index.php?app=blog&mod=Index&act=news&%{QUERY_STRING} [L]
+RewriteRule ^/?app/blog/following/?$					index.php?app=blog&mod=Index&act=followsblog&%{QUERY_STRING} [L]
+RewriteRule ^/?app/blog/my/?$                           index.php?app=blog&mod=Index&act=my&%{QUERY_STRING} [L]
+RewriteRule ^/?app/blog/([0-9]+)/?$                     index.php?app=blog&mod=Index&act=personal&uid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/blog/detail/([0-9]+)/?$              index.php?app=blog&mod=Index&act=show&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/blog/post/?$                         index.php?app=blog&mod=Index&act=addBlog&%{QUERY_STRING} [L]
+RewriteRule ^/?app/blog/edit/([0-9]+)/?$                index.php?app=blog&mod=Index&act=edit&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/blog/manage/?$                       index.php?app=blog&mod=Index&act=admin&%{QUERY_STRING} [L]
+
+# 相册
+RewriteRule ^/?app/photo/?$                                   index.php?app=photo&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?app/photo/all_albums/?$                        index.php?app=photo&mod=Index&act=all_albums&%{QUERY_STRING} [L]
+RewriteRule ^/?app/photo/all_photos/?$                        index.php?app=photo&mod=Index&act=all_photos&%{QUERY_STRING} [L]
+RewriteRule ^/?app/photo/albums/?$                            index.php?app=photo&mod=Index&act=albums&%{QUERY_STRING} [L]
+RewriteRule ^/?app/photo/photos/?$                            index.php?app=photo&mod=Index&act=photos&%{QUERY_STRING} [L]
+RewriteRule ^/?app/photo/album/([0-9]+)/?$                    index.php?app=photo&mod=Index&act=album&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/photo/photo/([0-9]+)/?$                    index.php?app=photo&mod=Index&act=photo&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/photo/multi_upload/?$                      index.php?app=photo&mod=Upload&act=flash&%{QUERY_STRING} [L]
+RewriteRule ^/?app/photo/upload/?$                            index.php?app=photo&mod=Upload&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?app/photo/edit/([0-9]+)/?$                     index.php?app=photo&mod=Manage&act=album_edit&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/photo/order/([0-9]+)/?$                    index.php?app=photo&mod=Manage&act=album_order&id=$1&%{QUERY_STRING} [L]
+
+# 活动
+RewriteRule ^/?app/event/?$                                   index.php?app=event&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?app/event/events/?$                            index.php?app=event&mod=Index&act=personal&%{QUERY_STRING} [L]
+RewriteRule ^/?app/event/post/?$                              index.php?app=event&mod=Index&act=addEvent&%{QUERY_STRING} [L]
+RewriteRule ^/?app/event/edit/([0-9]+)/?$                     index.php?app=event&mod=Index&act=edit&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/event/detail/([0-9]+)/?$                   index.php?app=event&mod=Index&act=eventDetail&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/event/member/([0-9]+)/?$                   index.php?app=event&mod=Index&act=member&id=$1&%{QUERY_STRING} [L]
+
+# 投票
+RewriteRule ^/?app/vote/?$                                    index.php?app=vote&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?app/vote/my/?$                                 index.php?app=vote&mod=Index&act=my&%{QUERY_STRING} [L]
+RewriteRule ^/?app/vote/([0-9]+)/?$                           index.php?app=vote&mod=Index&act=personal&uid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/vote/post/?$                               index.php?app=vote&mod=Index&act=addPoll&%{QUERY_STRING} [L]
+RewriteRule ^/?app/vote/detail/([0-9]+)/?$                    index.php?app=vote&mod=Index&act=pollDetail&id=$1&%{QUERY_STRING} [L]
+
+# 礼物
+RewriteRule ^/?app/gift/?$                                    index.php?app=gift&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?app/gift/receive/?$                            index.php?app=gift&mod=Index&act=receivebox&%{QUERY_STRING} [L]
+RewriteRule ^/?app/gift/send/?$                               index.php?app=gift&mod=Index&act=sendbox&%{QUERY_STRING} [L]
+RewriteRule ^/?app/gift/([0-9]+)/?$                           index.php?app=gift&mod=Index&act=personal&uid=$1&%{QUERY_STRING} [L]
+
+# 招贴版
+RewriteRule ^/?app/poster/?$                                  index.php?app=poster&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?app/poster/posters/?$                          index.php?app=poster&mod=Index&act=personal&%{QUERY_STRING} [L]
+RewriteRule ^/?app/poster/post/?$                             index.php?app=poster&mod=Index&act=addPosterSort&%{QUERY_STRING} [L]
+RewriteRule ^/?app/poster/post/([0-9]+)/?$                    index.php?app=poster&mod=Index&act=addPoster&typeId=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/poster/edit/([0-9]+)/?$                    index.php?app=poster&mod=Index&act=editPoster&id=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/poster/detail/([0-9]+)/?$                  index.php?app=poster&mod=Index&act=posterDetail&id=$1&%{QUERY_STRING} [L]
+
+# 群组
+RewriteRule ^/?app/group/?$                                             index.php?app=group&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/index?$                                        index.php?app=group&mod=Index&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/my_post/?$                                     index.php?app=group&mod=Index&act=post&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/replied/?$                                     index.php?app=group&mod=Index&act=replied&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/comment/?$                                     index.php?app=group&mod=Index&act=comment&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/atme/?$                                        index.php?app=group&mod=Index&act=atme&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/groups/?$                                      index.php?app=group&mod=SomeOne&act=index&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/class/?$                                       index.php?app=group&mod=Index&act=find&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/search/?$                                      index.php?app=group&mod=Index&act=search&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/add/?$                                         index.php?app=group&mod=Index&act=add&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/?$                                    index.php?app=group&mod=Group&act=index&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/search?$                              index.php?app=group&mod=Group&act=search&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/detail/([0-9]+)/?$                    index.php?app=group&mod=Group&act=detail&gid=$1&feed_id=$2&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/invite/?$                             index.php?app=group&mod=Invite&act=create&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/setting/baseinfo/?$                   index.php?app=group&mod=Manage&act=index&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/setting/private/?$                    index.php?app=group&mod=Manage&act=privacy&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/setting/member/?$                     index.php?app=group&mod=Manage&act=membermanage&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/setting/announcement/?$               index.php?app=group&mod=Manage&act=announce&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/setting/log/?$                        index.php?app=group&mod=Log&act=index&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/bbs/?$                                index.php?app=group&mod=Topic&act=index&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/bbs/post/?$                           index.php?app=group&mod=Topic&act=add&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/bbs/edit/([0-9]+)/?$                  index.php?app=group&mod=Topic&act=edit&gid=$1&tid=$2&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group(?:/([0-9]+))?/bbs_reply/edit(?:/([0-9]+))?/?$  index.php?app=group&mod=Topic&act=editPost&gid=$1&pid=$2&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/bbs/([0-9]+)/?$                       index.php?app=group&mod=Topic&act=topic&gid=$1&tid=$2&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/file/?$                               index.php?app=group&mod=Dir&act=index&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/file/upload/?$                        index.php?app=group&mod=Dir&act=upload&gid=$1&%{QUERY_STRING} [L]
+RewriteRule ^/?app/group/([0-9]+)/member/?$                             index.php?app=group&mod=Member&act=index&gid=$1&%{QUERY_STRING} [L]
+</IfModule>

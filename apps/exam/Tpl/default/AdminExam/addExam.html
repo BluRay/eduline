@@ -1,0 +1,472 @@
+<include file="__THEME__/admin_header" />
+<php>
+ set_time_limit(0);
+</php>
+	<link rel="stylesheet" href="__THEME__/js/swfupload/css/default.css">
+	<style type="text/css">
+		.ico_top, .ico_btm {
+		    background: url("__THEME__/admin/image/ico_top_btm.gif") no-repeat scroll 0 0 transparent;
+		    height: 14px;
+		    width: 12px;
+		}
+		.ico_top, .ico_btm { display: inline-block; vertical-align: middle;
+		}
+		.ico_top { background-position: -12px 0;}
+		.ico_btm {background-position: -24px 0;}
+		.ico_top:hover { background-position: 0 0;}
+		.ico_btm:hover { background-position: -35px 0;}
+		#bg{ display: none; position: absolute; top: 0%; left: 0%; width: 100%; height: 100%; background-color: black; z-index:1001; -moz-opacity: 0.7; opacity:.70; filter: alpha(opacity=70);}
+		#show{display: none; position: absolute; top: 25%; left: 22%; width: 53%; height: 49%; padding: 8px; border: 8px solid #E8E9F7; background-color: white; z-index:1002; overflow: auto;}
+	</style>
+	<script type="text/javascript">
+		var exam_publish_result_tm_mode = "{$exam['exam_publish_result_tm_mode']}";
+		if(exam_publish_result_tm_mode && exam_publish_result_tm_mode==1){
+			$("#result_tm").show();
+		}
+		var exam_user_signup_flg="{$exam['exam_user_signup_flg']}";
+		if(exam_user_signup_flg && exam_user_signup_flg==1){
+			$("#signup_time").show();
+			$("#signup_end").show();
+		}
+	</script>
+	<div id="bg"></div>
+	<div id="show">
+		<table  border="0" cellpadding="3" width="100%" cellspacing="1" style="background-color: #ececec;">
+		  <tr style="text-align: center; BACKGROUND-COLOR: #d2dbea; font-weight: bold">
+		    <th width="10%"><input type="checkbox" disabled="disabled"/></th>
+		    <th width="30%">考试名称</th>
+		    <th width="20%">所属分类</th>
+		    <th width="20%">初卷类型</th>
+		    <th width="10%">试题总分</th>
+		    <th width="10%">试题数量</th>
+		  </tr>
+		  <?php foreach ($paper_list as $vo) { ?>
+		  	<tr bgcolor='#F4FAFF'>
+		  		<td><input type="checkbox" value="{$vo.paper_id},{$vo.paper_name},{$vo.paper_category_name},{$vo.paper_point},{$vo.paper_question_count}"  name="checkbox" 
+		  		<?php foreach ($exam_paper as $v) {
+		  			if($v["exam_paper_paper"]==$vo["paper_id"]){
+		  				echo "checked='checked'";
+		  			}
+		  		} ?> /></td>
+		  		<td>{$vo.paper_name}</td>
+			    <td>{$vo.paper_category_name}</td>
+			    <?php if($vo["paper_type"]==1){ ?>
+			    <td>自动出卷</td>
+			    <?php }else{ ?>
+			    <td>手动出卷</td>
+			    <?php } ?>
+			    <td>{$vo.paper_point}</td>
+			    <td>{$vo.paper_question_count}</td>
+			</tr>
+		  <?php } ?>
+		</table>
+	<input id="btnclose" style="margin-top:20px;" class="btn_b" type="button" value="确定" onclick="hidediv({$exam['exam_id']});"/>
+	</div>
+	<div id="container" class="so_main">
+    <div class="page_tit">
+        <div class="right">
+            <neq name="back_id" value="-1"><a href="{:U('exam/AdminExam/index')}" class="btn_a"><span>返回</span></a></neq>
+        </div>
+        {$pageTitle}
+    </div>
+    <php>if(!empty($pageTab)):</php>
+    
+    <div class="tit_tab">
+        <ul>
+        <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+        <volist name='pageTab' id='t'>
+            <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+        </volist>
+        </ul>
+    </div>
+    <php>endif;</php>
+    <form method="POST" action="{:U('exam/AdminExam/doAddExam')}" id="detail_form" name="detail_form" onsubmit="return j_validateCallback(this,checkForm,post_callback)">
+    	<div class="form2">
+		    <?php if($exam['exam_admin']){ ?>
+		    	<dl class="lineD" id="dl_author">
+		    	<dt><font color="red"> * </font>创建者：</dt>
+		    	<dd>
+		    		{:getUserSpace($exam["exam_admin"])}
+		    	</dd>
+		    </dl>
+		    <?php } ?>
+    		<dl class="lineD" id="dl_video_title">
+		      	<dt><font color="red"> * </font>考试名称：</dt> 
+		      	<dd>
+		      		<input name="exam_name" id="exam_name" type="text" value="{$exam.exam_name}" class="s-txt" style="width:200px"> 
+		    	</dd>
+		    </dl>
+		    <dl class="lineD" id="dl_video">
+		    	<dt><font color="red"> * </font>考试须知：</dt>
+		    	<dd>
+		    		<textarea name="exam_describe" id="exam_describe" rows="10" cols="80">{$exam.exam_describe}</textarea>
+		    	</dd>
+		    </dl>
+		    <dl >
+		    	<dt>试卷列表</dt>
+		    	<dd>
+		    	</dd>
+		    </dl>
+		    <dl class="lineD" id="dl_video" style="margin-left:-30px;">
+		    	<table id="table"  border="0" cellpadding="3" cellspacing="1" width="80%"  float:left; style="background-color: #ececec;">
+				  <tr style="text-align: center; BACKGROUND-COLOR: #d2dbea; font-weight: bold">
+				    <th width="30%">考试名称</th>
+				    <th width="10%">所属分类</th>
+				    <th width="10%">试题总分</th>
+				    <th width="10%">试题数量</th>
+				    <th width="10%">操作</th>
+				  </tr>
+				  <?php foreach ($paper_list as $vo) { 
+				  		foreach ($exam_paper as $v) {
+				  			if($v["exam_paper_paper"]==$vo["paper_id"]){
+				  	?>
+				  	<tbody>
+				  	<tr bgcolor='#F4FAFF'>
+				  		<td>{$vo.paper_name}</td>
+					    <td>{$vo.paper_category_name}</td>
+					    <td>{$vo.paper_point}</td>
+					    <td>{$vo.paper_question_count}</td>
+					    <td><a href="javascript:delpaper({$v.exam_paper_id});">删除</a></td>
+					</tr>
+				  <?php } } } ?>
+				  </tbody>
+				</table>
+				<label style="margin-left:80px;line-height:40px;"><a href="javascript:showdiv();">请选择试卷</a></label>
+		    </dl>
+		    <dl class="lineD" id="form_teacherlist">
+		    	<dt><font color="red"> * </font>分类选择：</dt>
+		    	<dd>
+					<select name="exam_categoryid" id="exam_categoryid">
+					<?php if($exam["exam_categoryid"]){
+						foreach ($exam_category as $v) {
+							if($v["exam_category_id"]==$exam["exam_categoryid"]){ ?>
+								<option value='{$v.exam_category_id}'>{$v.exam_category_name}</option>
+								<foreach name="exam_category" item="vo">
+								<?php if($vo["exam_category_id"]!=$exam["exam_categoryid"]){ ?>
+								  	<option value="{$vo.exam_category_id}">{$vo.exam_category_name}</option>
+								<?php } ?>
+								</foreach>
+							<?php }
+						}
+					}else{ ?>
+					 <option value="0">请选择分类</option>
+					  <foreach name="exam_category" item="vo">
+					  <option value="{$vo.exam_category_id}">{$vo.exam_category_name}</option>
+					  </foreach>
+					<?php }?>
+					</select>
+		    	</dd>
+		    </dl>
+		    <dl class="lineD" id="form_tag">
+				<dt><font color="red"> * </font>考试状态：</dt>
+		    	<dd>
+		    	<select name="exam_status" id="exam_status">
+		    		<?php if($exam['exam_status']==1){ ?>
+		    		<option value="1">启用</option>
+		    		<option value="0">不启用</option>
+		    		<?php }else{ ?>
+		    		<option value="0">不启用</option>
+		    		<option value="1">启用</option>
+		    		<?php } ?>
+				</select>
+				</dd>
+			</dl>
+		     <dl class="lineD" id="form_tag">
+				<dt><font color="red"> * </font>是否显示排名：</dt>
+		    	<dd>
+		    	<select name="exam_publish_result_flg" id="exam_publish_result_flg">
+		    		<?php if($exam['exam_publish_result_flg']==0){ ?>
+		    		<option value="0">不显示</option>
+		    		<option value="1">显示</option>
+		    		<?php }else{ ?>
+		    		<option value="1">显示</option>
+		    		<option value="0">不显示</option>
+		    		<?php } ?>
+				</select>
+				</dd>
+			</dl>
+			<dl class="lineD" id="form_tag">
+				<dt><font color="red"> * </font>及格后是否继续考试：</dt>
+		    	<dd>
+		    	<select name="exam_passing_again_flg" id="exam_passing_again_flg">
+		    		<?php if($exam['exam_passing_again_flg']==0){ ?>
+		    		<option value="0">不允许</option>
+		    		<option value="1">允许</option>
+		    		<?php }else{ ?>
+		    		<option value="1">允许</option>
+		    		<option value="0">不允许</option>
+		    		<?php } ?>
+				</select>
+				</dd>
+			</dl>
+		    <dl class="lineD" id="form_tag">
+				<dt><font color="red"> * </font>成绩发布类型：</dt>
+		    	<dd>
+		    	<select name="exam_publish_result_tm_mode" id="exam_publish_result_tm_mode" onchange="changetm_mode();">
+		    		<?php if($exam['exam_publish_result_tm_mode']==0){ ?>
+		    			<option value="0">考试后立即发布</option>
+		    			<option value="1">指定时间发布</option>
+		    		<?php }else{ ?>
+		    			<option value="1">指定时间发布</option>
+		    			<option value="0">考试后立即发布</option>
+		    		<?php } ?>
+				</select>
+				</dd>
+			</dl>
+			<dl class="lineD" id="result_tm" style="display:none;">
+		      	<dt><font color="red"> * </font>发布时间：</dt> 
+		      	<dd>
+		      		<input name="exam_publish_result_tm" id="exam_publish_result_tm" type="text" value="<php>if($exam.exam_publish_result_tm){</php>{:date("Y-m-d H:i:s", $exam.exam_publish_result_tm)}<php>}</php>" class="s-txt" style="width:100px" onfocus="core.rcalendar(this,'full');" readonly="readonly"> 
+		    	</dd>
+		    </dl>
+		    <dl class="lineD" id="form_tag">
+				<dt><font color="red"> * </font>用户是否必须报名才能参加</dt>
+		    	<dd>
+		    	<select name="exam_user_signup_flg" id="exam_user_signup_flg" onchange="changesignup_flg();">
+		    		<?php if($exam['exam_user_signup_flg']==1){ ?>
+		    		<option value="1">需要</option>
+		    		<option value="0">不需要</option>
+		    		<?php }else{ ?>
+		    		<option value="0">不需要</option>
+		    		<option value="1">需要</option>
+		    		<?php }?>
+				</select>
+				</dd>
+			</dl>
+			<dl class="lineD" id="signup_time" style="display:none;">
+		      	<dt><font color="red"> * </font>报名考试开始时间：</dt> 
+		      	<dd>
+		      		<input name="exam_user_signup_time" id="exam_user_signup_time" type="text" value="<php>if($exam.exam_user_signup_time){</php>{:date("Y-m-d H:i:s", $exam.exam_user_signup_time)}<php>}</php>" class="s-txt" style="width:100px" onfocus="core.rcalendar(this,'full');" readonly="readonly"> 
+		    	</dd>
+		    </dl>
+		    <dl class="lineD" id="signup_end" style="display:none;">
+		      	<dt><font color="red"> * </font>考试报名结束时间：</dt> 
+		      	<dd>
+		      		<input name="exam_user_signup_end" id="exam_user_signup_end" type="text" value="<php>if($exam.exam_user_signup_end){</php>{:date("Y-m-d H:i:s", $exam.exam_user_signup_end)}<php>}</php>" class="s-txt" style="width:100px" onfocus="core.rcalendar(this,'full');" readonly="readonly"> 
+		    	</dd>
+		    </dl>
+		    <dl class="lineD" id="dl_video_title">
+		      	<dt><font color="red"> * </font>及格分数：</dt> 
+		      	<dd>
+		      		<input name="exam_passing_grade" id="exam_passing_grade" type="text" value="<?php if($exam['exam_passing_grade']){echo $exam['exam_passing_grade'];}else{ echo "0";} ?>" class="s-txt" style="width:200px"> 
+		    	</dd>
+		    </dl>
+		    <dl class="lineD" id="form_tag">
+				<dt><font color="red"> * </font>考试时长：</dt>
+		    	<dd>
+		    	<input name="exam_total_time" id="exam_total_time" type="text" value="<?php if($exam['exam_total_time']){echo $exam['exam_total_time'];}else{ echo "0";} ?>" class="s-txt" style="width:200px">&nbsp;分钟&nbsp;&nbsp;(0代表没有时长)
+				</dd>
+			</dl>
+			<dl class="lineD" id="form_tag">
+				<dt><font color="red"> * </font>限定考试次数：</dt>
+		    	<dd>
+		    	<input name="exam_times_mode" id="exam_times_mode" type="text" value="<?php if($exam['exam_times_mode']){echo $exam['exam_times_mode'];}else{ echo "0";} ?>" class="s-txt" style="width:200px">&nbsp;分钟&nbsp;&nbsp;(0代表不限制)
+				</dd>
+			</dl>
+			<dl class="lineD" id="form_listingtime">
+		    	<dt><font color="red"> * </font>考试开始时间：</dt>
+		    	<dd>
+		    		<input name="exam_begin_time" id="exam_begin_time" type="text" value="<php>if($exam['exam_begin_time']){</php>{:date("Y-m-d H:i:s", $exam['exam_begin_time'])}<php>}</php>" class="s-txt" style="width:100px" onfocus="core.rcalendar(this,'full');" readonly="readonly">
+		    	</dd>
+		    </dl>
+		    <dl class="lineD" id="form_uctime">
+		    	<dt><font color="red"> * </font>考试结束时间：</dt>
+		    	<dd>
+		    		<input name="exam_end_time" id="exam_end_time" type="text" value="<php>if($exam['exam_end_time']){</php>{:date("Y-m-d H:i:s", $exam['exam_end_time'])}<php>}</php>" class="s-txt" style="width:100px" onfocus="core.rcalendar(this,'full');" readonly="readonly">
+		    	</dd>
+		    </dl>
+		    <input id="exam_id" name="exam_id" type="hidden" value="{$exam.exam_id}">
+		    <input id="paper_ids" name="paper_ids" type="hidden" value="">
+		    <div class="page_btm">
+			<input type="submit" class="btn_b" value="保存" id="form_submit">
+    		</div>
+
+    	</div>
+    	</div>
+    	
+    	
+    </form>
+    <script type="text/javascript">
+    	function showdiv() {
+			document.getElementById("bg").style.display ="block";
+			document.getElementById("show").style.display ="block";
+		}
+		function hidediv(id) {
+			document.getElementById("bg").style.display ='none';
+			document.getElementById("show").style.display ='none';
+				var exam_paper_ids="";  
+	        	if(id){
+	        		$("input[name=checkbox]:checked").each(function() {  
+			            exam_paper_ids += ","+$(this).val().split(",")[0]; 
+			        });  
+			        var exam_paper_ids=exam_paper_ids.substring(1);
+	        		if(exam_paper_ids){
+		        		$.post(U('exam/AdminExam/addpaper'),{id:id,exam_paper_ids:exam_paper_ids},function(txt){
+							if(txt.status == 0){
+								ui.error(txt.info);
+							} else {
+								ui.success(txt.info);
+								window.location.href = window.location.href;
+							}
+						},'json');
+					}else{
+			        	ui.error("请选择试卷");
+			        }
+	        	}else{
+	        		$("#table tr:not(:first)").empty();
+	        		$("input[name=checkbox]:checked").each(function() { 
+			            var id=$(this).val().split(",")[0];
+			            var paper_name=$(this).val().split(",")[1];
+			            var category_name=$(this).val().split(",")[2];
+			            var paper_point=$(this).val().split(",")[3];
+			            var paper_question_count=$(this).val().split(",")[4];
+			            exam_paper_ids += ","+id+"-"+paper_point;
+			            $("#table").append("<tr bgcolor='#F4FAFF' id=tr"+id+"><td>"+paper_name+"</td><td>"+category_name+"</td><td>"+paper_point+"</td><td>"+paper_question_count+"</td><td><a href='javascript:deltr("+id+");'>删除</a></td></tr>");
+			        });
+			        var paper_ids=exam_paper_ids.substring(1);
+			        $("#paper_ids").val(paper_ids);
+	        	}
+		}
+		function deltr(id){
+			var paper_id=$("#paper_ids").val();
+		    var arr=paper_id.split(',');
+			for(var i in arr){
+				if(arr[i]==id){
+					arr.splice(i,1);
+				}
+			}
+			paper_id=arr.join(',');
+			$("#paper_ids").val(paper_id);
+			$("#tr"+id).remove();
+		}
+    	function delpaper(id){
+     		$.post(U('exam/AdminExam/delpaper'),{id:id},function(txt){
+				if(txt.status == 0){
+					ui.error(txt.info);
+				} else {
+					ui.success(txt.info);
+					window.location.href = window.location.href;
+				}
+			},'json');
+    	}
+    	function changetm_mode(){
+    		if($("#exam_publish_result_tm_mode").val()==1){
+    			$("#result_tm").show();
+    		}else{
+    			$("#result_tm").hide();
+    		}
+    	}
+    	function changesignup_flg(){
+    		if($("#exam_user_signup_flg").val()==1){
+    			$("#signup_time").show();
+				$("#signup_end").show();
+    		}else{
+    			$("#signup_time").hide();
+				$("#signup_end").hide();
+    		}
+    	}
+    	function checkForm(form){
+			if($("#exam_name").val()==""){
+				ui.error("考试名称不能为空");
+				return false;
+			}
+			if($("#exam_describe").val()==""){
+				ui.error("考试须知不能为空");
+				return false;
+			}
+			if($("#exam_categoryid").val()==0){
+				ui.error("请选择考试分类");
+				return false;
+			}
+			if($("#exam_begin_time").val()==""){
+				ui.error("请选择开始考试时间");
+				return false;
+			}
+			if($("#exam_end_time").val()==""){
+				ui.error("请选择结束考试时间");
+				return false;
+			}
+			if($("#exam_categoryid").val()==0){
+				ui.error("请选择考试分类");
+				return false;
+			}
+			if($("#exam_total_time").val()==0){
+				$("#exam_total_time").val(0);
+			}
+			if($("#exam_passing_grade").val()==0){
+				$("#exam_passing_grade").val(0);
+			}
+			if($("#exam_times_mode").val()==0){
+				$("#exam_times_mode").val(0);
+			}
+			if($("#exam_publish_result_tm_mode").val()==1){
+				if($("#exam_publish_result_tm").val()==""){
+					ui.error("请选择考试成绩发布的时间");
+					return false;
+				}
+			}
+			if($("#exam_user_signup_flg").val()==1){
+				if($("#exam_user_signup_time").val()==""){
+					ui.error("请选择报名考试开始时间");
+					return false;
+				}
+				if($("#exam_user_signup_end").val()==""){
+					ui.error("请选择报名考试结束时间");
+					return false;
+				}
+			}
+			if($("#exam_id").val()==""){
+				if($("#paper_ids").val()==""){
+					ui.error("请至少选择一张试卷");
+					return false;
+				}
+			}else{
+				var exam_id=$("#exam_id").val();
+				$.post(U('exam/AdminExam/selectpaper'),{id:exam_id},function(txt){
+					if(txt){
+						ui.error(txt.info);
+					}
+				},'json');
+			}
+			return true;
+		}
+		function j_validateCallback(form,call,callback) {
+			var $form = $(form);
+			if(typeof call != 'undefined' && call instanceof Function){    
+				$i = call($form);
+				if(!$i){
+					return false;
+				}
+			}
+			var _submitFn = function(){
+				$.ajax({
+					type: form.method || 'POST',
+					url:$form.attr("action"),
+					data:$form.serializeArray(),
+					dataType:"json",
+					cache: false,
+					success: function(xMLHttpRequest, textStatus, errorThrown){
+						if(typeof callback != 'undefined' && callback instanceof Function){   
+							callback($form,xMLHttpRequest);
+						}  
+					},
+					error: function(xhr, ajaxOptions, thrownError){
+						ui.error("未知错误!");
+					}
+				});
+			}
+			_submitFn();
+			return false;
+		}
+		function post_callback(_form,data){
+			if(data.status != undefined){
+				if(data.status == '0'){
+					ui.error(data.info);
+				} else {
+					ui.success(data.info);
+					window.location.href = U('exam/AdminExam/index')+"&tabHash=index";
+				}
+			}
+		}
+	</script>
+<include file="__THEME__/admin_footer" />

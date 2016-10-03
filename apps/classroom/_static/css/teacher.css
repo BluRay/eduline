@@ -1,0 +1,341 @@
+/*---teacher---*/
+body{
+	font-family: "微软雅黑"; 
+}
+ul{
+	margin:0px;
+}
+.li-1{
+	margin:0px;
+	float:left;
+	cursor: pointer;
+	padding-left:15px;
+	padding-right:15px;
+	margin-left: 5px;
+	margin-right: 5px;
+	color:#000;
+}
+.li-2{
+	margin:0px;
+	float:left;
+	cursor: pointer;
+	margin-left: 5px;
+	margin-right: 5px;
+	padding-left:15px;
+	padding-right:15px;
+	background-color: #1f78aa;
+	color:#fff;
+}
+.banner{
+	height:100%;
+	background-color:#fff;
+	padding:15px;
+	border:1px solid #d7d7d7;
+}
+.banner-2{
+	height:38px;
+	background-image: url(../image/srot.png);
+	background-repeat: repeat-x;
+	padding-left:15px;
+	padding-right:15px;
+	line-height: 38px;
+	border:1px solid #d7d7d7;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+.img{
+	width:100%;
+	height:100%;
+}
+.t-banner{
+	width:100%;
+	height:100%; 
+	overflow:hidden;
+	margin:0 auto;
+}
+.t-category{
+	color:#000;
+	float:left;
+	width:85px;
+	height:100%;
+	display: inline-block;
+	overflow:hidden;
+	padding-bottom:9999px;
+	margin-bottom:-9999px;
+	display:inline;
+}
+.t-list{
+	width:1080px;
+	float:right; 
+	height:auto;
+}
+.t-subject{
+	cursor: pointer;
+	padding-left:15px;
+	padding-right:15px;
+	margin-left: 5px;
+	margin-right: 5px;
+	color:#000;
+}
+.t-subject1{
+	cursor: pointer;
+	margin-left: 5px;
+	margin-right: 5px;
+	padding-left:15px;
+	padding-right:15px;
+	background-color: #1f78aa;
+	color:#fff;
+}
+.t-subject2{
+	cursor: pointer;
+	margin-left: 5px;
+	margin-right: 5px;
+	padding-left:15px;
+	padding-right:15px;
+	background-color: #ff9000;
+	color:#fff;
+}
+.t_top{
+	cursor: pointer;
+	color:#3a3f43;
+	float:left;
+	width:auto;
+	padding-right:10px;
+	margin-right: 25px;
+	background:url(../image/4.png) no-repeat right center;
+}
+.t_top-1{
+	cursor: pointer;
+	color:#3a3f43;
+	float:left;
+	width:auto;
+	padding-right:10px;
+	margin-right: 25px;
+	background:url(../image/3.png) no-repeat right center;
+}
+.line{
+	height:1px;
+	width:100%;
+	margin-top:15px;
+	margin-bottom:15px;
+	border-bottom:1px #ccc dashed;
+}
+.banner-img{
+	width:150px;
+	height:143px;
+	float: left;
+}
+.th-list-fl-right{
+	width:1000px;
+	height:143px;
+	float: right;
+}
+a{
+	color:#232323;
+}
+.banner-3{
+	width:97%;
+	height:145px;
+	text-align: left;
+	background-color:#ffffff;
+	padding-left:15px;
+	padding-right:15px;
+	padding-top:15px;
+	padding-bottom:15px;
+	border:1px solid #d7d7d7;
+	margin-bottom:20px;
+}
+.banner-3:hover{
+	border:1px solid #258ac0;
+	background-color:#f6f3ee;
+} 
+.label-1{  
+    width: auto;    
+    border-width: 1px; 
+    /* 边缘的宽度，如果要分别设置可以这样：border-width: 15px 5px 15px 5px;依次为上、右、下、左   */
+    border-style: solid;  
+    border-radius: 5px;    
+    border-color: #c4c4c4;
+    margin:5px 10px 0px 0px;  
+    padding: 0px 5px 0px 5px;
+	float:left;
+	height:25px;
+}
+.t-btn{  
+    width: 110px;
+    height:35px;
+    padding-top:5px;
+    text-align: center;
+    border-width: 1px; 
+    border-style: solid;  
+    border-radius: 5px;    
+    border-color: #c4c4c4;
+    margin-top:70px;  
+    background-color: #2388c0;
+    color:#fff;
+}
+.t-btn-1{  
+    width: 110px;
+    height:35px;
+    padding-top:5px;
+    padding-bottom:5px;
+    text-align: center;
+    border-width: 1px; 
+    border-style: solid;  
+    border-radius: 5px;    
+    border-color: #c4c4c4;
+    background-color: #2388c0;
+    float:right;
+    color:#fff;
+}
+.t_price{
+	width:40%;
+	float:left;
+	padding-left:10%;
+	padding-left:10%;
+	padding-top:110px;
+}
+.v-top{
+	width:100%;
+	height:auto;
+	background-color: #fbfbfb;
+	text-align: center;
+	background-image: url(../image/v-top.png);
+	background-repeat: repeat-x;
+}
+.v-select{
+	border:1px solid #a7937b;
+	width:270px;
+	height:35px;
+	color: #373737;
+	margin-bottom:10px;
+}
+.v-btn-1{
+	width:120px;
+	height: 35px;
+	line-height: 35px;
+	background-color: #ff824f;
+	color:#fff;
+	text-align: center;
+	cursor: pointer;
+}
+.v-introduce{
+	width: 1198px;
+	height: 100%;
+	background-color: #ffffff;
+	border:1px solid #cbcbcb;
+}
+.v-introduce-title{
+	width: 1198px;
+	height: 49px;
+	background-color: #fdffef;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #cbcbcb;
+	color:#000100;
+}
+.v-introduce-title-1{
+	float: left;
+	width:160px;
+	height:100%;
+	color:#268ecb;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #cbcbcb;
+	text-align:center;
+	line-height: 49px;
+	font-size: 18px;
+}
+.v-introduce-title-2{
+	float: left;
+	width:160px;
+	height:100%;
+	color:#000100;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #cbcbcb;
+	text-align:center;
+	line-height: 49px;
+	font-size: 18px;
+}
+.v-introduce-content{
+	width:1114px;
+	height:auto;
+	padding-left: 37px;
+	padding-right: 37px;
+}
+.v-introduce-content-1{
+	margin-top:25px;
+}
+.td{
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-right-color: #ffffff;
+    border-bottom-color: #ffffff;
+    background-color: #e2e2e2;
+    height: 65px;
+    text-align: center;
+    vertical-align: middle;
+    font-size:14px;
+    cursor: pointer;
+}
+.td-1{
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-right-color: #ffffff;
+    border-bottom-color: #ffffff;
+    background-color: #808080;
+    height: 65px;
+    text-align: center;
+    vertical-align: middle;
+    font-size:14px;
+    cursor: pointer;
+}
+.v-review-list{
+	width:100%;
+	height:100%;
+}
+.lable-2{
+	color:#fd9206;
+	font-size: 24px;
+	background-color:#ffaa4f;
+	color:#fff;
+	padding:5px;
+	margin-top:20px;
+	margin-bottom:20px;
+	width:155px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	-moz-border-radius:5px;
+}
+.v-content{
+	width:100%;
+	height:auto;
+	margin-top:35px;
+}
+.v-content-left{
+	float:left;
+	width:80px;
+	margin-right:45px;
+	text-align:center;
+	height:100%;
+}
+.v-content-right{
+	float:left;width:900px;height:100%;color:#1c1c1c;
+}
+.v-content-div{
+	width:auto;margin-right:15px;float:left;
+}
+.v-content-label{
+	margin-left:35px;margin-right:35px;float:left;
+}
+.v-textarea{
+	width:90%;
+	height:150px;
+	border:2px solid #d6d6d6;
+	padding:5px;
+}

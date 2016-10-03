@@ -1,0 +1,108 @@
+<include file="__THEME__/public_header" />
+<div id="Goods"></div>
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+            <a href="javascript:;" class="onactive" onclick="navClick(this,'getbuycourselist')">已预约的课程</a>
+            <a onclick="navClick(this,'getisdelcourselist')" href="javascript:;">已完成的约课</a>
+            <div class="user-Release-l"> 
+	            <a href="javascript:;" class="operation" onclick="manageBang(this)">
+	            	<i></i><span class="fl" id="magsta">管理</span>
+	            </a> 
+            </div>
+        </div>
+        <!--图片列表-->
+        <ul class="user-imglist">
+
+        </ul>
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+<script>
+var btnclick="getbuycourselist";
+var fdata;
+var magstatus;
+var mid = "{$mid}";
+$(function(){
+    var url="{:U('classroom/Home/getbuycourselist')}";
+	//异步加载我购买的课程
+    $.ajax({
+        type: "POST",
+        url:url,
+        data:"p=1&is_del=0",
+        dataType:"json",
+        success:function(data){
+            appendHtml(data,btnclick,'getbuycourselist');
+        }
+    });
+});
+    //头部点击事件
+    function navClick(cate,type){
+        $("#magsta").text("管理");
+        $(".Operation-list").css("display","none");
+        $(".user-imglist").html("");
+        btnclick=type;
+        magstatus=false;
+        url="{:U('classroom/Home/getbuycourselist')}";
+        if(type=="getbuycourselist"){
+           fdata="is_del=0";
+        }else{
+            fdata="is_del=1";
+        }
+        $("a").removeClass("onactive");
+        $(cate).addClass("onactive");
+        p=1;
+        ajaxBang(url,type,fdata);
+    }
+function manageBang(cate){
+	var manageval=$(cate).find('#magsta').text();
+    if(manageval=="管理"){
+        magstatus=true;
+        $(cate).find('#magsta').text("完成");
+        $(".Operation-list").css("display","block");
+    }else{
+        magstatus=false;
+        $(cate).find('#magsta').text("管理");
+        $(".Operation-list").css("display","none");
+    }
+}
+//点击查看更多事件
+function fallBang(cate){
+    var clickid=$(cate).attr('id');
+    var url="{:U('classroom/Home/"+clickid+"')}";
+    ajaxBang(url,clickid,fdata,function(){
+        if(magstatus==true){
+            $(".Operation-list").css("display","block");
+        }else{
+            $(".Operation-list").css("display","none");
+
+        }
+    });
+
+}
+/**
+ * 删除课程方法
+ * @param id
+ */
+function delcourse(cate,id){
+    var id=id;
+    url="{:U('classroom/Home/delCourse')}";
+    fdata="id="+id;
+    $.ajax({
+        type: "POST",
+        url:url,
+        data:fdata,
+        dataType:"json",
+        success:function(data){
+           if(data.status==1){
+               $(cate).parent().parent().parent().fadeOut();
+           }
+        }
+    });
+}
+</script>
+<include file="__THEME__/public_footer" />

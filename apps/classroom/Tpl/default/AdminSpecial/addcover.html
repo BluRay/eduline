@@ -1,0 +1,43 @@
+<style type="text/css">
+#show_icon img {width:100px;height:100px;}
+</style>
+<form id="btnformsubmit" method="post" action="{:U('classroom/AdminSpecial/doaddcover')}" enctype="multipart/form-data"  onSubmit="return mzformsubmit(this);">
+<dl class="pop-area">
+  <dt class="mb10" style="overflow:hidden;*zoom:1;">
+  	<div class="l">分类名称：</div>
+	<div class="r">
+		<input name="id" type="hidden" value="{$sid}">
+		{:W('Upload',array('uploadType'=>'image','inputname'=>'cover','limit'=>1,'urlquery'=>'attach_type=feed_image&upload_type=image&thumb=1'))}
+	</div>
+  </dt>
+  <dd>
+    <input type="submit" class="btn_b"  value="确定" />
+    <input type="button" class="btn_w ml10" onclick="ui.box.close()" value="取消" />
+  </dd>
+  <div class="clear"></div>
+</dl>
+</form>
+<script>
+var mzformsubmit = function(_this){
+	var form = $(_this);
+	$.ajax({
+	   type:form.attr("method"),
+	   url:form.attr("action"),
+	   dataType:'JOSN',
+	   data: form.serializeArray(),
+	   success: function(msg){
+	   var msg = eval('('+msg+')');
+	   if(msg.status == 1001){
+	   		ui.success('操作成功!');
+			setTimeout(function(){
+				window.location.href = U('classroom/AdminSpecial/special')+'&tabHash=special';
+			},1500);
+			
+	  	}else{
+			ui.error('操作失败!');
+		}
+	   }
+	});
+	return false;
+}
+</script>

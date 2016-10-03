@@ -1,0 +1,522 @@
+<include file="__THEME__/public_header" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+<script>
+window.onload=function()
+{
+	 //公用库
+	higher_common();
+	//导航
+	(function(){
+	    nav_bar_tab('Nav_bar', 'Manage_all','sel_cent_r');
+	 })(); 
+	//个人中心左侧菜单
+	(function(){
+	  home_titlista();
+	})();
+	//个人简介
+    (function(){
+		var oTextA=getByClass(document,'text_A');
+		for(var i=0; i<oTextA.length; i++)
+		{
+			Profile(oTextA[i]);
+		}
+	 })();
+	//input输入
+	 (function(){
+		var oMyInput=getByClass(document,'Album_Title_s');
+		for(var i=0; i<oMyInput.length; i++)
+		{
+			Album_Title_input(oMyInput[i]);     
+		}
+	 })();
+	 (function(){
+	    var aTopicsUp=getByClass(document,'topics_up');
+		for(var i=0; i<aTopicsUp.length; i++)
+		{
+			oTopics_a(aTopicsUp[i])
+		}	   
+	  })();
+	 (function(){
+		var oTxtbarA=getByClass(document,'txt_bar_a')[0];
+		var aLi=getByTagName(oTxtbarA,'li');
+		for(var i=0; i<aLi.length; i++)
+		{
+			oIntrodu_a(aLi[i]);
+		}
+	  })();
+	  (function(){
+		  
+	  })()
+};
+</script>
+
+<div class="main mt35 clearfix">
+	<div class="plr40 main_box_index fl">
+        <h4 class="ft18 pt20">个人中心</h4>
+        <div class="fl cent_l_box cent_l_box_a">
+            <h3 class="tit_list tit_list_a">内容管理</h3>
+            <ul>
+                <li><a href="{:U('home/Index/index')}">课程</a></li>
+                <li><a href="{:U('home/Index/index_zj')}">专辑</a></li>
+                <li><a href="{:U('home/Index/qanda')}">问答</a></li>
+                <li><a href="{:U('home/Index/note')}">笔记</a></li>
+                <li><a href="{:U('home/Index/qanda')}">评论</a></li>
+                <li><a href="{:U('home/Index/upload')}">上传课程</a></li>
+            </ul>
+            <h3 class="tit_list tit_list_a">财富管理</h3>
+            <ul>
+                <li><a href="{:U('home/Index/recharge')}">充值</a></li>
+                <li><a href="{:U('home/Index/withdrawal')}">余额</a></li>
+                <li><a href="{:U('home/Index/card')}">绑定银行卡</a></li>
+            </ul>
+            <h3 class="tit_list tit_list_a">账户管理</h3>
+            <ul>
+                <li class="sel_cent"><a href="{:U('home/Index/upload_z_Setup')}">账户设置</a></li>
+                <li><a href="{:U('home/Index/fans')}">关注/粉丝</a></li>
+            </ul>
+        </div>
+    	<div class="cent_r_box pb40 clearfix">
+            <div class="nva_cent">
+                <ul class="Nav_bar fl">
+                    <li class="sel_cent_r">基本信息</li>
+                    <li>头像设置</li>
+                    <li>修改密码</li>
+                    <li>申请认证</li>
+                    <li>帐号绑定</li>
+                </ul>
+            </div>
+            <div class="rec_box_a Manage_all" style="display:block;">
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                            <em>*</em> 登录帐号：
+                        </span>
+                        <div class="myInput1 Album_Title_s  fl w276">
+                              <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                              <span class="w276"> 用于账户登录</span>
+                        </div>
+                </div>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                           <em>*</em> 昵      称：
+                        </span>
+                        <div class="myInput1 Album_Title_s fl w276">
+                          <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                          <span class="w276"> 填写昵称</span>
+                        </div>
+                </div>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                           <em>*</em> 手机号：
+                        </span>
+                        <div class="Set_a w280">
+                <div class="fl mt7">
+                    <p class="p_ans_a">
+                        <a class="fl"target="_blank">1890000000</a>
+                    </p> 
+                    <div class="cmt-txt pt20 fl">
+                           <span class="color_wen9 prevnum_info">用于密码找回和重要信息接收</span>
+                    </div> 
+                </div>   
+                <div class="fr txt_r">            
+                    <a class="sel_w Collect" href="javascript:;">修改</a>
+                </div>
+            </div>
+                </div>
+                <div class="clearfix h55 mt20">
+                        <span class="selected_title selected_title_a color_hui fl">
+                           <em>*</em> 常用邮箱：
+                        </span>
+                        <div class="Set_a w280">
+                            <div class="fl mt7">
+                        <p class="p_ans_a">
+                            <a class="fl"target="_blank">123@sina.com</a>
+                        </p> 
+                        <div class="cmt-txt pt20 fl">
+                               <span class="color_wen9 prevnum_info">用于密码找回和重要信息接收</span>
+                        </div> 
+                    </div>   
+                            <div class="fr txt_r">            
+                                <a class="sel_w Collect" href="javascript:;">修改</a>
+                            </div>
+                        </div>
+                </div>
+                <div class="clearfix h55 mt20">
+                    <span class="selected_title selected_title_a color_hui fl">
+                       <em>*</em> 性别：
+                    </span>
+                    <div class="Set_a h30 lh30">
+                     <input type="radio" value="男" name="sex"/>&nbsp;&nbsp;&nbsp;男&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <input type="radio" value="女" name="sex"/>&nbsp;&nbsp;&nbsp;女
+                   </div>
+                </div>
+                <div class="mt10b20 clearfix h55">
+                            <span class="selected_title selected_title_a color_hui fl">
+                            <em>*</em> 地  区：
+                            </span>
+                            <div class="myInput1 fl mr20 w125" style="padding:0; height:auto">
+                                <select class="select_r  edittxt_cent">
+                                    <option value="1">
+                                        省
+                                    </option>
+                                    <option value="2">hhehe</option>
+                                    <option value="3">hhehe</option>
+                                    <option value="4">hhehe</option>
+                                    <option value="5">hhehe</option>
+                                </select>
+                            </div>
+                            <div class="myInput1 fl w125" style="padding:0; height:auto">
+                                <select class="select_r edittxt_cent">
+                                    <option value="1">
+                                        市
+                                    </option>
+                                    <option value="2">hhehe</option>
+                                    <option value="3">hhehe</option>
+                                    <option value="4">hhehe</option>
+                                    <option value="5">hhehe</option>
+                                </select>
+                            </div>
+                        </div>
+                <div class="clearfix h55">
+                            <span class="selected_title selected_title_a color_hui fl">
+                                所属院校专业：
+                            </span>
+                            <div class="myInput1 fl w276" style="padding:0; height:auto">
+                                <select class="select_r w276 edittxt_cent">
+                                    <option value="1">北京—北京大学—计算机系</option>
+                                    <option value="2">北京—北京大学—计算机系</option>
+                                    <option value="3">北京—北京大学—计算机系</option>
+                                    <option value="4">北京—北京大学—计算机系</option>
+                                    <option value="5">北京—北京大学—计算机系</option>
+                                </select>
+                            </div>
+                        </div>   
+                <div class="clearfix h55">
+                            <span class="selected_title selected_title_a color_hui fl">
+                                报考院校专业：
+                            </span>
+                            <div class="myInput1 fl w276" style="padding:0; height:auto">
+                                <select class="select_r w276 edittxt_cent">
+                                    <option value="1">北京—清华美院—建筑设计</option>
+                                    <option value="2">北京—清华美院—建筑设计</option>
+                                    <option value="3">北京—清华美院—建筑设计</option>
+                                    <option value="4">北京—清华美院—建筑设计</option>
+                                    <option value="5">北京—清华美院—建筑设计</option>
+                                </select>
+                            </div>
+                        </div>
+                <div class="clearfix h55">
+                            <span class="selected_title selected_title_a color_hui fl">
+                                学习项目与阶段：
+                            </span>
+                            <div class="myInput1 fl w276" style="padding:0; height:auto">
+                                <select class="select_r w276 edittxt_cent">
+                                    <option value="1">考研—冲刺阶段</option>
+                                    <option value="2">考研—冲刺阶段</option>
+                                    <option value="3">考研—冲刺阶段</option>
+                                    <option value="4">考研—冲刺阶段</option>
+                                    <option value="5">考研—冲刺阶段</option>
+                                </select>
+                            </div>
+                        </div>  
+                <div class="mt10b20 clearfix">
+                            <span class="selected_title selected_title_a color_hui fl">
+                            我  是：
+                            </span>
+                            <div class="myInput1 fl w125" style="padding:0; height:auto">
+                                <select class="select_r  edittxt_cent">
+                                    <option value="1">
+                                        学神
+                                    </option>
+                                    <option value="2">学神</option>
+                                    <option value="3">hhehe</option>
+                                    <option value="4">hhehe</option>
+                                    <option value="5">hhehe</option>
+                                </select>
+                            </div>
+                            <span class="fl p7">找</span>
+                            <div class="myInput1 fl w125" style="padding:0; height:auto">
+                                <select class="select_r edittxt_cent">
+                                    <option value="1">
+                                        学生
+                                    </option>
+                                    <option value="2">hhehe</option>
+                                    <option value="3">hhehe</option>
+                                    <option value="4">hhehe</option>
+                                    <option value="5">hhehe</option>
+                                </select>
+                            </div>
+                        </div> 
+                <div class="mt10b20 clearfix">
+                    <span class="selected_title selected_title_a color_hui fl">
+                            个人简介：
+                            </span>
+                    <div class="editwrap text_A fl w276 h100">
+                        <textarea id="wenti_content1 upload_textarea_a" class="j-edittxt edittxt h100"></textarea>
+                         <label id="auto-id-drt6TisVISpRhnQa" class="j-hint hint" for="edittxt">
+                          不超过300字
+                         </label>
+                    </div>
+                </div>
+                <div class="mt10b20 pl20 clearfix">
+                    <a class="Save ml86 sel_w btn_big_r" href="javascript:;">保存</a>
+                </div>                                     
+            </div>
+            <div class="mt50 plr40 Manage_all  clearfix">
+              <p class="ft16 lh30">请选择个人正面大照片作为头像，照片不能小于300px*300px</p>  
+              <p class="ft16 lh30 pt20"><a class="Share sel_w fl" href="javascript:;">选择文件</a>&nbsp;&nbsp;支持JPG,JPGE,PNG格式，大小限制15M以内</p>
+              <ul class="ph_img_box mt60 clearfix">
+                  <li class="ph_img fl"><img class="toux_img1" src="__THEME__/images/ph_img.png" /><p>(150px*150px)</p></li>
+                  <li class="ph_img m_70_40_0_40 fl"><img class="toux_img2" src="__THEME__/images/ph_img.png" /><p>(80px*80px)</p></li>
+                  <li class="ph_img mt120 fl"><img class="toux_img3" src="__THEME__/images/ph_img.png" /><p>(28px*28px)</p></li>
+              </ul>
+              <div class="clearfix">
+                    <a class="Save sel_w btn_big_r" href="javascript:;">保存</a>
+               </div>
+            </div>
+            <div class="rec_box_a Manage_all">
+            	            	<p class="lh30">密码由字母，数字，符号组成，6-15个字符，区分大小写</p>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                            <em>*</em> 原始密码：
+                        </span>
+                        <div class="myInput1 Album_Title_s fl w276">
+                              <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                        </div>
+                </div>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                           <em>*</em> 新密码：
+                        </span>
+                        <div class="myInput1 Album_Title_s fl w276">
+                          <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                        </div>
+                </div>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                           <em>*</em>  确认密码：
+                        </span>
+                        <div class="myInput1 Album_Title_s fl w276">
+                          <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                        </div>
+                </div>
+                <div class="mt10b20 clearfix">
+                    <a class="Save ml86 sel_w  btn_big_r" href="javascript:;">保存</a>
+                </div>                                    
+            </div>
+            <div class="rec_box_a Manage_all">
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                            <em>*</em>当前状态：
+                        </span>
+                        
+                        <div class="Set_a w280">
+                            <div class="fl mt7">
+                                <p class="p_ans_a">
+                                    <a class="fl" target="_blank">未认证</a>
+                                </p>
+                            </div>  
+                        </div>
+                </div>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                            <em>*</em>认证类型：
+                        </span>
+                        <div class="Set_a w100">
+                             <a id="buy-s-1r" class="pos_r pos_r_a fr topics_up"><b class="Text_error"></b>学霸认证</a>
+                        </div>
+                </div>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                            <em>*</em> 真实姓名：
+                        </span>
+                        <div class="myInput1 Album_Title_s fl w276">
+                              <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                        </div>
+                </div>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                           <em>*</em> 身份证号：
+                        </span>
+                        <div class="myInput1 Album_Title_s fl w276">
+                          <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                        </div>
+                </div>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                           <em>*</em> 学       校：
+                        </span>
+                        <div class="myInput1 Album_Title_s fl w276">
+                          <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                        </div>
+                </div>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                           <em>*</em> 专       业：
+                        </span>
+                        <div class="myInput1 Album_Title_s fl w276">
+                          <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                          <span class="w276">填写昵称</span>
+                        </div>
+                </div>
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                           个人地址：
+                        </span>
+                        <div class="myInput1 Album_Title_s fl w276">
+                          <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                        </div>
+                </div>  
+                <div class="clearfix h55">
+                        <span class="selected_title selected_title_a color_hui fl">
+                           学校地址：
+                        </span>
+                        <div class="myInput1 Album_Title_s fl w276">
+                          <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                        </div>
+                </div>
+                <div class="mt10b20 clearfix">
+                    <span class="selected_title selected_title_a color_hui fl">
+                             <em>*</em>联系电话：
+                            </span>
+                    <div class="myInput1 Album_Title_s fl w276">
+                          <input type="text" class="head_search upload_input_a" id="head_search" rel="输入关键字">
+                          <span class="w276">请输入可以联系到您本人的电话号码</span>
+                    </div>
+                </div> 
+                <div class="mt10b20 clearfix">
+                    <span class="selected_title selected_title_a color_hui fl">
+                             <em>*</em>认证理由：
+                            </span>
+                    <div class="editwrap text_A fl w276 h100" style="border: 1px solid rgb(206, 206, 206);">
+                        <textarea id="wenti_content1 upload_textarea_a" class="j-edittxt edittxt h100"></textarea>
+                         <label id="auto-id-drt6TisVISpRhnQa" class="j-hint hint" for="edittxt" style="display: block;">
+                          请输入认证理由...
+                         </label>
+                    </div>
+                </div> 
+                <div class="clearfix h55">
+                    <span class="selected_title selected_title_a color_hui fl">
+                      <em>*</em>认证附件：
+                    </span>
+                    <a class="Share sel_w fl" href="javascript:;">选择文件</a>
+                </div> 
+                <div class="clearfix">
+                    <div class="d_left_list">
+                          <div class="d_left_list1">
+                              <dl>
+                                  <dt><a class="txt_tu1" href="#"><img src="__THEME__/images/xq/xq_50.jpg"></a></dt>
+                                  <dd><a href="#">参考实例</a></dd>
+                              </dl>
+                               <ul class="fl">
+                                  <li><a href="#">身份证上的所有信息清晰可见，必须能看清证件号。 </a></li>
+                                  <li><a href="#">照片需免冠，建议未化妆，手持证件人的五官清晰可见。</a></li>
+                                  <li><a href="#">照片内容真实有效，不得做任何修改。</a></li>
+                                  <li><a href="#">支持.jpg .jpeg .bmp .gif格式照片，大小不超</a></li>
+                              </ul>
+                          </div>
+                       </div>
+                </div> 
+                <div class="clearfix h55">
+                    <span class="selected_title selected_title_a color_hui fl">
+                      其他资料：
+                    </span>
+                    <p class="ft16 lh30"><a class="Share sel_w_a bg_hui fl" href="javascript:;">选择文件</a>&nbsp;&nbsp;<a class="color_wen wjmm_a ft12 ml20 fl" style="padding-left:0;">上传本人学生证可加快审核</a></p>
+                    <p class="ml85 lh30">照片内容真实有效，不得做任何修改。 </p>
+                    <p class="ml85 lh30">支持.jpg .jpeg .bmp .gif格式照片，大小不超过2M。</p>    
+                </div>    
+                <div class="mt50 clearfix">
+                    <a class="Save ml86 sel_w btn_big_r" href="javascript:;">提交</a>
+                </div>               
+            </div>
+            <div class="pb40 plr40 clearfix Manage_all">
+              <div class="mt30">
+                    <ul class="txt_bar_a">
+                       <li>
+                           <div class="txt_bar_div">
+                               <span class="txt_bar_span1">新浪微博</span>
+                               <a class="fr color_blue ml30" href="javascript:;">解除绑定</a>
+                               <a id="buy-s-1r" class="pos_r fr topics_up mt4"> <b class="Text_error"></b>同步更新动态</a>
+                           </div>
+                           <div class="mt10 Introduction">
+                               <p class="ml85 fb lh30">绑定新浪微博后，你可以：</p>
+                               <p class="ml85 lh30">快速找到已加入高教网的好友，和他们一起学习 </p>
+                               <p class="ml85 lh30">邀请好友加入高教网，和你一起学习</p>
+                           </div>
+                       </li>
+                       <li>
+                           <div class="txt_bar_div">
+                           <span class="txt_bar_span2">腾讯QQ</span>
+                               <a class="Share sel_w fr mt4" href="javascript:;">点击绑定</a>
+                           </div>
+                           <div class="Introduction">
+                               <p class="ml85 fb lh30">绑定QQ后，你可以：</p>
+                               <p class="ml85 lh30">快速找到已加入高教网的好友，和他们一起学习</p>
+                               <p class="ml85 lh30">邀请好友加入高教网，和你一起学习</p>
+                           </div>
+                       </li>
+                       <li>
+                           <div class="txt_bar_div mt10">
+                           <span class="txt_bar_span3">人人网</span>
+                               <a class="Share sel_w fr mt4" href="javascript:;">点击绑定</a>
+                           </div>
+                           <div class="Introduction">
+                               <p class="ml85 fb lh30">绑定人人网后，你可以：</p>
+                               <p class="ml85 lh30">快速找到已加入高教网的好友，和他们一起学习</p>
+                               <p class="ml85 lh30">邀请好友加入高教网，和你一起学习</p>
+                           </div>
+                       </li>
+                       <li>
+                           <div class="txt_bar_div">
+                           <span class="txt_bar_span4">微信</span>
+                               <a class="Share sel_w fr mt4" href="javascript:;">点击绑定</a>
+                           </div>
+                           <div class="Introduction">
+                               <p class="ml85 fb lh30">绑定微信后，你可以：</p>
+                               <p class="ml85 lh30">快速找到已加入高教网的好友，和他们一起学习</p>
+                               <p class="ml85 lh30">邀请好友加入高教网，和你一起学习</p>
+                           </div>
+                       </li>
+                    </ul>
+</div>
+            </div>
+    	</div>
+    </div>
+    <div class="main_box_index w200 plr10 pt20 fr">
+    	<div class="fk_pic txt_c">
+            <a href="javascript:;" target="_blank">
+                <img src="__THEME__/images/xq/xq_50.jpg"></img>
+            </a>
+        </div>
+        <p class="daren_name txt_c lh30">
+            <a class="daren_name_a" target="_blank" href="">
+                向新兰
+                <em class="daren_name_img"></em>
+            </a>
+        </p>
+        <p class="txt_c">关注1000|粉丝1000</p>
+        <a class="btn_lan_h" href="javascript:;">答题高手7段</a>
+        <a class="btn_lan_h" href="javascript:;">数学百晓生</a>
+        <a class="btn_lan_h" href="javascript:;">腰缠万贯</a>
+        <a class="btn_lan_h" href="javascript:;">十佳好青年</a>
+        <div class="clearfix">
+            <p class="fl green_txt txt_c plr30 mt20">
+                我的学币</br>
+                1000
+            </p>
+            <p class="fl green_txt txt_c bor_l plr30 mt20">
+                我的学分</br>
+                1000
+            </p>
+        </div>
+        <a class="btn_big_r">打卡赚学分</a>
+        <p class="mt20">连续领取学分，每天+5，最高+40封顶，如中断领取，重新从5开始。</p>
+        <div class="clearfix">
+            <a class="btn_hui_h" href="javascript:;">做任务赚学分</a>
+            <a class="btn_hui_h" href="javascript:;">学分换购列表</a>
+        </div>
+        <p class="mt10 ml20 bg_phone">手机每天再多领40积分</p>
+    </div>
+</div>
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

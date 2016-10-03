@@ -1,0 +1,183 @@
+<include file="__THEME__/public_header" />
+<link href="__ROOT__/apps/exam/_static/css/exam.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+  #bg{ display: none; position: absolute; top: 0%; left: 0%; width: 100%; height: 100%; background-color: #8e9091; z-index:1001; -moz-opacity: 0.7; opacity:.70; filter: alpha(opacity=70);}
+  #show{display: none; position: absolute; top: 30%; left: 35%; width: 30%; height: 30%; padding: 8px; z-index:1002; }
+  .fixed{position:fixed; top:20px;}
+  .fixed{_position:absolute; _top:expression((20+(noValue = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop))+'px');}
+  </style>
+  <script src="__ROOT__/apps/exam/_static/js/exam.js"></script>
+<script>
+//倒计时
+var test_time=0;
+window.onload=function(){ 
+  var time=<?php echo $exam_info["exam_total_time"]; ?>;
+  if(time>0){
+    test_time=time*60;
+    var t=window.setInterval(time_djs, 1000);
+  }
+}
+</script>
+<div class="breadcrumb"> <a href="/">首页</a>><a href="{:U('exam/Index/index')}">考试系统</a>><a href="#">{$exam_info.exam_name}考试结果</a></div>
+<div class="worap-con">
+<div class="es-section testpaper-heading">
+    <div class="testpaper-description">
+      <p>{$exam_info.exam_describe}</p>
+      <p>{$exam_info.paper_describe}</p>
+  </div>
+<div class="testpaper-metas">共 {$data.count} 题，总分 {$data.score} 分，及格 {$exam_info.exam_passing_grade} 分，您的得分 {$user_exam.user_exam_score} 分，一共对了 {$user_exam.user_right_count} 道题，错了 {$user_exam.user_error_count} 道题</div>
+  <div id="testpaper-navbar" class="testpaper-navbar" data-spy="affix" data-offset-top="200">
+    <ul class="nav nav-pills clearfix">
+      <volist name="question_type" id="vo">
+        <li><a class="btn" style="line-height:10px;" href="#{$vo.question_type_id}">{$vo.question_type_title}</a></li>
+      </volist>
+    </ul>
+  </div>
+</div>
+<form method="POST" action="{:U('exam/Index/doExam')}" id="detail_form" name="detail_form" onsubmit="return j_validateCallback(this,checkForm,post_callback)">
+<div class="row">
+  <div class="col-md-3">
+    <div id="float_box" style="width:280px;">
+        <div class="testpaper-card">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <span class="testpaper-card-timer">
+                <small  style="font-size:14px;color:#666666">考试时间：
+                <?php 
+                  if($exam_info['exam_total_time']==0){ 
+                    echo "不受限制";
+                  }else{ 
+                    echo $exam_info['exam_total_time']."分钟";
+                  } ?>
+                </small>
+              </span>
+              <div class='testpaper-card-timer'>
+                <small class='text-muted' style='font-size:14px;color:#666666'>考试所花时间：{$user_exam.user_total_date}</small>
+              </div>
+              <div>
+                <div class="fen" style="float:left;margin:10px 15px 20px 0px;"><img src="__ROOT__/apps/exam/_static/images/fen.png"></div>
+                <div style="width:150px;">
+                  <small style='font-size:14px;color:#666666';>总分：{$data.score} 分</small><br/>
+                  <small style='font-size:14px;'>得分：{$user_exam.user_exam_score} 分</small>
+                </div>
+              </div>
+        </div>
+        <div class="panel-body">
+          <div class="panel-body-title">
+            <div style='height:15px;width:50px; float:left;margin-right:15px;'>
+              <div style='background-color:#079d07;width:20px;height:15px;float:left;margin-right:5px;'></div>
+              <img src="__ROOT__/apps/exam/_static/images/right.png" style="padding-bottom:10px;">
+            </div>
+            <div style='height:15px;width:50px; float:left;'>
+              <div style='background-color:#c20025;width:20px;height:15px;float:left;margin-right:5px;'></div>
+              <img src="__ROOT__/apps/exam/_static/images/error.png" style="padding-bottom:10px;">
+            </div>
+          </div>
+          <div style="clear:both;margin-bottom:15px;"></div>
+          <?php 
+          $num=0;
+          foreach ($question_type as $v) {
+            foreach ($data["question_list"] as $k=> $vo) {
+              if($vo['question_type']==$v['question_type_id']){
+                foreach ($user_answer as $answer) {
+                  if($answer["user_question_id"]==$vo["question_id"]){
+                    $num++;
+                    if($answer["user_question_answer"]==$vo["question_answer"]){
+                      echo "
+                        <a href='#question$num' style='float:left;margin-right:5px;margin-bottom:5px;'>
+                          <div style='width:30px; height:30px;background-color:#079d07; border-radius:25px;'>
+                            <span style='height:30px; line-height:30px; display:block; color:#FFF; text-align:center'>".$num."</span>
+                          </div>
+                        </a>
+                      ";
+                    }else{
+                      echo "
+                        <a href='#question$num' style='float:left;margin-right:5px;margin-bottom:5px;'>
+                          <div style='width:30px; height:30px; background-color:#c20025; border-radius:25px;'>
+                            <span style='height:30px; line-height:30px; display:block; color:#FFF; text-align:center'>".$num."</span>
+                          </div>
+                        </a>
+                      ";
+                    }
+                  }
+                } 
+              }
+            }
+          }
+          ?>
+          <div class="clearfix mtm mbm"></div>
+        </div>
+      </div>  
+    </div>
+    </div>
+
+    &nbsp;
+  </div>
+<div class="col-md-9">
+  <div class="testpaper-body">
+   <volist name="question_type" id="v">
+    <?php 
+      $num=0;
+     foreach ($question_type as $v) {
+    ?>
+    <div class="panel panel-default testpaper-question-block" id="{$v.question_type_id}">
+      <div class="panel-heading">
+        <strong class="">{$v.question_type_title}</strong>
+        <small class="text-muted">共{$v.sum}题，共{$v.score}分</small>
+      </div>
+      <volist name="data.question_list" id="vo" key="key"> 
+      <?php 
+       foreach ($data["question_list"] as $k=> $vo) {
+        if($vo['question_type']==$v['question_type_id']){
+          $num++;
+      ?>
+        <div class="panel-body" id="question{$num}">
+          <div>
+            <div class="testpaper-question-body">
+              <div class="testpaper-question-stem-wrap clearfix">
+                <div class="testpaper-question-seq-wrap">
+                  <div class="testpaper-question-seq">{$num}</div>
+                  <div class="testpaper-question-score">{$vo.paper_content_point}分</div>
+                </div>
+              <div class="testpaper-question-stem">{$vo.question_content}</div>
+            </div>
+              <?php if($vo["question_type"]!=3){ ?>
+              <ol class="testpaper-question-choices" type="A">
+                <?php foreach ($vo["option_list"] as $l=> $list) {
+                  echo "<li>".$subscript[$l]."：".$list['option_content']."</li>";
+                } ?>
+              </ol>
+            <?php } ?>
+          </div>
+          <div class="testpaper-question-footer clearfix">
+            <div class="testpaper-question-choice-inputs"> 
+              正确答案：<font style="color:green">{$vo.question_answer}</font>，您的答案：
+              <?php 
+                foreach ($user_answer as $answer) {
+                  if($answer["user_question_id"]==$vo["question_id"]){
+                    if($answer["user_question_answer"]==$vo["question_answer"]){
+                      echo "<font style='color:green;'>".$answer["user_question_answer"]."</font>";
+                    }else{
+                      echo "<font style='color:red;'>".$answer["user_question_answer"]."</font>";
+                    }
+                  }
+                } 
+              ?>
+            </div>
+          </div>
+          <div class="testpaper-question-footer clearfix">
+            <div class="testpaper-question-choice-inputs" style="margin-top:10px;"> 
+              解析：{$vo.question_qsn_guide}
+            </div>
+          </div>
+        </div> 
+      </div>
+    <?php } } ?>
+  </div>
+  <?php } ?>
+  </form>
+    </div>
+  </div>
+</div>
+</div>
+<include file="__THEME__/public_footer" />

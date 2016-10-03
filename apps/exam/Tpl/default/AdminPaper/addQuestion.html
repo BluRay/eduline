@@ -1,0 +1,213 @@
+<include file="__THEME__/admin_header" />
+<php>
+ set_time_limit(0);
+</php>
+	<style type="text/css">
+		.ico_top, .ico_btm {
+		    background: url("__THEME__/admin/image/ico_top_btm.gif") no-repeat scroll 0 0 transparent;
+		    height: 14px;
+		    width: 12px;
+		}
+		.ico_top, .ico_btm { display: inline-block; vertical-align: middle;
+		}
+		.ico_top { background-position: -12px 0;}
+		.ico_btm {background-position: -24px 0;}
+		.ico_top:hover { background-position: 0 0;}
+		.ico_btm:hover { background-position: -35px 0;}
+		#bg{ display: none; position: absolute; top: 0%; left: 0%; width: 100%; height: 100%; background-color: black; z-index:1001; -moz-opacity: 0.7; opacity:.70; filter: alpha(opacity=70);}
+		#show{display: none; position: absolute; top: 25%; left: 22%; width: 53%; height: 49%; padding: 8px; border: 8px solid #E8E9F7; background-color: white; z-index:1002; overflow: auto;}
+	</style>
+	<div id="container" class="so_main">
+    <div class="page_tit">
+        <div class="right">
+            <neq name="back_id" value="-1"><a href="{:U('exam/AdminQuestion/index')}" class="btn_a"><span>返回</span></a></neq>
+        </div>
+        {$pageTitle}
+    </div>
+    <php>if(!empty($pageTab)):</php>
+    <div class="tit_tab">
+        <ul>
+        <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+        <volist name='pageTab' id='t'>
+            <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+        </volist>
+        </ul>
+    </div>
+    <php>endif;</php>
+    <form method="POST" action="{:U('exam/AdminPaper/doAddQuestion')}" id="detail_form" name="detail_form" onsubmit="return j_validateCallback(this,checkForm,post_callback)">
+    	<div class="form2">
+    		<dl class="lineD" id="dl_video" style="margin-left:-30px;">
+    			<dt style="line-height:40px;"><dd>{$paper_info.paper_name}---试题管理</dd></dt>
+    		</dl>
+		    <dl class="lineD" id="dl_video" style="margin-left:-30px;">
+		    <label style="margin-left:10%;line-height:40px;"><a href="javascript:void(0);">试题列表</a></label>
+	    	<table id="table"  border="0" cellpadding="3" cellspacing="1" width="80%"  float:left; style="background-color: #ececec;text-align: center;">
+			  <tr style="BACKGROUND-COLOR: #d2dbea; font-weight: bold">
+			  	<th width="5%">排序</th>
+			    <th width="60%">试题名称</th>
+			    <th width="8%">所属分类</th>
+			    <th width="8%">试题题型</th>
+			    <th width="5%">试题分数</th>
+			    <th width="10%">操作</th>
+			  </tr>
+			  <?php foreach ($paper_question as $k=> $vo) { ?>
+			  	<tbody>
+			  	<tr bgcolor='#F4FAFF'>
+			  		<td>{$k+1}</td>
+			  		<td>{$vo.question_content}</td>
+				    <td>{$vo.category_name}</td>
+				    <td>{$vo.type_name}</td>
+				    <td>{$vo.paper_content_point}&nbsp;分</td>
+				    <td><a href="javascript:delquestion({$vo.paper_content_id},{$vo.paper_content_point});">删除</a></td>
+				</tr>
+			  <?php } ?>
+			  </tbody>
+			</table>
+			<label style="margin-left:10%;line-height:40px;"><a href="javascript:showdiv();">请选择试题</a></label>
+		    </dl>
+		    <dl class="lineD" id="dl_video" style="margin-left:-30px;">
+    			<dt style="line-height:40px;">
+	    			<dd>
+	    				试题总分：&nbsp;<input type="text" readonly name="paper_point" id="paper_point" value="{$paper_info.paper_point}" />&nbsp;分&nbsp;<br/>
+	    				试题总数：&nbsp;<input type="text" readonly name="paper_question_count" id="paper_question_count" value="{$paper_info.paper_question_count}" />&nbsp;题&nbsp;
+	    			</dd>
+				<dt>
+    		</dl>
+			<div class="page_btm">
+				<input type="hidden" name="paper_id" id="paper_id" value="{$paper_info.paper_id}" />
+		        <input type="submit" class="btn_b" value="保存">
+		    </div>
+    	</div>
+    </form>
+    <div id="bg"></div>
+	<div id="show">
+		<table  border="0" cellpadding="3" width="100%" cellspacing="1" style="background-color: #ececec;">
+		  <tr style="text-align: center; BACKGROUND-COLOR: #d2dbea; font-weight: bold">
+		    <th width="10%"><input type="checkbox" disabled="disabled"/></th>
+		    <th width="30%">试题名称</th>
+		    <th width="10%">所属分类</th>
+		    <th width="10%">试题题型</th>
+		    <th width="10%">试题分数</th>
+		  </tr>
+		  <?php foreach ($question_list as $key => $vo) { ?>
+		  	<tr bgcolor='#F4FAFF'>
+		  		<td><input type="checkbox" value="{$vo.question_id}-{$vo.question_point}"  name="checkbox" 
+		  		<?php foreach ($paper_question as $v) {
+		  			if($v["question_id"]==$vo["question_id"]){
+		  				echo "checked='checked'";
+		  			}
+		  		} ?> /></td>
+		  		<td>{$vo.question_content}</td>
+			    <td>{$vo.question_category_name}</td>
+			    <td>{$vo.question_type_title}</td>
+			    <td>{$vo.question_point}</td>
+			</tr>
+		  <?php } ?>
+		</table>
+	<input id="btnclose" style="margin-top:20px;" class="btn_b" type="button" value="确定" onclick="hidediv({$paper_info.paper_id});"/>
+	</div>
+<script type="text/javascript">
+    $(function(){
+	  var rollSet = $('#float_box');
+	  var offset = rollSet.offset();
+	  $(window).scroll(function () {
+	    var st = $(this).scrollTop();
+	    $("#show").css("margin-top",st);
+	   // 检查对象的顶部是否在游览器可见的范围内
+	   var scrollTop = $(window).scrollTop();
+	   if(offset.top < scrollTop){
+	    rollSet.addClass('fixed');
+	   }else{
+	    rollSet.removeClass('fixed');
+	   }
+	  });
+	});
+	function showdiv() {
+		$("#bg").css("padding-top",document.body.offsetHeight);
+		document.getElementById("bg").style.display ="block";
+		document.getElementById("show").style.display ="block";
+	}
+	function hidediv(id) {
+		document.getElementById("bg").style.display ='none';
+		document.getElementById("show").style.display ='none';
+		var paper_question="";
+		$("input[name=checkbox]:checked").each(function() {  
+            paper_question += ","+$(this).val(); 
+        });  
+        var paper_question=paper_question.substring(1);
+		if(paper_question){
+    		$.post(U('exam/AdminPaper/doAddQuestion'),{id:id,paper_question:paper_question},function(txt){
+				if(txt.status == 0){
+					ui.error(txt.info);
+				} else {
+					ui.success(txt.info);
+					window.location.href = window.location.href;
+				}
+			},'json');
+		}else{
+        	ui.error("请选择试题");
+        }
+	} 
+	function delquestion(id,point){
+		var paper_question_count=$("#paper_question_count").val()-1;
+		var paper_point=$("#paper_point").val()-point;
+		var paper_id=$("#paper_id").val();
+ 		$.post(U('exam/AdminPaper/delquestion'),{id:id,paper_id:paper_id,paper_point:paper_point,paper_question_count:paper_question_count},function(txt){
+			if(txt.status == 0){
+				ui.error(txt.info);
+			} else {
+				ui.success(txt.info);
+				window.location.href = window.location.href;
+			}
+		},'json');
+	}
+	function checkForm(form){
+		var _this = $(form);
+		var paper_question_count = _this.find('input[name="paper_question_count"]').val();
+		var paper_point = _this.find('input[name="paper_point"]').val();
+		if(paper_question_count <=0 || paper_point<=0){
+			ui.error("请选择试题");
+			return false;
+		}
+		return true;
+	}
+	function j_validateCallback(form,call,callback) {
+		var $form = $(form);
+		if(typeof call != 'undefined' && call instanceof Function){    
+			$i = call($form);
+			if(!$i){
+				return false;
+			}
+		}
+		var _submitFn = function(){
+			$.ajax({
+				type: form.method || 'POST',
+				url:$form.attr("action"),
+				data:$form.serializeArray(),
+				dataType:"json",
+				cache: false,
+				success: function(xMLHttpRequest, textStatus, errorThrown){
+					if(typeof callback != 'undefined' && callback instanceof Function){   
+						callback($form,xMLHttpRequest);
+					}  
+				},
+				error: function(xhr, ajaxOptions, thrownError){
+					ui.error("未知错误!");
+				}
+			});
+		}
+		_submitFn();
+		return false;
+	}
+	function post_callback(_form,data){
+		if(data.status != undefined){
+			if(data.status == '0'){
+				ui.error(data.info);
+			} else {
+				ui.success(data.info);
+				window.location.href = U('exam/AdminPaper/index')+"&tabHash=index";
+			}
+		}
+	}
+</script>
+<include file="__THEME__/admin_footer" />

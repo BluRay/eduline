@@ -1,0 +1,59 @@
+<include file="__THEME__/admin_header" />
+<php>
+ set_time_limit(0);
+</php>
+	<link rel="stylesheet" href="__THEME__/js/swfupload/css/default.css">
+	</div>
+	<div id="container" class="so_main">
+    <div class="page_tit">
+        <div class="right">
+            <neq name="back_id" value="-1"><a href="{:U('exam/AdminUserExam/index')}" class="btn_a"><span>返回</span></a></neq>
+        </div>
+        {$pageTitle}
+    </div>
+    <php>if(!empty($pageTab)):</php>
+    
+    <div class="tit_tab">
+        <ul>
+        <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+        <volist name='pageTab' id='t'>
+            <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+        </volist>
+        </ul>
+    </div>
+    <php>endif;</php>
+    	<div class="form2">
+		    <div style='width:80%;height:auto; margin-left:50px;'>
+			  <?php 
+			  	$arr=array("A","B","C","D","E","F","G","H","I","J","K");
+			  	foreach ($list as $key => $vo) { ?>
+			  		<div style="color: #4a6fad;line-height:30px;padding-left:5px;">{$key+1}、&nbsp;{$vo.question_content}&nbsp;&nbsp;
+			  		<?php foreach ($quetion_type as $v) {
+			  			if($vo['question_type']==$v['question_type_id']){
+			  				echo "(".$v['question_type_title'].")";
+			  			}
+			  		} ?></div>
+			  		<div style="line-height:30px;padding-left:5px;">
+			  		<ol type="A" style="margin:0px; margin-left:10px;">
+			  			<?php foreach ($vo['option_list'] as $v) { ?>
+				  			<li style="margin-left:10px;">{$v.opiton_content}</li>
+				  		<?php } ?>	
+				  	</ol>
+			  		</div>
+			  		<div style="line-height:30px;padding-left:5px;">正确答案：
+			  		<font style="color:#4a6fad">
+			  		 <?php foreach ($vo['option_list'] as $v) { 
+				  			if($v['is_right']==1){ 
+					  			echo $arr[$v['option_item_id']]."&nbsp;";
+					  		}
+				  		} ?>	
+			  		</font>&nbsp;&nbsp;用户答案：{$vo.user_answer}</div>
+			  		<div style="line-height:30px;padding-left:5px;"><font style='color:#4a6fad;'>解析</font>：{$vo.question_qsn_guide}</div>
+			  		<?php if($key+1!=count($list)){
+			  			echo "<hr/>";
+			  		} ?>
+			  <?php } ?>
+			</div>
+    	</div>
+    	</div>
+<include file="__THEME__/admin_footer" />

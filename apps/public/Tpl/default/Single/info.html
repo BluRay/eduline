@@ -1,0 +1,40 @@
+<include file="__THEME__/public_header" />
+<style type="text/css">
+  .breadInter {width: 1100px;margin: 0 auto;}
+</style> 
+
+<div class="breadcrumb">
+	<div class="breadInter">
+	    <a href="/">首页</a>&gt;<a>{$data.title}</a>
+	</div>
+</div>
+<!--main-->
+<!--畅销榜单-->
+<div class="worap main-list " style="padding-top:0">
+    <div class="main-sidebar ">
+       <div class="back clearfix">
+           <div class="main-sidebar-title"><h2>{$cate}</h2></div>
+           <ul class="main-sidebar-ul">
+               <foreach name="single_list" item="val">
+               <li <php>if($data['id'] == $val['id']){</php> style="background: #1981E8;" <php>}</php>>
+                   <a  class="a" <php>if($data['id'] == $val['id']){</php> style="color:#fff;" <php>}</php>  href="{:U('public/Single/info',array('id'=>$val['id']))}" ><span>{$val.title}</span></a>
+               </li>
+               </foreach>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="main-r back viewtopic">
+        <div class="title">
+           {$data.title}
+        </div>
+        <div class="dateline">
+        </div>
+        <div class="content-load" style="border:0;">
+            {$data.text}
+        </div>
+    </div>
+    
+</div>
+
+<include file="__THEME__/public_footer" />

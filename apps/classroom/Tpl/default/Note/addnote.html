@@ -1,0 +1,188 @@
+<include file="__THEME__/public_header" />
+<link  href="__APP__/editor/themes/default/default.css" rel="stylesheet" />
+<script src="__APP__/js/common.js" type="text/javascript"></script>
+
+<script>
+window.onload=function()
+{
+	 //公用库
+	higher_common();
+	
+	//笔记——标题
+	(function(){
+		mysearch('smyInput');
+	})();
+	
+}
+</script>
+
+<div class="main_box_index shadow Tag" id="Tag">
+    <p class="Tag_p"></p>
+    <span class="Tag_span"></span>
+</div>
+<div class="main_box_index shadow Tag" id="Tag1">
+    <p class="Tag_p"></p>
+    <span class="tag_span1"></span>
+</div>
+<script>
+var validate = function(_form){
+	//同步数据
+	E.sync();
+	var oKecid=_form.find('select[name="kecid"]').val();
+	
+	var oMyInput=getByClass(document,'myInput')[0];
+	var oInput=getByTagName(oMyInput,'input')[0];
+	
+	var arr=['他妈的', '你妈的', '傻×', '衮蛋', '你妹儿'];
+	var oKeEditIframe=getByTagName(document,'ke-edit-iframe')[0];
+	
+	oInput.value = oInput.value.replace(/<\[^>]*>/g,''); //去除HTML tag
+	oInput.value = oInput.value.replace(/[ | ]*\n/g,'\n'); //去除行尾空白
+	//oTextarea.value = oTextarea.value.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+	oInput.value=oInput.value.replace(/&nbsp;/ig, "");
+	oInput.value=oInput.value.replace(/ /ig,'');//去掉 
+	
+	$('.ke-edit-iframe')[0].contentDocument.body.innerHTML = $('.ke-edit-iframe')[0].contentDocument.body.innerHTML.replace(/<\[^>]*>/g,''); //去除HTML tag
+	$('.ke-edit-iframe')[0].contentDocument.body.innerHTML = $('.ke-edit-iframe')[0].contentDocument.body.innerHTML.replace(/[ | ]*\n/g,'\n'); //去除行尾空白
+	//oTextarea.value = oTextarea.value.replace(/\n[\s| | ]*\r/g,'\n'); //去除多余空行
+	$('.ke-edit-iframe')[0].contentDocument.body.innerHTML=$('.ke-edit-iframe')[0].contentDocument.body.innerHTML.replace(/&nbsp;/ig, "");
+	$('.ke-edit-iframe')[0].contentDocument.body.innerHTML=$('.ke-edit-iframe')[0].contentDocument.body.innerHTML.replace(/ /ig,'');//去掉 
+	for(var i=0; i<arr.length; i++)
+	{
+		if(oInput.value.indexOf(arr[i])>-1)
+		{
+			tag('标题内容不得包含敏感词!','xq_transparent');
+			return false;
+		}
+		if($('.ke-edit-iframe')[0].contentDocument.body.innerHTML.indexOf(arr[i])>-1)
+		{
+			tag('笔记内容不得包含敏感词!','xq_transparent');
+			return false;
+		}
+	}
+	
+	if(oKecid<=0){
+		tag('请选择课程!','xq_transparent');
+		return false;
+	}
+	if(oInput.value=='')
+	{
+		
+		tag('请输入标题内容!','xq_transparent');
+		return false;
+	}
+	if($('.ke-edit-iframe')[0].contentDocument.body.innerHTML=='')
+	{
+		tag('请输入笔记内容!','xq_transparent');
+		return false;
+	}
+	
+	return true;
+}
+
+var callback = function(_form,data){
+	var oMyInput=getByClass(document,'myInput')[0];
+	var oInput=getByTagName(oMyInput,'input')[0];
+	oInput.value='';
+	$('.ke-edit-iframe')[0].contentDocument.body.innerHTML='';
+}
+</script>
+ <!--小标签bg-->  
+<div id="xq_transparent"></div>
+<div class="clearfix main mt10">
+	<p class="h40 ft16"><a href="index.html">点播</a>&nbsp;>&nbsp;<em class="ft12">写笔记</em></p>
+    <div class="fl">
+    	<form id="zmform" name="zmform" action="{:U('classroom/Note/dowritenote')}" method="post" onsubmit="return j_validateCallback(this,validate,callback);">
+        <div class="bg_f w626 p20 clearfix">
+            <h1 id="contentTitle">写笔记</h1>
+            <div class="mt10 clearfix" style="margin-bottom:18px;margin-top:30px;">
+                <span class="fl form_label mr16" style="line-height:28px;">课程</span>
+                <select name="kecid" style="height:28px;line-height:28px;margin-left:-1px;border:1px solid #CCC;">
+                	<option value="0">选择课程</option>
+                    <volist name="videoList" id="vo">
+                    <option value="{$vo.id}">{$vo.video_title}</option>
+                    </volist>
+                </select>
+                <label for="is_open">
+                	<input name="is_open" id="is_open" type="checkbox" value="1" checked="checked" style="vertical-align:middle;margin-top:-3px;"/>
+                    是否公开
+                </label>
+            </div>
+            <div class="mt10 clearfix">
+                <span class="fl form_label mr16" style="line-height:28px;">标题</span>
+                <div id="smyInput" class="myInput fl w584" style="width:573px;">
+                   <input name="title" type="text" class="w575" rel="输入关键字"/>
+                  <span class="w333">请在这里添加补充提问</span>
+                </div>
+            </div>
+            <div class="clearfix mt20">
+                <label class="form_label mr10" for="html" style="margin-right:12px;">
+                    内容
+                </label>
+                <div class="content_tips" style="width:547px;">
+                    <p>Tips：
+                        <br></br>笔记可以是你的作业、资料、学习经验…
+                    </p>
+                    {:W("Editor",array("contentName"=>"content",'tool'=>'more'))}
+                </div>
+                <div class="form_do">
+                    <a class="" href="{:U('classroom/Note/index')}">
+                        取消
+                    </a>
+                    <input class="submit" type="submit" value="发布"></input>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <div class="ml70bfb">
+    	<php>
+        if($type == 1){
+        	$url = U('classroom/Video/view','id='.$id);
+        }else{
+        	$url = U('classroom/Album/view','id='.$id);
+       	}
+        </php>
+        <a class="side_back" href="{$url}" target="_blank">
+            <span class="side_back_arrow"><</span>
+            <if condition=" $type eq 1 ">课程<else />专辑</if>详情
+        </a>
+        <div class="bg_f side_course p20">
+            <a href="{$url}" target="_blank">
+                <img width="45" height="45" src="{$datainfo.uid|getUserFace=###,'m'}">
+            </a>
+            <h6 class="course_title">
+                <a href="{$url}" target="_blank">
+                    <span>{$datainfo.title}</span>
+                    <span>{$datainfo.category|getCategoryName=###,true}</span>
+                </a>
+            </h6>
+            <span class="mt20 mb10"> 
+                <em class="green_txt fl ft12">评分：</em>
+                <ul class="fl">
+                    <li class="<if condition=" $datainfo.score GT 0 ">star<else />star_down</if> fl">star</li> 
+                    <li class="<if condition=" $datainfo.score GT 1 ">star<else />star_down</if> fl">star</li>
+                    <li class="<if condition=" $datainfo.score GT 2 ">star<else />star_down</if> fl">star</li>
+                    <li class="<if condition=" $datainfo.score GT 3 ">star<else />star_down</if> fl">star</li>
+                    <li class="<if condition=" $datainfo.score GT 4 ">star<else />star_down</if> fl">star</li>                       
+                </ul>
+                <em class="green_txt fl ft12">{$datainfo.score}</em>
+                <p>（{$datainfo.comment_count}人评价）</p>
+            </span>
+            <p class="fl">时间：</p>
+            <p>{$datainfo.ctime|date="Y-m-d",###}</p>
+        </div>
+        
+        
+        
+        
+        
+        
+        
+    </div>
+</div>
+
+
+<include file="__THEME__/public_footer_g" />
+</body>
+</html>

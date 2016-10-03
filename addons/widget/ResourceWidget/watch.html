@@ -1,0 +1,411 @@
+<div class="g-sd2" id="course-toolbar-box">
+    <div class="m-ctb">
+        <div class="courseintro">
+            <div class="fl courseTitle j-courseintro">
+                <div class="u-coursetitle fl">
+                    <a class="j-info f-thide" href="javascript:;">{$baseInfo.title}</a>
+                    <div class="f-cb clearfix">
+                        <span class="j-info starall">
+                             <ul class="mt5">
+                                <li class="<if condition=" $baseInfo.score GT 0 ">star<else />star_down</if>">star</li> 
+                                <li class="<if condition=" $baseInfo.score GT 1 ">star<else />star_down</if>">star</li>
+                                <li class="<if condition=" $baseInfo.score GT 2 ">star<else />star_down</if>">star</li>
+                                <li class="<if condition=" $baseInfo.score GT 3 ">star<else />star_down</if>">star</li>
+                                <li class="<if condition=" $baseInfo.score GT 4 ">star<else />star_down</if>">star</li>            
+                            </ul>
+                        </span>
+                        <span class="cmt j-cmt">
+                            ({$baseInfo.comment_count|intval=###}份评价)
+                        </span>
+                    </div>
+                    <p class="j-info f-thide">发布者：{$baseInfo.username}</p>
+                </div>
+            </div>
+            <a class="j-courseimg-link courseImgCover" target="_blank" href="javascript:;">
+                <!-- <div class="courseImg-link"></div> -->
+                <img class="f-fr courseImg j-courseimg" src="{$baseInfo.small_ids}" width="120" height="66">
+            </a>
+        </div>
+        <ul id="tags" class="tabs j-tab-tabwrap">
+            <li class="selecttag">
+            <a class="tabitem j-tab-tabitem" href="javascript:;" style="color:#FFF;">
+                <span class="f-fl tabicon tabicon-pos0"></span>
+                <span class="f-fl">目录</span>
+            </a>
+            </li>
+            <li data-name="biji">
+            <a class="tabitem j-tab-tabitem" href="javascript:;">
+                <span class="f-fl tabicon tabicon-1"></span>
+                <span class="f-fl">笔记</span>
+            </a>
+            </li>
+            <li data-name="review">
+            <a class="tabitem j-tab-tabitem" href="javascript:;">
+                <span class="f-fl tabicon tabicon-2"></span>
+                <span class="f-fl">点评</span>
+            </a>
+            </li>
+            <li data-name="question">
+            <a class="tabitem j-tab-tabitem" href="javascript:;">
+                <span class="f-fl tabicon tabicon-3"></span>
+                <span class="f-fl">提问</span>
+            </a>
+            </li>
+        </ul>
+    </div>
+    <div id="tagcontent_box">
+           <div id="tagcontent0" class="tagcontent" style="display:block; width:320px;">
+                <div id="chapterList-tabbox" class="tabbox j-tabbox" style="display: block;">
+                    <div class="bd j-bd"></div>
+                    <div id="tb-chapterlist-box" class="m-chapterlistBox">
+                      <div class="m-chapterList">
+                      		<volist name="mulus" id="vo" key="key">
+                                <if condition=" $key==1 ">
+                                <div class="section" data-lesson="{$vo.video_id}" data-lessonid="{$vo.id}" data-title="{$vo.video_title}" data-price="{$vo['mzprice']['oriPrice']}" data-isbuy="{$vo.isBuyVideo}">
+                                    <div class="section_bj" style="display:block">
+                                    </div>
+                                    <span class="fl f-thide ks" style="color:#FFF;">考点{$key}</span>
+                                    <span class="fl ksicon-0-mark ksicon-30-mark" title="未开始"></span>
+                                    <span class="fl ksname"  style="color:#FFF;">{$vo.video_title}</span>
+                                </div>
+                                <else />
+                                <div class="section" data-lesson="{$vo.video_id}" data-lessonid="{$vo.id}" data-title="{$vo.video_title}" data-price="{$vo['mzprice']['oriPrice']}" data-isbuy="{$vo.isBuyVideo}">
+                                    <div class="section_bj">
+                                    </div>
+                                    <span class="fl f-thide ks">考点{$key}</span>
+                                    <span class="fl ksicon-0-mark" title="未开始"></span>
+                                    <span class="fl ksname">{$vo.video_title}</span>
+                                </div>
+                                </if>
+                            </volist>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <div id="tagcontent3" class="p10 tagcontent txt_l">
+            	<form id="zmformnote" name="zmformnote" action="{:U('classroom/Note/add')}" method="post" onsubmit="return j_validateCallback(this,vnote,cnote);">
+                <input name="kztype" type="hidden" value="1" />
+                <input name="kzid" class="kzid" type="hidden" value="0" />
+                
+                <div class="tips1 l5">我的笔记</div>
+                <div class="editwrap mt22">
+                    <textarea id="auto-id-8N8gGtRpum9CBbFZ" class="j-edittxt edittxt" name="content"></textarea>
+                    <label id="auto-id-drt6TisVISpRhnQa" class="j-hint hint" for="edittxt">
+                        在此记录你的想法...
+                    </label>
+                </div>
+                <div class="mt5 clearfix">
+                    <label class="checklabel fl"><input name="is_open" value="1" checked="checked" type="checkbox" hidefocus="true" class="j-privatecheck">&nbsp;公开</label>
+                    <input type="submit" value="保存" class="bg_btn_gray Secrecy fr" style="border:none;cursor:pointer;"/>
+                </div>
+                </form>
+                <div id="txtmydianbonote" class="wie" style="margin-top:28px;"></div>
+            </div>
+            <!--id="tagcontent3"-->
+            <div id="tagcontent3"  class="p10 tagcontent txt_l">
+            	<form  name="zmformnote" action="{:U('classroom/Review/add')}" method="post" onsubmit="return j_validateCallback(this,vReview,cReview);">
+                <input name="kztype" type="hidden" value="1" />
+                <input name="id" class="kzid" type="hidden" value="0" />
+                <div class="tips1 l5">我的评论</div>
+                <div class="clearfix mt10b20l_15">
+                    <div class="reply-star">
+                        <label class="form-label color_hui ml30 fl" style="margin-left: 15px;" for="score">评分</label>
+                            <ul id="star_ul" class="star_ul fl ml20" style="margin: 2px 0 0 10px;">
+                                <li title="评1分"></li> 
+                                <li title="评2分"></li>
+                                <li title="评3分"></li>
+                                <li title="评4分"></li>
+                                <li title="评5分"></li>                
+                            </ul>
+                        <span class="color_hui" id="how-score"></span>
+                        <p class="fl">&nbsp;&nbsp;&nbsp;（请根据课程质量打分）</p>
+                    </div>
+                </div>
+                <input type="hidden" id="course_score" name="score" value="0">
+                <div class="editwrap mt22">
+                    <textarea id="auto-id-8N8gGtRpum9CBbFZ" class="j-edittxt edittxt" name="content"></textarea>
+                    <label id="auto-id-drt6TisVISpRhnQa" class="j-hint hint" for="edittxt">
+                        在此记录你的想法...
+                    </label>
+                </div>
+                <div class="mt5 clearfix">
+                    <label class="checklabel fl"><input name="is_secret" value="1" type="checkbox" hidefocus="true" class="j-privatecheck">&nbsp;匿名</label>
+                    <input type="submit" value="保存" class="bg_btn_gray Secrecy fr" style="border:none;cursor:pointer;"/>
+                </div>
+                </form>
+                
+                <div id="txtmydianboreview" class="wie" style="margin-top:28px;"></div>
+                
+            </div>
+            <!--id="tagcontent3"-->
+            <div id="tagcontent3" class="p10 tagcontent txt_r">
+            	<form  name="zmformnote" action="{:U('classroom/Question/add')}" method="post" onsubmit="return j_validateCallback(this,vQuestion,cQuestion);">
+                <input name="kztype" type="hidden" value="1" />
+                <input name="kzid" class="kzid" type="hidden" value="0" />
+                <div class="editwrap mt22">
+                	<div class="tips r5">还可以输入<span>100</span>字</div>
+                    <textarea id="auto-id-8N8gGtRpum9CBbFZ" class="j-edittxt edittxt" name="content"></textarea>
+                    <label id="auto-id-drt6TisVISpRhnQa" class="j-hint hint" for="edittxt">
+                        请添加问题描述性标题，将自动给出相似问题列表
+                    </label>
+                </div>
+                <div class="mt5 clearfix">
+                	<input type="submit" value="添加问题" class="bg_btn_gray Secrecy" style="border:none;cursor:pointer;"/>
+                </div>
+                </form>
+                <div id="txtmydianboqst" class="wie" style="margin-top:28px;"></div>
+        	</div>
+        
+        
+        
+        
+        
+        
+	</div>
+</div>
+<script>
+var vnote = function(_form){
+	//及时给课程ID赋值
+	_form.find('input[name="kzid"]').val(mzcur_lesson_id);
+	
+	return true;
+};
+var cnote = function(_form,$data,cdata){
+	if(cdata.status != 1){
+		return;
+	}
+	_form.find('textarea[name="content"]').val('').parent().addClass('editwrap').removeClass('input_focus').css('border','1px solid #CECECE').find('label').css('display','block');
+	getdianboNote();
+	//alert('fdf');
+};
+//------------------------------------------------------------
+var vReview = function(_form){
+	//及时给课程ID赋值
+	_form.find('input[name="id"]').val(mzcur_lesson_id);
+	return true;
+};
+var cReview = function(_form,$data,cdata){
+	if(cdata.status != 1){
+		return;
+	}
+	_form.find('input[name="score"]').val(0);
+	_form.find('textarea[name="content"]').val('').parent().addClass('editwrap').removeClass('input_focus').css('border','1px solid #CECECE').find('label').css('display','block');
+	
+	getdianboReview();
+};
+//------------------------------------------------------------
+var vQuestion = function(_form){
+	//及时给课程ID赋值
+	_form.find('input[name="kzid"]').val(mzcur_lesson_id);
+	
+	return true;
+};
+var cQuestion = function(_form,$data,cdata){
+	if(cdata.status != 1){
+		return;
+	}
+	_form.find('textarea[name="content"]').val('');
+	var ss = _form.find('textarea[name="content"]').parent();
+	ss.addClass('editwrap').removeClass('input_focus').css('border','1px solid #CECECE').find('label').css('display','block');
+	//textarea_box(ss).cleanText();
+	getdianboQst();
+	//alert('fdf');
+};
+</script>
+
+
+
+
+<script>
+var dianbokztype = '{$kztype}';
+var dianbokzid   = '{$kzid}';
+//三个异步分页对象
+var dianboNoteObj = dianboReviewObj = dianboQstObj = null;
+$(function(){
+	//异步加载我的笔记
+	$('#txtmydianbonote').mzpagination({
+		url:U('widget/Resource/getList'),
+		ispage:true,//是否分页
+		data:{
+			limit:4,
+			type:3,
+			kztype:1,
+			kzid:mzcur_lesson_id
+		}
+	},function(d){
+		return getdianboNoteHtml(d);
+	},function(fun){
+		dianboNoteObj = fun;
+	});
+	//异步加载点评
+	$('#txtmydianboreview').mzpagination({
+		url:U('widget/Resource/getList'),
+		ispage:true,//是否分页
+		data:{
+			limit:4,
+			type:2,
+			kztype:1,
+			kzid:mzcur_lesson_id
+		}
+	},function(d){
+		return dianboReviewHtml(d);
+	},function(fun){
+		dianboReviewObj = fun;
+	});
+	//异步加载提问
+	$('#txtmydianboqst').mzpagination({
+		url:U('widget/Resource/getList'),
+		ispage:true,//是否分页
+		data:{
+			limit:4,
+			type:1,
+			kztype:1,
+			kzid:mzcur_lesson_id
+		}
+	},function(d){
+		return dianboQstHtml(d);
+	},function(fun){
+		dianboQstObj = fun;
+	});	
+});
+
+
+//重新加载笔记
+var getdianboNote = function(){
+	dianboNoteObj.getData_coerce({limit:4,type:3,kztype:1,kzid:mzcur_lesson_id,p:1});
+};
+//重新加载点评
+var getdianboReview = function(){
+	dianboReviewObj.getData_coerce({limit:4,type:2,kztype:1,kzid:mzcur_lesson_id,p:1});
+};
+//重新加载问题
+var getdianboQst = function(){
+	dianboQstObj.getData_coerce({limit:4,type:1,kztype:1,kzid:mzcur_lesson_id,p:1});
+};
+//-------------------------------------------------------------------------------------------
+//获取笔记列表
+var getdianboNoteHtml = function($data){
+	var html = '';
+	$.each($data,function(i,k){
+		html += '<div class="mt20 clearfix">';	
+		html += '<p class="p_ans"><a href="'+k.note_src+'" target="_blank">'+k.note_title+'</a></p>';	
+		html += '<em class="ls">'+k.username+'</em>';	
+		html += '<em class="gray ml15">'+k.strtime+'</em>';	
+		html += '<P style="word-break:break-all;">'+k.note_description+'&nbsp;&nbsp;<em class="ls"><a href="'+k.note_src+'" target="_blank">更多></a></em></P>';	
+		html += '<em class="fr">同问['+k.note_help_count+']</em>';	
+		html += '<em class="fr">评论['+k.note_comment_count+']</em>';	
+		html += '</div>';	
+		html += '<hr class="das_l mt10"></hr>';	
+	});
+	return html;
+};
+//获取点评列表
+var dianboReviewHtml = function($data){
+	var html = '';
+	$.each($data,function(i,k){
+		html += '<div class="clearfix mt20">';	
+		html += '<em class="ls fl mr15">'+k.username+'</em>';	
+		html += '<ul class="pinlun_ul fl">';
+		
+		html += '<li class="'+(k.star>=1?'star':'star_down')+'">star</li>';
+		html += '<li class="'+(k.star>=2?'star':'star_down')+'">star</li>';
+		html += '<li class="'+(k.star>=3?'star':'star_down')+'">star</li>';
+		html += '<li class="'+(k.star>=4?'star':'star_down')+'">star</li>';
+		html += '<li class="'+(k.star>=5?'star':'star_down')+'">star</li>';
+		
+		html += '</ul>';	
+		html += '<em class="green ml15 fl">'+k.sname+'</em>';	
+		html += '<p class="time fr">'+k.strtime+'</p>';	
+		html += '</div>';	
+		html += '<p class="p_dp">'+k.review_description+'</p>';	
+		html += '<div class="zp">';	
+		html += '<span class="zan">'+k.review_vote_count+'</span>';	
+		html += '<span class="pl">'+k.review_comment_count+'</span>';	
+		html += '</div>';	
+		html += '<hr class="das_l"></hr>';	
+	});
+	return html;
+};
+//获取问题列表
+var dianboQstHtml = function($data){
+	var html = '';
+	$.each($data,function(i,k){
+		html += '<div class="m-askItem">';
+		html += '<p class="clearfix">';
+		html += '<a href="'+k.qst_src+'" target="_blank" class="j-asklink fl">'+k.qst_title+'</a>';
+		html += '<em class="ls fr">'+k.username+'</em>';
+		html += '</p>';
+		html += '<div class="moreinfo clearfix">';
+		html += '<ul class="fl ans_r clearfix">';
+		if(parseInt(k.count)){
+			html += '<li>已回答</li>';
+		}
+		html += '<li>同问['+k.qst_help_count+']</li>';
+		html += '<li>评论['+k.qst_comment_count+']</li>';
+		html += '</ul>';
+		html += '<span class="fr">'+k.strtime+'</span>';
+		html += '</div>';
+		html += '</div>';	
+	});
+	return html;
+};
+</script>
+
+
+
+<script>
+function score(id)
+{
+	var oStarUl=document.getElementById(id);
+	var aLi=oStarUl.children;
+	for(var i=0; i<aLi.length; i++)
+	{
+		//aLi[i].style.backgroundPosition=i%2?'-12px 0':'0 0';
+		aLi[i].index=i;
+		aLi[i].onmouseover=function ()
+		{
+			for (var i=0; i<aLi.length; i++)
+			{
+				aLi[i].style.backgroundImage='';
+			}
+			for (var i=0; i<this.index+1; i++)
+			{
+				var app = "__APP__";
+				var url = app+"/images/green.png";
+				aLi[i].style.backgroundImage="url('"+url+"')";
+			}
+		};
+		aLi[i].onclick=function ()
+		{
+			$("#course_score").val(this.index+1);
+			$('#how-score').text('评分:'+(this.index+1)+'分');
+		};
+	}
+}
+$(function(){
+	//选项卡
+	(function(){
+		Tabs('j-tab-tabwrap');
+	})();
+	//视频播放 轮播
+	(function(){
+	    video('course-learn');
+	 })();
+	 //笔记 点评 评论_仅仅是输入
+	(function(){
+	    var oEditwrap=getByClass(document, 'editwrap');
+		for(var i=0; i<oEditwrap.length; i++)
+		{
+			textarea_box(oEditwrap[i],100);
+		}
+	})();
+	
+	 //星星评分
+	(function(){
+	   	score('star_ul');
+	})();	
+});
+</script>

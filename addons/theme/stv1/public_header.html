@@ -1,0 +1,119 @@
+<include file="__THEME__/_header" />
+<php>if(empty($_SESSION['mid'])){</php>
+	<include file="__THEME__/reg_login" />
+<php>}</php>
+<!--header-->
+<div class="header">
+    <div class="header-top">
+    	<div class="wrap">
+            <div class="header-logo">
+                <a href="/" title="Eduline"><img src="{$site.logo_head}"/></a>
+            </div>
+            <div class="header-search index">
+                <form>
+                	<input type="hidden" name="app" value="classroom" >
+			        <input type="hidden" name="mod" value="Search" >
+			        <input type="hidden" name="act" value="index" >
+                    <input type="text" id="searchkey" name="searchkey" placeholder="搜索关键词">
+                    <input type="submit" class="submit">
+                </form>
+            </div>
+            <div class="header-login">
+                <div class="login-ewm">
+                	<img src="__THEME__/images/appdownload.png" class="lazyloading">
+                    <p>eduline<br>客户端下载</p>
+                </div>
+                <php>if(empty($_SESSION['mid'])){</php>
+                	<div class="login-nav">
+                		<a href="javascript:;" onClick="reg_login()">登录</a><span>/</span><a href="javascript:;" onClick="reg_login()">注册</a>
+			    	</div>
+			    <php>}else{</php>
+			    	<div class="login-box">
+	                    <a href="{:U('classroom/UserShow/index',array('uid'=>$_SESSION['mid']))}"><img src="{:getUserFace($_SESSION['mid'])}" class="lazyloading"><span>{:getUserName($_SESSION['mid'])}</span></a>
+	                    <dl class="login-after-position">
+					         <dd class="login-after-bdbt"><a href="{:U('classroom/Home/wenda')}">我的问答</a></dd>
+					         <dd class="login-after-bdbt"><a href="{:U('classroom/Home/note')}">我的笔记</a></dd>
+					         <dd class="login-after-bdbt"><a href="{:U('classroom/User/setInfo')}">我的设置</a></dd>
+					         <dd class="login-after-bdbt"><a href="{:U('public/Message/index')}">我的消息</a></dd>
+					         <dd class="login-after-bdbt"><a href="javascript:;" onClick="logout()">退出</a></dd>
+					     </dl>
+	                </div>
+	                <!--消息提示-->
+				    <ul class="news-msg"
+				          <php>if(!empty($mid) &&(!empty($unreadnum) || !empty($systemnum) || !empty($commentnum))){</php>
+				          		style="display:block;"
+				          <php>}else{</php>
+				        		style="display:none;"
+				          <php>}</php> >
+				          <a class="shanchu-ico" href="javascript:;" onClick="closeMsg()">×</a>
+				          <php>if(!empty($unreadnum) && !empty($mid)){</php>
+				                <li>{$unreadnum}条新的私信，&nbsp;<a href="{:U('public/Message/index')}">查看消息</a></li>
+				          <php>}</php>
+				          <php>if(!empty($systemnum) && !empty($mid)){</php>
+				                <li>{$systemnum}条新的系统消息，&nbsp;<a href="{:U('public/Message/notify')}">查看消息</a></li>
+				          <php>}</php>
+				          <php>if(!empty($commentnum) && !empty($mid)){</php>
+				                <li>{$commentnum}条新的评论消息，&nbsp;<a href="{:U('public/Message/comment')}">查看消息</a></li>
+				         <php>}</php>
+				     </ul>
+			    <php>}</php>
+                
+            </div>
+        </div>
+    </div>
+    <div class="header-bot">
+    	<div class="wrap">
+            <ul class="header-nav">
+                <volist name="site_top_nav" id="vo">
+		            <if condition="$vo.app_name eq more">
+		              <li onmouseover="mouseup(this);" onmouseout="mouseout(this);">
+		                <a href="{$vo['url']}" >{$vo['navi_name']}</a>
+		                <div id="menu_box">
+		                  <volist name="vo['child']" id="val">
+		                    <a target="{$val['target']}" href="{$val['url']}" >{$val['navi_name']}</a>
+		                  </volist>
+		                </div>
+		              </li>
+		            <else/>
+		      			  <li <php>if(APP_NAME == $vo['app_name'] || ( APP_NAME == 'classroom' && MODULE_NAME == $vo['app_name'] ) ){echo "class='active'";}</php>><a target="{$vo['target']}" href="{$vo['url']}" >{$vo['navi_name']}</a></li>
+		            </if>
+	      		</volist> 
+	        	<php>if(!empty($_SESSION['mid'])){</php>
+	        		<li <php>if(MODULE_NAME == "Home" || MODULE_NAME=="User"){echo "class='active'";}</php> ><a href="{:U('classroom/Home/video')}" >管理中心</a></li>
+	        	<php>}</php>
+	        	
+            </ul>
+        </div>
+    </div>
+</div>
+<!--右边浮动-->
+<php> $videolisturl =  $mid ? U('classroom/Video/merge') :  "javascript:reg_login();"; </php>
+<div id="albumShop" class="shopfixed"> 
+	<a href="<php>echo $videolisturl;</php>" class="shop">&nbsp; 
+		<span id="albumNum" class="shop-msg">
+			  <php>if(function_exists('getVideoMergeNum')){</php>
+			  		{:getVideoMergeNum($mid,session_id())}
+			  <php>} else {</php>
+			  		0
+			  <php>}</php>
+	    </span>
+	</a> 
+	<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$site.site_qq}&site=www.51eduline.com&menu=yes"   class="qa">&nbsp;</a> 
+	<a href="#" class="wx">&nbsp;<div class="erwm"><img  src="{:getAttachUrlByAttachId($site['site_qrcode'])}"><i></i></div></a> 
+</div>
+
+<script>
+function mouseup(cate){
+  var left=$(cate).offset().left;
+  $("#menu_box").css("display","block");
+}
+function mouseout(cate){
+  $("#menu_box").css("display","none");
+}
+
+function closeMsg(){
+    $(".news-msg").remove();
+}
+
+</script>
+

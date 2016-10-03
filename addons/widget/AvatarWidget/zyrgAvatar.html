@@ -1,0 +1,73 @@
+<h2>给自己设置一个美美的头像吧！</h2>
+    <div class="p">请选择您喜欢的图片,支持JPG,JPGE,PNG格式，大小限制{$attach_max_size|default=0}M以内 </div>
+<form id='noflashUpload' model-node="avatar_upload_form" enctype="multipart/form-data" action="{:U('public/Account/doSaveAvatar', array('step'=>'upload'))}" method="post">
+    <dl class="form-avatar header">
+        <dd class="header-l">
+            <input event-node="select_file" type="file" name="Filedata" class="bnt" />
+            <span event-node="loading" style="display:none;"><img src="__THEME__/image/load.gif" />加载中...</span>
+        </dd>
+        <dd>
+         <div class="header-r"><span>头像预览</span></div>
+         <div model-node="avatar_scan" class="mod-avatar " style="display:none">
+                <div class="cut-1"><img event-node="avatar_big" src="{$avatar.avatar_big}" width="150" /><p>(150px*150px)</p></div>
+            </div>
+        </dd>
+    </dl>
+</form>
+<form model-node="avatar_setting_form" enctype="multipart/form-data" action="{:U('public/Account/doSaveAvatar', array('step'=>'save'))}" method="post" style="display:none;">
+    <dl class="form-avatar header" style="position:relative">
+        <dd class="pb20" style="position:relative">
+            <div model-node="avatar_area" class="mod-avatar left header-l"  style=" position:relative;margin-bottom:10px;" >
+            </div>
+            <div class="mod-avatar header-r" style="position:relative">
+                <div model-node="avatar_preview" class="left header-rimg" style="width: 200px; height: 200px;overflow:hidden; position:absolute; top:0; right:0"></div>
+            </div>
+        </dd>
+        <dd style="position:absolute; width:350px; height:40px; bottom:-40px; left:0; background:#ffffff ; z-index:555">
+            <input event-node="avatar_picurl" type="hidden" name="picurl">
+            <input event-node="avatar_picwidth" type="hidden" name="picwidth">
+            <input event-node="avatar_fullpicurl" type="hidden" name="fullpicurl">
+            <input event-node="avatar_x1" type="hidden" name="x1">
+            <input event-node="avatar_y1" type="hidden" name="y1">
+            <input event-node="avatar_x2" type="hidden" name="x2">
+            <input event-node="avatar_y2" type="hidden" name="y2">
+            <input event-node="avatar_w" type="hidden" name="w">
+            <input event-node="avatar_h" type="hidden" name="h">
+            <a event-node="avatar_save" event-args="tip={:L('PUBLIC_IMAGE_SAVE_IS')}？" href="javascript:;" style=" background: none repeat scroll 0 0 #65addd;  color: #fff; float: left;font-size: 14px;height:40px;   line-height: 40px; margin-right: 10px;  text-align: center; width: 135px;">保存</a>
+            <a event-node="avatar_reset" class="Save sel_w btn_big_r" href="#" style="background: none repeat scroll 0 0 #eeeeee;  color: #333333; float: left;font-size: 14px;height:40px;  line-height: 40px; margin-right: 10px;  text-align: center; width: 135px;">换一张</a>
+            <a href="#" class="f3 fl" style="height:40px; line-height:62px;" onclick="outfall()">跳过 ></a>
+        </dd>
+    </dl>
+</form>
+
+<script type="text/javascript">
+    <php>
+    if(!empty($callback)){
+        echo 'var upload_callback = "'.$callback.'"';
+    }else{
+        echo 'var upload_callback = "nocallback"';
+    }
+    </php>
+
+    var avatar_success = function(msg){
+       window.top.avatarOk();
+    };
+    var obj = {
+        'te':321
+    };
+
+$(function(){
+var w = $(".header-r").width();
+$(".header-r img").each(function(){
+        var img_w = $(this).width();
+        var img_h = $(this).height();
+        if(img_w>w){
+            var height = (w*img_h)/img_w;
+            $(this).css({"252":w,"252":height});
+        }
+    });
+}) ;
+</script>
+<script src="__THEME__/js/module.form.js?v20121111"></script>
+<script src="__THEME__/js/avatar/module.avatar.js?v20130423"></script>
+<script src="__THEME__/js/avatar/avatar.js?v20130423"></script>

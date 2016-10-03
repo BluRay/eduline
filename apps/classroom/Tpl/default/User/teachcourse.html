@@ -1,0 +1,170 @@
+<include file="__THEME__/public_header" />
+<link href="__APP__/css/teacher.css" rel="stylesheet" type="text/css" />
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../User/_left" />
+    <!--中 -->
+    <link rel="stylesheet" href="__THEME__/js/swfupload/css/default.css">
+    <script type="text/javascript" src = "__THEME__/js/swfupload/js/fileprogress.js"></script>
+    <script type="text/javascript" src = "__THEME__/js/swfupload/js/handlers.js"></script>
+    <script type="text/javascript" src = "__THEME__/js/swfupload/swfupload/swfupload.js"></script>
+    <script type="text/javascript" src = "__THEME__/js/swfupload/js/swfupload.queue.js"></script>
+    <style type="text/css">
+    .ico_top, .ico_btm {
+        background: url("__THEME__/admin/image/ico_top_btm.gif") no-repeat scroll 0 0 transparent;
+        height: 14px;
+        width: 12px;
+    }
+    .ico_top, .ico_btm { display: inline-block; vertical-align: middle;
+    }
+    .ico_top { background-position: -12px 0;}
+    .ico_btm {background-position: -24px 0;}
+    .ico_top:hover { background-position: 0 0;}
+    .ico_btm:hover { background-position: -35px 0;}
+  </style>
+    <div class="user-con fl user-pbottom">
+      <div class="user-con-title">
+        <a onclick="navClick(this,'uploadvideo')" href="#">我的授课信息</a>
+      </div>
+      <form method="POST" action="{:U('classroom/User/doteachcourse')}" id="detail_form" name="detail_form" onsubmit="return j_validateCallback(this,checkForm,post_callback)">
+      <div class="form2" style="margin-top:15px;">
+        <if condition="count($course_list) eq 0">
+          你还没有设置授课内容
+        </if>
+        <ul class="user-set-sz" id="user-set-sz">
+        <foreach name="course_list" item="ld">
+          <li id="course_{$key+1}">
+            <div>
+              <label class="label1"><em>*</em> 课程名字：</label>
+              <input type="text" class="user-width" name="course_name_{$key+1}" value="{$ld.course_name}">
+            </div>
+            <div>
+              <label class="label1"><em>*</em> 价格：</label>
+              <input type="text" name="course_price_{$key+1}" value="{$ld.course_price}">
+            </div>
+            <div>
+              <label class="label1"><em>*</em> 描述：</label>
+              <textarea name="course_inro_{$key+1}" class="user-textarea">{$ld.course_inro}</textarea>
+            </div>
+            <div><label style="cursor:pointer;" onclick="deloldcourse({$key+1},{$ld.course_id});">删除此课程</label></div>
+          </li>
+        </foreach>
+        </ul>
+        <ul class="user-set-sz">
+          <li style="padding-left:150px;">
+          <input type="hidden" id="num" value="<?php if($course_list){ echo count($course_list); }else{ echo 0;} ?>">
+          <input type="hidden" id="num_list" name="num_list">
+          <input type="hidden" id="old_num_list" name="old_num_list" value="{$old_num_list}">
+          <input  class="user-submit" type="button"onclick="addcourse();" style="cursor:pointer;float:left;"  value="添加新课程">
+          <input  class="user-submit" type="submit"  value="保 存">
+          </li>
+        </ul>
+      </div>   
+      </form>
+    </div>
+    <!--右-->
+    <include file="../User/_right" />
+</div>
+ <script type="text/javascript">
+function delcourse(num){
+  $("#course_"+num).remove();
+  var num_list=$("#num_list").val();
+  if(num_list.indexOf(num+",")!=-1){
+    num_list=num_list.replace(num+",",'');
+  }else{
+    num_list=num_list.replace(num,'');
+  }
+  $("#num_list").val(num_list);
+}
+function deloldcourse(num,id){
+  $.post(U('classroom/User/delteachcourse'),{id:id},function(txt){
+    if(txt.status == 0){
+      ui.error(txt.info);
+    } else {
+      ui.success(txt.info);
+      $("#course_"+num).remove();
+      old_num_list=$("#old_num_list").val();
+      old_num_list=old_num_list.replace(num+"-"+id+"-0","");
+      $("#old_num_list").val(old_num_list);
+      window.location.href = window.location.href;
+    }
+  },'json');
+}
+ function addcourse(){
+  num=+$("#num").val()+(+1);
+  var html = "";
+  html += "<li id="+"'course_"+num+"'>";
+  html += "<div>";
+  html += "<label class='label1'><em>*</em> 课程名字：</label>";
+  html += "<input type='text' class='user-width' name='course_name_"+num+"'>";
+  html += "</div>";
+  html += "<div>";
+  html += "<label class='label1'><em>*</em> 价格：</label>";
+  html += "<input type='text' name='course_price_"+num+"'>";
+  html += "</div>";
+  html += "<div>";
+  html += "<label class='label1'><em>*</em> 描述：</label>";
+  html += "<textarea class='user-textarea' name='course_inro_"+num+"'></textarea>";
+  html += "</div>";
+  html += "<div><label style='cursor:pointer;' onclick='delcourse("+num+");'>删除此课程</label></div>";
+  html += "</li>";
+  $("#user-set-sz").append(html);
+  $("#num").val(num);
+  num_list=$("#num_list").val()+num+',';
+  $("#num_list").val(num_list);
+ }
+  function j_validateCallback(form,call,callback) {
+    var $form = $(form);
+    if(typeof call != 'undefined' && call instanceof Function){    
+      $i = call($form);
+      if(!$i){
+        return false;
+      }
+    }
+    var _submitFn = function(){
+      $.ajax({
+        type: form.method || 'POST',
+        url:$form.attr("action"),
+        data:$form.serializeArray(),
+        dataType:"json",
+        cache: false,
+        success: function(xMLHttpRequest, textStatus, errorThrown){
+          if(typeof callback != 'undefined' && callback instanceof Function){   
+            callback($form,xMLHttpRequest);
+          }  
+        },
+        error: function(xhr, ajaxOptions, thrownError){
+          ui.error("未知错误!");
+        }
+      });
+    }
+    _submitFn();
+    return false;
+  }
+  function checkForm(form){
+    num_list=$("#num_list").val();
+    old_num_list=$("#old_num_list").val();
+    if(num_list=="" && old_num_list==""){
+      ui.error("请添加课程信息!");
+      return false;
+    }
+    num_list=num_list.substring(0,num_list.length-1);
+    old_num_list=old_num_list.substring(0,old_num_list.length-1);
+    $("#num_list").val(num_list);
+    $("#old_num_list").val(old_num_list);
+    return true;
+  }
+  function post_callback(_form,data){
+    if(data.status != undefined){
+      if(data.status == '0'){
+        ui.error(data.info);
+      } else {
+        ui.success(data.info);
+        window.location.href = U('classroom/User/teachcourse');
+      }
+    }
+  }
+  function callback(data){
+  }
+  </script>
+<include file="__THEME__/public_footer" />

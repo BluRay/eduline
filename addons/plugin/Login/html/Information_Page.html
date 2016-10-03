@@ -1,0 +1,159 @@
+  <include file="__THEME__/public_header" />
+<div class="worap-login back min-height">
+	<div class="login-qqheader">
+    <img src="{$user.userface}">
+    <p>
+您好，{$user.uname}！您的{$typeName}已经授权成功，完善信息设置后便可用{$typeName}互联账号直接登录。
+</p>
+    </div>
+    <div  class="login-Cipher">
+    <ul class="login-Cipher-ul ">
+     <input type="hidden" id="type" name="other_type" value="{$type}" >
+	            <input id="oauth_token" type="hidden" name="oauth_token" value="{$oauth_token}" >
+	            <input id="oauth_token_secret" type="hidden" name="oauth_token_secret" value="{$oauth_token_secret}" >
+	            <input id="other_uid" type="hidden" name="other_uid" value="{$user.id}" >
+	            <input id="other_face" type="hidden" name="other_face" value="{$user.userface}" >
+	 <input type="hidden" id="other_signature" name="other_signature" value="{$user.signature}" >
+          <li>
+        <label class="f9">昵&nbsp;&nbsp;称: </label>
+        <input class="regsiter-width" id="uname" type="text" placeholder="2-6个中文字符内" maxlength="6">
+      </li>
+
+      <li>
+        <label class="label f9">手机号码:</label>
+         <input class="width130" id="Mobile" type="text" placeholder="请输入常用的手机号码">
+         <a class="width80" href="javascript:;" onclick="getpartyVerify()">获取验证码</a>
+         <span class="width97"  style="display:none" ><a id="dtime"></a>重新发送</span> 
+      </li>
+<li>
+        <label class="label f9">验&nbsp;证&nbsp;码: </label>
+        <input class="regsiter-width" id="reg_captcha"  type="text" placeholder="请输入收到的验证码">
+      </li>
+      <li>
+        <label class="label f9">常用邮箱: </label>
+        <input class="regsiter-width" id="email" type="text" placeholder="请输入您经常使用的邮箱">
+      </li>
+      <li>
+        <label class="label f9">密码设置: </label>
+        <input class="regsiter-width" id="password" type="password" maxlength="20" placeholder="请设置密码，6-20个字符">
+      </li>
+       <li>
+        <label class="label f9">确认密码: </label>
+        <input class="regsiter-width" id="repassword" type="password" maxlength="20" placeholder="与上相同">
+      </li>
+      <li>
+          <label class="label">性别</label>
+          <label class="label"><input id="sex" name="sex" type="radio" value="1" checked="checked" class="">&nbsp;&nbsp;男</label>
+          <label class="label"><input id="sex" name="sex" type="radio" value="2">&nbsp;&nbsp;女</label>
+        </li>
+    </ul>
+    <input name="" class="regsiter-xy-submit" onclick="party(this)" type="button" value="确 定"/></div>
+</div>
+    <include file="__THEME__/public_footer_g" />
+<script>
+//第三方集成注册
+function party(cate){
+	var type=$.trim($("#type").val());//获取第三方类型
+	var oauth_token=$.trim($("#oauth_token").val());
+	var oauth_token_secret=$.trim($("#oauth_token_secret").val());
+	var other_uid=$.trim($("#other_uid").val());
+	var other_face=$.trim($("#other_face").val());
+	var other_signature=$.trim($("#other_signature").val());
+	var phone=$.trim($("#Mobile").val());//获取用户手机号
+	var pverify=$.trim($("#reg_captcha").val());//获取验证码
+	var uname=$.trim($("#uname").val());//获取昵称
+	var email=$.trim($("#email").val());//获取邮箱
+	var pwd=$.trim($("#password").val());//获取新密码
+	var pwds=$.trim($("#repassword").val());//获确认密码
+	var sex=$('input[name="sex"]:checked').val();//获取性别
+	if( !phone.match(/^1[3|4|5|8][0-9]\d{4,8}$/)){
+		notes("对不起，手机格式不正确！");
+		return;
+	}
+	if(pverify.length!=4){
+		notes("对不起，验证码长度不正确！");
+		return;
+	}
+	if(!email.match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)){
+		 notes('对不起，邮箱格式错误!','failure');
+		 return;
+	}
+	if(pwd.length<6 || pwd.length>20){
+		notes("对不起，新密码长度不正确！");
+		return;
+	}
+	if(pwds!=pwd){
+		notes("对不起，两次密码输入不一致");
+		return;
+	}
+	$(cate).attr("disabled","disabled");
+	$(cate).val("提交中....");
+	//设置用户
+	 $.ajax({
+		 type: "POST",
+		 url:"{:U('public/Register/doOtherStep1')}",
+		 data:"other_type="+type+"&oauth_token="+oauth_token+"&oauth_token_secret="+oauth_token_secret+"&other_uid="+other_uid+"&other_face="+other_face+"&uname="+uname+"&email="+email+"&password="+pwd+"&repassword="+pwds+"&sex="+sex+"&Mobile="+phone+"&reg_captcha="+pverify,
+		 dataType:"json",
+		 success:function(data){
+		 if(data.status=='0'){
+			 	$(cate).removeAttr('disabled');
+			    $(cate).val("确定");
+		        notes(data.info,'failure');
+		       	return;
+		 }else{
+		        notes(data.info,'success');
+		        window.location.href='<php> echo $GLOBALS['ts']['site']['home_url']; </php>';
+		  }
+		  }
+		}); 
+}
+
+function getpartyVerify(){
+	var phone=$.trim($("#Mobile").val());//获取用户手机号
+	var phoneVerify=function(){
+		//获取手机验证码
+		  $.ajax({
+		        type: "POST",
+		        url:"{:U('public/Passport/getVerify')}",
+		        data:"phone="+phone,
+		        dataType:"json",
+		        success:function(data){
+		        	if(data.status=='0'){
+		        		notes(data.info,'failure');
+		       		 	return;
+		        	}else{
+		        		notes(data.info,'success');
+		        		$('.width80').css("display","none");
+		        		$('.width97').removeAttr("style");
+		        		timerc=60;
+		        		dtime();
+		       		 	return;
+		        	}
+		        }
+		    }); 
+		}
+	
+	//检查手机号格式
+	if(!phone.match(/^1[3|4|5|8][0-9]\d{4,8}$/)){
+		 notes('对不起，请填写正确的手机号!','failure');
+		 return;
+	}else{
+		//验证此手机是否已被注册
+	    $.ajax({
+	        type: "POST",
+	        url:"{:U('public/Passport/clickPhone')}",
+	        data:"phone="+phone,
+	        dataType:"text",
+	        success:function(data){
+	            if(data==0){
+	            	 notes('对不起，此手机已被注册，请更换!','failure');
+	            	 return;
+	            }else{
+	            	phoneVerify();
+	            }
+	           
+	        }
+	    }); 
+}
+}
+</script>

@@ -1,0 +1,15 @@
+<script type="text/javascript" src="__THEME__/js/editor/kindeditor-4.1.4/kindeditor.js?v=2012"></script>
+<!--发布样式 begi-->
+<div class="contents">
+<textarea  name="{$contentName}"  cols="" rows="10" id="{$contentName}" style="height:200px;width:{$width}; margin-bottom:10px;*width:99%;">{$value}</textarea>
+</div>
+<script>
+	//E	=	KISSY.Editor( "content" );
+	E = KISSY.Editor( "{$contentName}" ,'{$tool}' , false);
+	E._focusToEnd();
+	
+	
+	
+</script>
+
+

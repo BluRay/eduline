@@ -1,0 +1,41 @@
+
+<div class="content-sider" style="width:300px;margin-right:50px;padding-top:10px;">
+	<div class="sider-top"><a href="javascript:void(0);" onclick="addwenda()"><span class="icon-question"></span>提问</a></div>
+    <div class="page-tit">
+        <div class="page-tit-box"><div class="fl">相关问答</div></div>
+    </div>
+    <ul class="sider-question">
+        <volist name="recWenda" id="vo">
+            <li><a href="{:U('wenda/Index/detail',array('id'=>$vo['id']))}"><php>echo getShort(t($vo['wd_description']),28);</php></a></li>
+        </volist>
+    </ul>
+    <div class="page-tit">
+        <div class="page-tit-box"><div class="fl">推荐课程</div></div>
+    </div>
+    <ul class="sider-class">
+         <volist name="recClass" id="vo">
+        <li>
+        	<div class="pic"><a href="{:U('classroom/Video/view',array('id'=>$vo['id']))}"><img src="{:getCover($vo['cover'],112,70)}" class="lazyloading"></a></div>
+            <div class="info">
+            	<div class="tit"><a href="{:U('classroom/Video/view',array('id'=>$vo['id']))}">{$vo.video_title}</a></div>
+				<div class="txt"><php>echo getShort(t($vo['video_intro']),12);</php></div>
+            </div>
+        </li>
+        </volist>
+    </ul>
+</div>
+
+
+
+<script>
+    function addwenda(){
+        if(MID=='0'){
+            reg_login();
+            return;
+        }
+        window.open("{:U('wenda/Index/addWenda')}");
+
+    }
+
+
+</script>

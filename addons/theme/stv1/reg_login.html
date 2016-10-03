@@ -1,0 +1,170 @@
+<script>
+var CLICK_VERIFY="{:U('public/Passport/clickVerify')}";
+var CLICK_UNAME="{:U('public/Passport/clickUname')}";
+var CLICK_PHONE="{:U('public/Passport/clickPhone')}";
+var CLICK_PHONEVER="{:U('public/Passport/clickPhoneVer')}";
+var SETUSERFACE="{:U('public/Passport/setUserFace')}";
+var GET_PHONEVERIFY="{:U('public/Passport/getVerify')}";
+
+//更换验证码
+function changeverify(){
+	var date = new Date();
+    var ttime = date.getTime();
+    var url = "__ROOT__/public/captcha.php";
+    $('#verifyimg').attr('src',url+'?'+ttime);
+
+};
+
+/**
+ * 取消注册
+ */
+function removeReg(){
+    $("#transparent").css("display","none");
+}
+</script>
+<div id="transparent">
+
+  <div id="loging-worap-regsiter"> <a class="loging-Cancel" href="javascript:;" onclick="removeReg()">×</a>
+      <!--登录-->
+    <div id="loging-worap">
+          <div class="title">登录</div>
+          <div class="loging">
+              <ul>
+                  <li>
+                      <label class="label">帐&nbsp; &nbsp;&nbsp;&nbsp;号:</label>
+                      <input name="log_username" id="log_username" class="regsiter-width" maxlength="20"  type="text" placeholder="用户名/邮箱/手机">
+
+                  </li>
+                  <li>
+                      <label class="label">密&nbsp; &nbsp;&nbsp;&nbsp;码:</label>
+                      <input name="log_pwd" id="log_pwd"  class="regsiter-width" maxlength="20" type="password" placeholder="请输入登录密码">
+                  </li>
+
+              </ul>
+              <div class="loging-xy">
+                  <div class="loging-xy-bottom">
+                      <input name=""  id="logSub" onclick="logSub()"  class="loging-xy-submit" type="submit" value="登录"/>
+                      <a href="{:U('home/Repwd/index')}">忘记密码？</a></div>
+                  <style>
+                      .ico-sina{background:url("__APP__/image/LOGO_48x48.png");}
+                      .ico-qzone{background:url("__APP__/image/QQ_Logo_wiki4848.png");}
+                      .ico-renren{background:url("__APP__/image/Renren_logo_48×48.png");}
+                  </style>
+
+                  <div class="loging-bottom">
+                      <php>if(Addons::requireHooks('login_input_footer') && Addons::hook('login_input_footer')):</php>
+                      <div class="login-ft" style="">
+                          <span>其它帐号登录：</span>{:Addons::hook('login_input_footer')}
+                      </div>
+                      <php>endif;</php>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!--注册-->
+    <div id="regsiter-worap">
+      <div class="title">注册</div>
+      <form>
+        <div class="regsiter">
+          <div class="teb"><a href="javascript:;" class="f3"onclick="phoneReg(this)" >手机注册</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+          <a href="javascript:;"  onclick="emailReg(this)">邮箱注册</a></div>
+          <!---手机注册-->
+          <ul id="phoneReg">
+           <li>
+              <label class="label">手机号码:</label>
+              <input class="regsiter-width" type="text" id="prphone" maxlength="11" placeholder="请输入手机号码">
+            </li>
+            <li>
+              <label class="label">验&nbsp;证&nbsp;码:</label>
+              <input class="width130" type="text" id="prverify" maxlength="6" placeholder="请输入收到的验证码">
+              <a class="width80" href="javascript:;" onclick="getPhoneVerify()">获取验证码</a><span class="width97"  style="display:none" ><a id="dtime"></a> 重新发送</span> </li>
+            <li>
+              <label class="label">账户密码:</label>
+              <input class="regsiter-width" id="prpassword" maxlength="20" type="password" placeholder="请输入用户密码，6-20个字符">
+            </li>
+            <li>
+              <label class="label">&nbsp;</label>
+              <input name="" onclick="phoneNext()" class="regsiter-xy-submit" type="button" value="下一步"/>
+            </li>
+          </ul>
+          <!---邮箱注册--->
+          <ul id="emailReg"  style="display: none">
+            <li>
+              <label class="label">邮箱地址</label>
+              <input value="" class="regsiter-width" id="erusername" type="text" placeholder="请输入您的常用邮箱地址">
+            </li>
+            <li>
+              <label class="label">图片验证</label>
+              <input class="width121" type="text" id="erverify" placeholder="请输入右侧验证码">
+              <a  href="#"><img class="width108" src="__ROOT__/public/captcha.php" title="点击刷新" onclick="changeverify()" id="verifyimg"></a> </li>
+            <li>
+              <label class="label">账户密码</label>
+              <input value="" class="regsiter-width" id="erpasswrod" type="password" placeholder="请输入用户密码，6-20个字符">
+            </li>
+
+            <li>
+              <label class="label">&nbsp;</label>
+            <!--  <p class="p">错误提示</p>-->
+              <input name="" onclick="onemaliNext()" class="regsiter-xy-submit" type="button" value="下一步"/>
+            </li>
+          </ul>
+        </div>
+      </form>
+    </div>
+
+
+  </div>
+  <!--邮箱提示-->
+ <!-- <div class="regsiter-main-msg">
+    <h3><i class="tru"></i>验证邮件已发送，请前往邮箱点击激活链接完成注册</h3>
+    <p class="p">注册邮箱：1111566555@admin.com</p>
+    <div class="bottom"><a href="#" class="span">(20)重新发送</a><a href="#" class="a">前往邮箱 >></a></div>
+  </div>-->
+  <!--头像设置-->
+   <!--<div class="regsiter-main-headerworap">
+   <iframe src="{:U('public/Passport/setUserFace')}" frameborder="0" scrolling="no" width="814" height="426"></iframe>
+   </div>-->
+  <!--用户信息-->
+	<div class="regsiter-main">
+	    <h2>让学友们更了解你！</h2>
+	    <form>
+	      <ul class="">
+	        <li>
+	          <label class="label">昵称:</label>
+	          <input class="width" id="uname" type="text" maxlength="6" placeholder="请输入用户昵称">
+	        </li>
+	        <li>
+	          <label class="label">性别</label>
+	          <input id="sex"  name="sex" type="radio" value="1"  checked="checked" />
+	          <label>男</label>
+	          <input id="sex" name="sex" type="radio" value="2" />
+	          <label>女</label>
+	        </li>
+	        <li>
+	          <label class="label">地区:</label>
+	         {:W('Area',array('curPro'=>$user['province'],'curCity'=>$user['city'],'area'=>$user['area'],'city_names'=>$user['location'],'tpl'=>'zyCardArea'))}
+	        </li>
+	        <li>
+	          <label class="label">职业:</label>
+	          <input id="profession" class="width" type="text" maxlength="10" placeholder="请输入您的职业,10个字符内">
+	        </li>
+	        <li>
+	          <label class="label">个人简介:</label>
+	          <textarea id="intro" class="textareawidth" maxlength="500" placeholder="请输入个人简介,6-500个字符内" cols="" rows=""></textarea>
+	        </li>
+	      </ul>
+	      <div class="bntbox"><a class="bnt" href="javascript:;" onclick="setUserInfo()">完成填写，注册！</a><a href="javascript:;" class="a" onclick="prevBang()">返回</a> </div>
+	    </form>
+    </div>
+    <div id="loging-back"></div>
+</div>
+<script>
+    $(document).keydown(function(event){
+        if($("#transparent").css("display")=="block"){
+            if(event.keyCode == 13){
+                logSub();
+            }
+        }
+
+    });
+</script>

@@ -1,0 +1,49 @@
+<include file="__THEME__/public_header" />
+
+<div class="sixin-worap position-rt">
+    <!--左-->
+    <include file="left" />
+    <!--中 -->
+    <div class="user-con fl">
+        <div class="user-con-title"> <a href="#" class="onactive">全部消息：</a></div>
+        <!--后台私信-->
+        <ul class="user-wenda">
+            <foreach name="list.data" item="l">
+            <li class="li">
+                <div class="discusslist padding-new"><a target="_blank" title=" " class="other-txt f228" href="#">系统提示</a>
+                    <div class="detailmeg">
+                        <div class="report">
+                            <div class="mynote"><a title="{:getUserName($l.uid)}" href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}">{:getUserName($l['uid'])}</a>&nbsp;&nbsp;
+                                <php>if(!empty($l['uid'])){</php>
+                                管理员：
+                                <php>}else{</php>
+                                   系统
+                                <php>}</php>
+                            </div>
+                            <!--操作删除--><div class="Operation-wd"><a href="javascript:;" onclick="ui.confirm(this,'确定要删除该消息？')" callback="delnotify({$l.id})"><i onclick="ui.confirm(this,'确定要删除该消息？')" callback="delnotify({$l.id})"></i><span onclick="ui.confirm(this,'确定要删除该消息？')" callback="delnotify({$l.id})">删除</span></a></div>
+                            <p class="mynote"><a target="_blank" >{$l.body}</a> </p>
+                        </div>
+                        <div class="fbtime">时间：<span>{$l['ctime']|friendlyDate}</span> <php>if($l['is_read'] == 0){</php><img src="__THEME__/image/icon_new.gif" /><php>}</php></div>
+                    </div>
+                </div>
+            </li>
+            </foreach>
+
+        </ul>
+        <!--分页-->
+        <div class="sabrosus">
+           {$list.html}
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function delnotify(id){
+        $.post(U('public/Message/delnotify'),{id:id},function(){
+                location.reload();
+        });
+
+    }
+</script>
+<include file="__THEME__/public_footer" /> 

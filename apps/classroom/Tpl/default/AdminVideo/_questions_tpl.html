@@ -1,0 +1,41 @@
+<volist name="questions" id="vo" key="k">
+	<div num-data="{$k}" class="questions">
+	    <dl class="lineD" id="title">
+	      <dt><font color="red"> * </font><span>测试问题{$k}</span>：</dt>
+	      
+	      <dd>
+	      	<input type="hidden" class="q_id" name="question[{$k-1}][q_id]" value="{$vo['qid']}" />
+	        <input name="question[{$k-1}][title]" id="question_title" type="text" value="{$vo['q_title']}" class="s-txt mz_title" style="width:200px"> | <a href="javascript:void(0);" onclick="del_question(this);">删除</a>
+	      </dd>
+	    </dl>
+	    <dl class="lineD" id="options">
+	      <dt><font color="red"> * </font>选项：</dt>
+	      <dd>
+	      	<volist name="vo['q_options']" id="a_vo">
+	      		<php>
+	      			$option = "answer_".$key;
+	      			if($key == 0){
+	      				$c_k = 'A';
+	      			} else if($key == 1){
+	      				$c_k = 'B';
+	      			} else if($key == 2){
+	      				$c_k = 'C';
+	      			} else if($key == 3){
+	      				$c_k = 'D';
+	      			}
+	      		</php>
+ 	        		<font color="red"> * </font><span class="span{$key}" a-data="{$c_k}">{$c_k}.</span><input name="question[{$k-1}][answer_{$key}]" type="text" value="{$vo[$option]}" class="s-txt answer_{$key}" style="width:200px"><br />
+ 	        	</volist>
+	        <!--<font color="red"> * </font><span class="spanb" a-data="B">B.</span><input name="question[{$key+1}][answer_b]" type="text" value="{$answer_b}" class="s-txt answer_b" style="width:200px"><br />
+	        <font color="red"> * </font><span class="spanc" a-data="C">C.</span><input name="question[{$key+1}][answer_c]" type="text" value="{$answer_c}" class="s-txt answer_c" style="width:200px"><br />
+	        <font color="red"> * </font><span class="spand" a-data="D">D.</span><input name="question[{$key+1}][answer_d]" type="text" value="{$answer_d}" class="s-txt answer_d" style="width:200px">-->
+	      </dd>
+	    </dl>
+	    <dl class="lineD" id="answers">
+	    	<dt><font color="red"> * </font>正确答案：</dt>
+	    	<dd>
+	    		<input name="question[{$k-1}][answers]" type="text" value="{$vo['q_answer']}" class="s-txt answers" style="width:200px">请填写大写字母
+	    	</dd>
+	    </dl>
+	</div>
+</volist>

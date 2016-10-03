@@ -1,0 +1,168 @@
+<include file="__THEME__/public_header" />
+<link rel="stylesheet" href="__APP__/event.css" type="text/css" media="screen" charset="utf-8" />
+<link href="__APP__/js/pagination/pagination.css" rel="stylesheet" type="text/css" />
+<style>
+.feed_list .input_tips{width:796px;}
+.sider-recently .pic{width:50px;height:50px;}
+</style>
+<script type="text/javascript" src="__APP__/js/event.js"></script>
+<!--content start-->
+<div class="page-palce">
+	<div class="wrap"><a href="/">首页</a><span>&gt;</span><a href="{:U('event')}">活动</a><span>&gt;</span><span>{$title}</span></div>
+</div>
+<div class="page-top">
+	<div class="wrap">
+    	<div class="page-top-wrap">
+            <div class="pic"><a href="javascript:void(0);"><img src="{:getCover($coverId, 520,320)}" class="lazyloading"/></a></div>
+            <div class="tit">{$title}</div>
+            <div class="txt"><i class="icon-time"></i>{$time}</div>
+            <div class="txt"><i class="icon-place"></i>{$address}</div>
+            <div class="txt"><i class="icon-author"></i><a href="#">{$user_info[$uid]['space_link']}</a></div>
+            <div class="txt"><i class="icon-browse"></i><php>if($limitCount>0){</php>{$joinCount}/{$limitCount}<php>}else{</php>{$joinCount}<php>}</php>人</div>
+            <div class="btn_div">
+                <?php if( $eTime>time()){ ?>
+                     <span class="detail_joinIn_{$id}">
+                      <?php if( $follow ){ ?>
+                      <?php if( $canJoin ){ ?>
+                      <?php if( $limitCount>0 ) { ?>
+                      <a class="bm" href="javascript:javascript:EventAction( {$id},{$opts['allow']},'joinIn')" class="joinStatus canjoin" rel="我要报名" norel="我要报名">我要报名</a>
+                 
+                      <?php }else{ ?>
+                      <a class="bm" href="javascript:;" class="joinStatus nojoin" rel="名额已满" norel="名额已满">名额已满</a>
+                      <?php } ?>
+                      <?php }else if( false == $admin ){ ?>
+                      <?php if( $opts['allow'] == 1 && $hasMember != 1){ ?>
+                      <a href="javascript:void(0);" class="bm" onclick="javascript:EventDelAction({$id},{$opts['allow']},'joinIn')">审核中,点击取消</a>
+                      <?php }else{ ?>
+                       <a  href="javascript:;"  class="bm" onclick="javascript:EventDelAction( {$id},{$opts['allow']},'joinIn')">取消参加</a>
+                      <?php } ?>
+                      <?php } ?>
+                      <?php } ?>
+                      <?php if( $canAtt ){ ?>
+                            <span class="detail_attention_{$id}">
+                            <a  href="javascript:;" class="bm"  onclick="javascript:EventAction( {$id},null,'attention')">我要关注</a>
+                            </span>
+                      <?php }else if( false == $admin && true == $canJoin){ ?>
+                            <span class="detail_attention_{$id}">
+                            <a  href="javascript:;"  class="bm" onclick="javascript:EventDelAction( {$id},null,'attention')">取消关注</a>
+                            </span>
+                      <?php } ?>
+                        
+                      </span>
+                    <?php }else { ?>
+                      <a class="bm">此活动已经结束</a>
+                      
+                    <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>
+<!--content start-->
+<div class="content bgb pt30">
+	<div class="wrap">
+        <div class="content-con">
+        	<div class="content-main">
+            	<div class="page-title">
+                	<ul class="page-title-ul">
+                    	<li class="on"><a href="javascript:void(0);">活动详情</a></li>
+                        <li><a href="javascript:void(0);">讨论</a></li>
+                    </ul>
+                </div>
+                <div class="page-conent tags_tab">
+                    {$explain}
+                </div>
+                <div class="page_nav clearfix tags_tab" style="display: none;">    
+              <div class="feed_list" style="border:1px solid #EAEAEA;padding:20px;padding-top:10px;">
+                {:W('Comment',array('tpl'=>'detail', 'table'=>'event', 'row_id'=>$id, 'canrepost'=>'0', 'cancomment'=>1, 'cancomment_old'=>0, 'showlist'=>1, 'limit'=>'20', 'order'=>'DESC'))}
+              </div>  
+           </div>  
+            </div>
+            
+            <div class="content-sider w340">
+                <div class="sider-tit">活动发起人</div>
+                <dl class="sider-originator">
+                	<dt>
+                    	<div class="pic"><space uid="uid" class="avatar">{uavatar}</space></div>
+                    	<h3><space uid="uid" class="name">{uname}</space></h3>
+                    </dt>
+                    <dd>
+                    	<div class="txt">{$user_info[$uid]['intro']}</div>
+                        <div class="operation">
+                            <php> if($attention['following'] == "0"): </php>
+                            <a href="javascript:;"  onClick="followyou(this,{$uid})" class="follow">关注Ta</a>
+          		            <php> else: </php>
+          		            <a class="follow">已关注</a>
+                	   	    <php> endif; </php>
+                            <a onclick="ui.sendmessage({$uid}, 0)" href="javascript:void(0)" event-node="postMsg" class="pm">私信</a>
+                        </div>
+                    </dd>
+                </dl>
+                <div class="sider-tit clearfix" style="clear: both;">活动成员</div>
+                <ul class="sider-recently">
+                    <volist name="member" id="vo" offset= "0" length= '5' >
+                	<li>
+                    	<div class="pic"><space uid="vo.uid">{avatar}</space></div>
+                        <div class="info">
+                        	<div class="tit"><space uid="vo.uid">{uname}</space></div>
+                        </div>
+                    </li>
+                    </volist>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!--footer-->
+<include file="__THEME__/public_footer" />
+<script>
+    $(function(){
+       //标签切换
+       $(".page-title-ul li").click(function(){
+         var _this = $(this);
+         _this.addClass('on').siblings().removeClass('on');
+         $(".tags_tab:eq("+_this.index()+")").show().siblings(".tags_tab").hide();
+       });  
+    });
+    function followyou(cate,uid){
+
+        if(MID=='0'){
+
+            reg_login();
+
+            return;
+
+        }
+
+        $.ajax({
+
+            type: "POST",
+
+            url:U('classroom/Public/followyou'),
+
+            data:"fid="+uid,
+
+            dataType:"json",
+
+            success:function(data){
+
+                if(data.status=='0'){
+
+                    notes(data.info,'failure');
+
+                    return;
+
+                }else{
+
+                    $(cate).text("已关注对方");
+
+                }
+
+
+
+            }
+
+        });
+
+    }
+</script>

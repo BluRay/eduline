@@ -1,0 +1,17 @@
+ <foreach name="data" item="l">
+ <li class="li position-rt">
+		          <div class="width">
+		            <div class="li-fl"><a href="{:U('classroom/UserShow/index',array('uid'=>$l['uid']))}">
+		            <img src="{:getUserFace($l['uid'],'m')}"/></a><span>{:getUserName($l['uid'])}</span></div>
+		            <div class="li-fr">
+		              <h3><a <eq name="l['type']" value="2"> href="{:U('classroom/Album/view',array('id'=>$oid))}"<else /> href="{:U('classroom/Video/view',array('id'=>$oid))}"</eq> class="f3">{:limitNumber($l['qst_title'],30)}</a> </h3>
+		              <p>{:limitNumber($l['qst_description'],30)}</p>
+		              <div class="replymegfooter">
+		                <div class="wenda-time"> <em>时间：{:getDateDiffer($l['ctime'])}</em> </div>
+		                <div class="qa-comment-addon-r"><span class="qa-total-reply"><i class="qa-icon"></i><span class="js-qa-tr-num">{$l.qst_comment_count} 条评论</span>
+		                </span> <span  class=" qa-comment-support "><i class="zan-icon"></i><span>{$l.qst_help_count}</span></span></div>
+		              </div>
+		            </div>
+		          </div>         
+ </li>
+ </foreach>

@@ -1,0 +1,157 @@
+<include file="__THEME__/admin_header" />
+<php>
+ set_time_limit(0);
+</php>
+	
+	<div id="container" class="so_main">
+    <div class="page_tit">
+        <div class="right">
+            <neq name="back_id" value="-1"><a href="{:U('exam/AdminQuestion/index')}" class="btn_a"><span>返回</span></a></neq>
+        </div>
+        {$pageTitle}
+    </div>
+    <php>if(!empty($pageTab)):</php>
+    <div class="tit_tab">
+        <ul>
+        <php> !$_REQUEST['tabHash'] && $_REQUEST['tabHash'] =  $pageTab[0]['tabHash'];</php>
+        <volist name='pageTab' id='t'>
+            <li><a href="{$t.url}&tabHash={$t.tabHash}" <php> if($t['tabHash'] == $_REQUEST['tabHash']){ echo 'class="on"';}</php>>{$t.title}</a></li>
+        </volist>
+        </ul>
+    </div>
+    <php>endif;</php>
+    <form method="POST" action="{:U('exam/AdminPaper/doAddPaper')}" id="detail_form" name="detail_form" onsubmit="return j_validateCallback(this,checkForm,post_callback)">
+    	<div class="form2">
+    		<input type="hidden" name="paper_id" value="{$_GET['paper_id']}" />
+			<dl class="lineD" id="paper_name">
+				<dt><font color="red"> * </font>试卷名称：</dt>
+				<dd><input type="text" class="s-txt" style="width:200px;" name="paper_name" value="{$paper['paper_name']}" /></dd>
+				
+			</dl>
+			
+			<dl class="lineD" id="paper_describe">
+				<dt><font color="red"> * </font>试卷说明：</dt>
+				<dd><textarea id="paper_describe" name="paper_describe" cols="80" rows="10">{$paper['paper_describe']}</textarea></dd>
+			</dl>
+			
+			<dl class="lineD" id="paper_category">
+		      	<dt><font color="red"> * </font>试卷分类：</dt>
+				<dd>
+					<select name="paper_category" id="paper_category" class="s-select" style="width:200px;">
+						<option value="0" selected >请选择分类</option>
+						<foreach name="paper_category" item="vo">
+							<option value="{$vo.paper_category_id}" <php>if($vo['paper_category_id'] == $paper['paper_category']){</php>selected<php>}</php> >{$vo.paper_category_name}</option>
+						</foreach>
+					</select>
+				</dd>
+		    </dl>
+		    <dl class="lineD" id="paper_category">
+		      	<dt><font color="red"> * </font>出卷方式：</dt>
+				<dd>
+					<select name="paper_type" id="paper_type" class="s-select" style="width:200px;" onchange="selected();">
+						<if condition="$vo.paper_type">
+							<if condition="$vo.paper_type eq 1">
+								<option value="1">自动出卷</option>
+								<option value="0">手动出卷</option>
+							<else/>
+								<option value="0">手动出卷</option>
+								<option value="1">自动出卷</option>
+							</if>
+						<else/>
+							<option value="0">手动出卷</option>
+							<option value="1">自动出卷</option>
+						</if>
+						
+					</select>
+				</dd>
+		    </dl>
+		    <dl class="lineD" id="questiontype" style="display:none;">
+		      	<dt><font color="red"> * </font>试题类型：</dt>
+				<dd id="type">
+				<volist name="question_type" id="val">
+					{$val.question_type_title}：<input type="text" name="{$val.question_type_id}" value="0">  题 此类型下共有 <font color="#088d08;">{$val.question_count}</font>  道题<br/>
+				</volist>
+				</dd>
+		    </dl>
+			<div class="page_btm">
+				<input type="hidden" name="question_type" id="question_type">
+		         <input type="submit" class="btn_b" value="保存">
+		    </div>
+    	</div>
+    </form>
+    <script type="text/javascript">
+    	function selected(){
+    		if($("#paper_type").val()==1){
+    			$("#questiontype").css("display","block");
+    		}else{
+    			$("#questiontype").css("display","none");
+    		}
+    	}
+		function checkForm(form){
+			var _this = $(form);
+			var paper_name     = _this.find('input[name="paper_name"]').val();
+			var paper_describe = _this.find('textarea[name="paper_describe"]').val();
+			var paper_category = _this.find('select[name="paper_category"]').val();
+			if(paper_name == ''){
+				ui.error("试卷名称不能为空");
+				return false;
+			}
+			if(paper_describe == ''){
+				ui.error("试卷说明不能为空");
+				return false;
+			}
+			if(paper_category == '0'){
+				ui.error("请选择试卷分类");
+				return false;
+			}
+			var question_type="";
+			var files = $("#type").find("input[type='text']");
+		    files.each(function(){
+		        if($(this).val()>0){
+		        	question_type+= ","+$(this).attr("name")+"-"+$(this).val();
+		        }
+		    });
+		    var question_type=question_type.substring(1);
+		    $("#question_type").val(question_type);
+			return true;
+		}
+		function j_validateCallback(form,call,callback) {
+			var $form = $(form);
+			if(typeof call != 'undefined' && call instanceof Function){    
+				$i = call($form);
+				if(!$i){
+					return false;
+				}
+			}
+			var _submitFn = function(){
+				$.ajax({
+					type: form.method || 'POST',
+					url:$form.attr("action"),
+					data:$form.serializeArray(),
+					dataType:"json",
+					cache: false,
+					success: function(xMLHttpRequest, textStatus, errorThrown){
+						if(typeof callback != 'undefined' && callback instanceof Function){   
+							callback($form,xMLHttpRequest);
+						}  
+					},
+					error: function(xhr, ajaxOptions, thrownError){
+						ui.error("未知错误!");
+					}
+				});
+			}
+			_submitFn();
+			return false;
+		}
+		function post_callback(_form,data){
+			if(data.status != undefined){
+				if(data.status == '0'){
+					ui.error(data.info);
+				} else {
+					ui.success(data.info);
+					window.location.href = U('exam/AdminPaper/index')+"&tabHash=index";
+				}
+			}
+		}
+	</script>
+<include file="__THEME__/admin_footer" />

@@ -1,0 +1,27 @@
+<include file="__THEME__/public_header" />
+<!--content start-->
+<div class="content">
+	<div class="wrap">
+        <div class="content-con p20">
+        	<volist name="list" id="vo">
+        		<div class="page-tit">
+	                <div class="page-tit-box"><div class="fl">{$vo.title}</div><div class="fr group-add" ><span></span><a href="{:U('group/Index/add',array('fid'=>$vo['id']))}">申请小组</a></div></div>
+	            </div>
+	            <ul class="group-list">
+	            	<foreach name="vo.group_list" item="val">
+		            	<li>
+			            	<a href="{:U('group/Topic/index',array('gid'=>$val['id']))}">
+			                	<div class="pic"><img src="{:logo_path_to_url($val['logo'])}" class="lazyloading"></div>
+			                    <div class="info">
+			                    	<h3>{$val.name|getShort=12}</h3>
+			                        <p>{$val.intro|getShort=15}<br/>成员：{$val.membercount}&nbsp;&nbsp;帖子：{$val.threadcount}</p>
+			                    </div>
+			                </a>
+		                </li>
+	                </foreach>
+	            </ul>
+        	</volist>
+        </div>
+    </div>
+</div>
+<include file="__THEME__/public_footer" />

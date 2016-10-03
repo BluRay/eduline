@@ -1,0 +1,210 @@
+<include file="__THEME__/public_header" />
+<div class="mask"></div>
+<!-- 购买确认弹出框 -->
+<div class="buyOperating">
+    <div class="w-close"><a class="mr15 mt5">×</a></div>
+    <div class="w-notice">
+        <h4>提示：该专辑需要支付<em id="total_price" class="coin_num_l">{$merge_video_list['total_price']?:0}</em>学币，您当前账户余额为<em class="coin_num_l">{$user_info['balance']?:0}</em>学币。是否继续？</h4>
+    </div>
+    <div class="agreement">
+        <a><span id="protocol" class="agree"></span>我已经阅读并同意</a>
+        <a>《收费课程服务协议》</a>
+    </div>
+    <div class="buy-btn">
+        <a class="btn"  onclick="buyVideos();">确认支付</a>
+        <a class="btn" href="{:U('classroom/User/recharge')}">充值</a>
+        <a class="btn cancel">暂不支付</a>
+    </div>
+</div>
+<div class="shop-worap">
+  <div class="title">您当前选择了<span class="allNum"></span>个课程：</div>
+  <div class="shop-table">
+  <table width="1160" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th width="130"><label class="inputcheckbox"><input type="checkbox" class="inputcheckbox fl" name="CheckboxGroup1" value="复选框" > <strong class="fl">&nbsp;&nbsp;全选</strong></label><a href="javascript:;" class="delAll shop-Operation-top fl">&nbsp;&nbsp;批量删除</a></th>
+    <th width="500"><strong>课程名称</strong></th>
+    <th width="285"><strong>价格</strong></th>
+    <th width="110"><strong>支付状态</strong></th>
+    <th width="61"><strong>操作</strong></th>
+  </tr>
+  <volist name="merge_video_list['data']" id="vo">
+  <tr class="<eq name="i%2" value="0">t1<else />t2</eq> item">
+    <td width="130"><label class="inputcheckbox single"><if condition="$vo['tlimit_state']"><else/><input type="checkbox" price="{$vo['is_buy']?0:$vo['price']}"  data-id="{$vo['video_id']}" class="{$vo['is_buy']?'':no_buy} inputcheckbox fl" name="CheckboxGroup1" ></if><span class="fl">&nbsp;&nbsp;{$i}</span></label></td>
+    <td width="500"><a href="{:U('classroom/Video/view',array('id'=>$vo['video_id']))}" class="f3">{$vo['video_info']['video_title']?:'暂时没有课程名称'}</a></td>
+    <td width="285" class=" font12"><span class="price cyellow">{$vo['price']?:0}</span>学习币<if condition="$vo['tlimit_state']">　<span class="cgreen">(限时免费)</span></if></td>
+    <td width="100" class=" font12">
+    <eq name="vo.is_buy" value=""><span class="">未支付</span>
+    <else/><span class="cgreen">已支付</span></eq>
+    </td>
+    <td  class=" font12" width="100"><a data-id="{$vo['video_id']}" href="javascript:;" class="delMerge f3">删除</a></td>
+  </tr>
+  </volist>
+</table>
+<div class="shop-bottom">
+    <div class="p"><strong class="fblu"><span class="allNum"></span></strong>个未支付课程，共计<strong class="fyellow"></strong>个学习币</div>
+    <div class="width"><a href="javascript:;" class="delAll shop-Operation fl">批量删除</a><a id="buy" href="#" class="shop-bottombnt">确定并支付</a></div>
+</div>
+</div>
+</div>
+<!---购买结束-->
+
+<script type="text/javascript">
+var countPrice = 0;
+    (function(){
+    	$('.allNum').text(parseInt($('.item input[price!="0"]:checked').size()));
+        $('.item').each(function(k,i){
+			if($(this).find('input').is(':checked')){
+				countPrice += parseInt($(this).find('input').attr('price'));
+			} 
+        });
+        if($('tbody tr th .inputcheckbox').is(':checked')) $('.shop-Operation-top').show();
+        $('.fyellow').text(countPrice);
+        $('#total_price').text(countPrice);
+    })();
+    $(function(){
+        var headHeight = $('.header-worap').height();
+        var footHeight = $('.footer-worap').height();
+        var miniHeight = parseInt($(document).height() - (headHeight+footHeight+76));
+        $('.shop-worap').css({"min-height":miniHeight+'px'});
+        //全选/反选
+        $('tbody tr th .inputcheckbox').live('click',function(){
+            if($(this).find('input').is(':checked')){
+                $('.shop-Operation-top').show();
+                $('tbody tr td input').attr('checked',true);
+				$('.allNum').text(parseInt($('.item input[price!="0"]:checked').size()));
+				countPrice = 0;
+                $('.item').each(function(k,i){
+                    if($(this).find('input').is(':checked')){
+                    	countPrice += parseInt($(this).find('input').attr('price'));
+					} 
+                });
+                $('.fyellow').text(countPrice);
+                $('#total_price').text(countPrice);
+            }else{
+            	$('.shop-Operation-top').hide();
+                $('tbody tr td input').attr('checked',false);
+				$('.allNum').text(0);
+				$('.fyellow').text(0);
+				$('#total_price').text(0);
+            }
+        });
+		//单个选中、未选中状态
+		$('.item .single').live('click',function(){
+			$('.allNum').text(parseInt($('.item input[price!="0"]:checked').size()));
+				countPrice = 0;
+                $('.item').each(function(k,i){
+                   if($(this).find('input').is(':checked')){
+                	   countPrice += parseInt($(this).find('input').attr('price'));
+					} 
+                });
+                $('.fyellow').text(countPrice);
+                $('#total_price').text(countPrice);
+		});
+       //删除
+        $('.delMerge').live('click',function(){
+            var _this = $(this);
+            $.get("{:U('classroom/Video/delVideoMerge')}",{id:_this.attr('data-id')},function(data){
+                if(!data.status){
+                    notes(data.info,'failure');
+                    return false;
+                }
+                _this.parents('tr').remove();
+                var albumNum = $('#albumNum').text();
+                $('#albumNum').text(parseInt(albumNum)-1);
+                $('.allNum').text(parseInt($('.item input[price!="0"]:checked').size()));
+                countPrice = 0;
+                $('.item').each(function(k,i){
+                    if($(this).find('input').is(':checked')){
+                    	countPrice += parseInt($(this).find('input').attr('price'));
+					} 
+                });
+                $('.fyellow').text(countPrice);
+                $('#total_price').text(countPrice);
+            },'json');
+        });
+
+
+        //批量删除
+        $('.delAll').live('click',function(){
+            var _this = $(this);
+            if($('.item input:checked').size()<=0){
+                notes('请勾选课程','failure');
+                return false;
+            }
+            var videoIds = new Array();
+            $('.item').each(function(i,v){
+                if($(this).find('input').is(':checked')){
+                    videoIds.push(parseInt($(this).find('input').attr('data-id')));
+                } 
+            });
+            $.post("{:U('classroom/Video/delVideoMerges')}",{videoIds:videoIds},function(data){
+                if(!data.status){
+                    notes(data.info,'failure');
+                    return false;
+                }
+                
+                $('.item').each(function(k,i){
+                    var item_this = $(this);
+                    if(item_this.find('input').is(':checked')){
+                        item_this.remove();
+                    } 
+                });
+                $('.fyellow').text(0);
+                $('#total_price').text(countPrice);
+                $('.allNum').text(parseInt($('.item input[price!="0"]:checked').size()));
+                $('#albumNum').text(parseInt($('.item').size()));
+            },'json');
+        });
+
+      //点击购买
+        $('#buy').live('click',function(){
+            if($('.item input:checked').size()<=0){
+                notes('请勾选课程','failure');
+                return false;
+            }
+            $('.buyOperating').show();
+            var mask_height = $(document).height();
+            $('.mask').height(mask_height).show();
+        });
+        //同意协议
+        $('.agreement #protocol').click(function(){
+            var type = $(this).attr('class');
+            if(type == 'no-agree'){
+                $(this).attr('class','agree');
+            }else{
+                $(this).attr('class','no-agree');   
+            }
+        });
+        //暂不支付
+        $('.w-close a,.buy-btn .cancel').click(function(){
+            $('.buyOperating,.mask').hide();
+        });
+    });
+	function close_show(obj){
+		$(obj).parent().parent().hide();
+		$("#transparent").hide();
+	}
+	function buyVideos(){
+		if($('.agreement .agree').size() < 1){
+	        notes("购买专辑必须同意《收费课程服务协议》",'failure');
+	        return;
+	    }
+        var vids = new Array();
+        var total_price = 0;
+        $(".item").each(function(k,v){
+            vids.push($(this).find("input:checked").attr('data-id'));
+        });
+        total_price = parseInt($('#total_price').text());
+        $.post("{:U('classroom/Video/buyVideos')}",{vids:vids,price:total_price},function(data){
+            if(data.status){
+                notes(data.info,'success');
+                location.href="{:U('classroom/Home/video')}";
+            }else{
+                notes(data.info,'failure');
+                return false;
+            }
+        },'json');
+        
+	}
+</script>
+<include file="__THEME__/public_footer" />

@@ -1,0 +1,20 @@
+<include file="__THEME__/public_header" />
+<div class="worap position-rt">
+    <!--左-->
+    <include file="../../User/_left" />
+    <!--中 -->
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title">
+        <include file="_tab" />
+        </div>
+        <div class="user-Release" >
+          <div class="tx_r_m Manage_all" style="display:block; text-align:center">
+                <p class="txt_r ft24 pb20"> 可用余额 <em class="green_txt ft30 mlr22">{:unLast0($userLearnc['balance'])}</em>学币<a class="green_txt ft14 ml20" href="{:U('classroom/User/card')}">绑定银行卡</a><a class="green_txt ft14 ml20" href="{:U('classroom/User/account', array('tab'=>4))}">提现￥</a></p>
+            </div>  
+        </div>
+    </div>
+    <!--右-->
+    <include file="../../User/_right" />
+</div>
+
+<include file="__THEME__/public_footer" />

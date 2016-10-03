@@ -1,0 +1,14 @@
+<!--右边-->
+<ul class="search-ul">
+    <php>if(empty($_GET['searchtid'])){</php>
+    <li><a href="{:U('classroom/Search/index',array('searchkey'=>$searchkey))}" <php>if(ACTION_NAME=="index"){echo "class='active'";}</php>  >课程<span class="font12">({$video_count})</span></a></li>
+    <php>}</php>
+    <li><a href="{:U('classroom/Search/wenda',array('searchkey'=>$searchkey,'searchtid'=>$searchtid,'type'=>1))}" <php>if(ACTION_NAME=="wenda" && $_GET['type']==1){echo "class='active'";}</php> >技术问答<span class="font12">({$js_count})</span></a></li>
+
+    <li><a href="{:U('classroom/Search/wenda',array('searchkey'=>$searchkey,'searchtid'=>$searchtid,'type'=>2))}"  <php>if(ACTION_NAME=="wenda" && $_GET['type']==2){echo "class='active'";}</php> >技术分享<span class="font12">({$fx_count})</span></a></li>
+
+    <li><a href="{:U('classroom/Search/wenda',array('searchkey'=>$searchkey,'searchtid'=>$searchtid,'type'=>3))}"  <php>if(ACTION_NAME=="wenda" && $_GET['type']==3){echo "class='active'";}</php>>活动建议<span class="font12">({$jy_count})</span></a></li>
+    <php>if(empty($_GET['searchtid'])){</php>
+    <li><a href="{:U('classroom/Search/videowd',array('searchkey'=>$searchkey))}"  <php>if(ACTION_NAME=="videowd" ){echo "class='active'";}</php>>课程问答<span class="font12">({$wdviode_count})</span></a></li>
+    <php>}</php>
+</ul>

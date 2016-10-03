@@ -1,0 +1,49 @@
+<include file="__THEME__/public_header" />
+<!--main-->
+<!--畅销榜单-->
+<div class="worap position-rt">
+    <!--左-->
+    <include file="UserShow:left"/>
+
+    <div class="user-con fl user-pbottom">
+        <div class="user-con-title"> <a href="#" class="onactive">笔记</a>  </div>
+        <!--问答内容-->
+        <ul class="user-wenda">
+            <!--提问循环-->
+            <php>if(!empty($data['data'])){</php>
+            <foreach name="data.data" item="li">
+                <li class="li" <php>if($key == 0){</php> style="padding-top:0;"<php>}</php> >
+                    <div class="discusslist"> <a  title="{:getUserName($li['uid'])}" class="otherHead" href="#"><img width="40" height="40" src="{:getUserFace($li['uid'],'m')}"></a>
+                        <div class="detailmeg">
+                            <div class="mynote"><a title="{:getUserName($li['uid'])}" href="#">{:getUserName($li['uid'])}</a> <em> 笔记</em></div>
+                            <p class="mynote"><a target="_blank" href="javascript:;"> {$li.note_title}</a> </p>
+                            <div class="fbtime fl"><span class="fl">时间：{:getDateDiffer($li['ctime'])}</span>
+                                <!--问答评论可见项--><span class="qa-comment-support fr"><i class="qa-icon"></i><span>{$li.note_help_count}</span></span>
+                                <span class="qa-total-reply fr"><i class="qa-icon"></i><span><a target="_blank" href="javascript:;">{$li.note_comment_count}条评论</a></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </foreach>
+            <php>}else{</php>
+            <span style="display:inline-block"><php>echo $_GET['uid'] == $mid ? '你' : 'TA';</php>暂无笔记</span>
+            <php>}</php>
+        </ul>
+        <div class="sabrosus">
+            {$data.html}
+        </div>
+    </div>
+
+
+
+
+
+
+    <!--右-->
+    <div class="user-r fl">
+        <include file="UserShow:right"/>
+        <!---->
+    </div>
+</div>
+<!--footer-->
+<include file="__THEME__/public_footer" />

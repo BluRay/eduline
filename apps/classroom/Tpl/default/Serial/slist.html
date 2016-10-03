@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Eduline&nbsp;|&nbsp;让所有网站轻松应用视频&nbsp;|&nbsp;中国领先的视频云服务提供商</title>
+<meta name="viewport" charset="UTF-8" content="user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+<link href="__THEME__/css/lz_index.css" type="text/css" rel="stylesheet">
+<script>
+/**
+ * 全局变量
+ */
+var SITE_URL  = '<php> echo SITE_URL;</php>';
+var UPLOAD_URL= '<php> echo UPLOAD_URL;</php>';
+var THEME_URL = '__THEME__';
+var APPNAME   = '<php> echo APP_NAME;</php>';
+var MID		  = '<php> echo $mid;</php>';
+var UID		  = '<php> echo $uid;</php>';
+var initNums  =  '<php> echo $initNums;</php>';
+var SYS_VERSION = '<php> echo $site["sys_version"];</php>';
+var _ROOT_    = '__ROOT__';
+// Js语言变量
+var LANG = new Array();
+</script>
+<script src="__THEME__/js/gjwjs/jquery-1.7.1.min.js"></script>
+<script src="__THEME__/js/gjwjs/jquery.mousewheel.js"></script>
+<script src="__THEME__/js/gjwjs/title_common.js"></script>
+<script src="__THEME__/js/gjwjs/jquery.mzpinterest.js"></script>
+<script>
+var mzobj = null;
+$(function(){
+	$('#txtpinterest').mzpinterest({
+		url:U('classroom/Serial/slistdata'),
+		data:{
+			cid:'{$cid}',
+			type:'{$type}',
+			limit:8,
+			p:1
+		}
+	},
+	function(_data){
+		if((_data.nowPage+1) > _data.totalPages){
+			return '';
+		}else{
+			return '<a class="sdfdsfd dsfgdmore btn_ind dis_b fl vl_c" data-pageid="'+_data.nowPage+'" href="javascript:;">查看更111多</a>';
+		}
+	},
+	function(){
+		serial_z_story();	
+	});
+});
+</script>
+</head>
+<body>
+<div class="main_x clearfix">
+	<include file="_left" />
+    <div id="apDiv1">
+        <div id="apDiv2">
+           <table class="men_content">
+                <tbody>
+                    <tr>
+                        <td class="men_slide_item">
+                            <div id="txtpinterest" class="men_list_content bg_f clearfix"></div>
+                        </td>
+                        <td class="men_slide_item men_slide_item1">
+                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+    </div>
+</div>
+</body>
+</html>
+<script language="javascript" type="text/javascript">
+var Browser = function(){
+ var d_ = document,n_ = navigator,t_ = this,s_= screen;
+ 
+    var b = n_.appName;
+    var ua = n_.userAgent.toLowerCase();
+    
+ t_.name = "Unknow";
+ 
+ t_.safari = ua.indexOf("safari")>-1;  // always check for safari & opera
+    t_.opera = ua.indexOf("opera")>-1;    // before ns or ie
+ t_.firefox = !t_.safari && ua.indexOf('firefox')>-1; // check for gecko engine 
+    t_.ns = !t_.firefox && !t_.opera && !t_.safari && (b=="Netscape");
+    t_.ie = !t_.opera && (b=="Microsoft Internet Explorer");
+ 
+ t_.name = (t_.ie ? "IE" : (t_.firefox ? "Firefox" : (t_.ns ? "Netscape" : (t_.opera ? "Opera" : (t_.safari ? "Safari" : "Unknow")))));
+}
+var brw = new Browser();
+var apDiv1 = document.getElementById("apDiv1");
+var perWidth = apDiv1.clientWidth / 2;
+var mouse_wheel = function(e){
+ var evt = window.event || e;
+ if(evt.detail > 0 || evt.wheelDelta < 0)
+  apDiv1.scrollLeft += perWidth;
+ else
+  apDiv1.scrollLeft -= perWidth;
+}
+var mouse_wheel_opera = function(e){
+	 //alert(window.event == e); //Opera 下，window.event 和 e 相等
+	 var obj = e.srcElement;
+	 if(obj == apDiv1){
+	  mouse_wheel(e);
+	 }
+} 
+switch(brw.name){
+ case "IE":
+ case "Safari":
+  apDiv1.onmousewheel = mouse_wheel;
+  break;
+ case "Firefox":
+  apDiv1.addEventListener("DOMMouseScroll", mouse_wheel, false);
+  break;
+ case "Opera":
+  document.onmousewheel = mouse_wheel_opera;
+  break;
+}
+</script>

@@ -1,0 +1,457 @@
+<include file="__THEME__/public_header" />
+<div class="mask"></div>
+<!--content start-->
+<div class="page-palce">
+	<div class="wrap"><a href="/">首页</a><span>&gt;</span><a href="{:U('classroom/Video/index')}">{$data.video_category_name}</a><span>&gt;</span><span>{$data.video_title}</span></div>
+</div>
+<div class="page-top">
+	<div class="wrap">
+    	<div class="page-top-wrap">
+            <div class="pic"><a href="{:U('classroom/Album/watch',array('aid'=>$_GET['id'],'type'=>1))}"><img src="{:getCover($data['cover'] ,520 , 320 )}" class="lazyloading"></a></div>
+            <div class="tit">
+            	<a class="a f3" href="{:U('classroom/Album/watch',array('aid'=>$_GET['id'],'type'=>1))}">{$data.video_title}</a>
+	            <php>if(!empty($mid)){</php>
+	          		<span id="collectAlbum" class="video-hesc <if condition="$data['iscollect']"> after  </if> before" >
+	          		<if condition="$data['iscollect']">已收藏<else/>收藏</if></span>
+	      		<php>}</php>
+      		</div>
+            <div class="dis">{$data.video_intro}</div>
+            <div class="info">
+            	<div class="num">购买人数：{$data.album_order_count}</div>
+            	<div class="star">
+            	<if condition="$data.video_score  GT 0 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$data.video_score  GT 1 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$data.video_score  GT 2 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$data.video_score  GT 3 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$data.video_score  GT 4 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             	（{$data.reviewCount}）
+            	</div>
+            </div>
+            <div class="price">￥{$data['mzprice']['price']}<span class="cgreen" style="font-size:16px;"><if condition="$data['is_tlimit']">(限时打折)</if></span></div>
+            <div class="ebtn">
+	            <a class="bm" 
+					<php>if(!$data['is_buy']){</php> id="charge"<php>}</php>  href="javascript:void(0);"><php>if($data['is_buy']){</php>已购买<php>}else{</php>立即购买<php>}</php></a>
+	            <a class="ks" href="{:U('classroom/Album/watch',array('aid'=>$_GET['id'],'type'=>1))}">开始学习</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 购买确认弹出框 -->
+<div class="buyOperating">
+	<div class="w-close"><a class="mr15 mt5">×</a></div>
+	<div class="w-notice">
+    	<h4>提示：该课程需要支付<em class="coin_num_l">{$data['mzprice']['price']}</em>学币，您当前账户余额为<em class="coin_num_l">{$data['balance']['balance']}</em>学币。是否继续？</h4>
+	</div>
+    <div class="agreement">
+    	<a><span id="protocol" class="agree"></span>我已经阅读并同意</a>
+        <a>《收费课程服务协议》</a>
+    </div>
+	<div class="buy-btn">
+        <a class="btn"  onclick="buyOperat({$_GET['id']},'video');">确认支付</a>
+        <a class="btn" href="{:U('classroom/User/recharge')}">充值</a>
+        <a class="btn cancel">暂不支付</a>
+    </div>
+</div>
+<!--content start-->
+<div class="content bgb pt30">
+	<div class="wrap">
+        <div class="content-con">
+        	<div class="content-main">
+            	<div class="page-title">
+                	<ul class="page-title-ul">
+                        <li class="on"><a href="javascript:;" onclick="switchnav(this,'video_info')">详情</a></li>
+                        <li><a href="javascript:;" onclick="switchnav(this,'video_question')">提问</a></li>
+                        <li><a href="javascript:;" onclick="switchnav(this,'video_note')">笔记</a></li>
+                        <li><a href="javascript:;" onclick="switchnav(this,'video_comment')">点评</a></li>
+                    </ul>
+                </div>
+                <!-- 提问 -->
+                <div class="page-conent" id="video_info">
+                	<p>{$data.video_intro}</p>
+                </div>
+                <!-- 提问 -->
+                <div class="page-conent" id="video_question">
+                	{:W('Resource',array('type'=>1,'ispage'=>true,'kztype'=>1,'kzid'=>$id,'template'=>'album_question'))}
+                </div>
+                <!-- 笔记 -->
+                <div class="page-conent" id="video_note">
+                	{:W('Resource',array('type'=>3,'ispage'=>true,'kztype'=>1,'kzid'=>$id,'template'=>'album_note'))}
+                </div>
+                <!-- 评论 -->
+                <div class="page-conent" id="video_comment">
+                	{:W('Resource',array('type'=>2,'ispage'=>true,'kztype'=>1,'kzid'=>$id,'template'=>'album_review'))}
+                </div>
+                
+            </div>
+            <div class="content-sider w340">
+                <div class="sider-tit">讲师信息</div>
+                <php>if(!empty($data['teacher_id'])){</php>
+                	<dl class="sider-originator auto">
+	                	<dt>
+	                    	<div class="pic"><a href="{:U('classroom/Teacher/view',array('id'=>$data['user']['id']))}"><img src="{:getAttachUrlByAttachId($data['user']['head_id'])}" class="lazyloading"></a></div>
+	                    	<h3><a href="{:U('classroom/Teacher/view',array('id'=>$data['user']['id']))}">{$data.user.name}</a><em>{$data.user.title}</em></h3>
+	                    </dt>
+	                    <dd>
+	                    	<div class="txt">{$data.user.inro}</div>
+	                    </dd>
+	                </dl>
+   				<php>}</php>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+var albumId = '{$id}';
+var id = '{$uid}';
+var collectStatus = 1;
+var arr=['他妈的', '你妈的', '傻×', '衮蛋', '你妹儿'];
+    (function(){
+        $('#video_info').css('display','block');
+    })();
+    $(document).ready(function(){
+        //收藏课程
+        $('#collectAlbum').live('click',function(){
+            
+            if(id<=0){
+                reg_login();
+                return false;
+            }
+            if($(this).hasClass('hasCollect')){
+                collectStatus = 0;
+            }else{
+            	collectStatus = 1;
+            }
+            var _this = $(this);
+            _this.data('lock',false);
+            if(_this.data('lock')) return;
+            _this.data('lock',true);
+            $.post("{:U('classroom/Public/collect')}",{source_id:albumId,type:collectStatus,sctype:2},function(data){
+                if(data.status == 0){
+                    notes(data.info,'failure');
+                    _this.data('lock',false);
+                    return false;
+                }
+                if($('#collectAlbum').hasClass('hasCollect')){
+                    $('#collectAlbum').text('收藏').removeClass().addClass("video-hesc before");
+                }else{
+                    $('#collectAlbum').text('已收藏').removeClass().addClass("video-hesc after");
+                }
+                _this.data('lock',false);
+            },'json');
+        });
+		//点击购买
+		$('#charge').live('click',function(){
+			if(id<=0){
+				reg_login();
+				return false;
+			}
+			$('.buyOperating').show();
+			var mask_height = $(document).height();
+			$('.mask').height(mask_height).show();
+		});
+		//同意协议
+		$('.agreement #protocol').click(function(){
+			var type = $(this).attr('class');
+			if(type == 'no-agree'){
+				$(this).attr('class','agree');
+			}else{
+				$(this).attr('class','no-agree');	
+			}
+		});
+		//暂不支付
+		$('.w-close a,.buy-btn .cancel').click(function(){
+			$('.buyOperating,.mask').hide();
+		});
+        //加入课程组合
+        $("#buy").click(function(){
+            $.get("{:U('classroom/Video/addVideoMerge')}",{id:$(this).attr('kid')},function(txt){
+                if(txt.status){
+                    $("#showStatus").removeClass('text_wrong');
+                    $("#showStatus").addClass('text_true');
+                    //window.href="{:U('classroom/Video/merge')}";
+                }
+            },'json');
+        });
+        //同问
+        $('.tongwen').live('click',function(){
+            var t_id = $(this).attr('t_id');
+            var t_type = $(this).attr('type');
+            var _this = $(this);
+            eval('var tw_type='+t_type+'_type');//分类类型 1:提问,2:点评,3:笔记
+            $.post("{:U('classroom/Index/tongwen')}",{rid:t_id,type:tw_type},function(txt){
+                if(txt.status == 1){
+                    var num = parseInt(_this.find('.t_num').text())+1;
+                    _this.find('.t_num').text(num);
+                }else{
+                    notes(txt.info,'failure');
+                }
+            },'json');
+        });
+        //显示/隐藏 问题、笔记、点评输入框
+        $('.title a,.js-ipt-cancel').click(function(){
+            if(id<=0){
+                reg_login();
+                return false;
+            }
+            var types = $(this).attr('type');
+            $('#'+types+'-comments').toggle();
+        });
+        $(".js-reply-ipt-default").mousedown(function(){
+            $(".qa-reply-footright").css("display","block");
+        });
+        $("#video_insearch").mousedown(function(){
+            $(".qa-reply-footright").css("display","block");
+        });
+        
+        //点击评论取消按钮
+        $('.js-ipt-cancel').live('click',function(){
+            var cancel_id = $(this).siblings('button.js-ipt-submit').attr('sub_id');
+            var cancel_type = $(this).siblings('button.js-ipt-submit').attr('type');
+            $("#"+cancel_type+'_'+cancel_id).prev().find('.js-qa-tr-num').show();
+            $("#"+cancel_type+'_'+cancel_id).prev().find('.qa-tr-up').hide();
+            $("#"+cancel_type+'_'+cancel_id).hide();
+
+
+            //背景样式
+            $("#"+cancel_type+'_'+cancel_id).prev().find(".qa-total-reply.qa-icon").css("background-position","-25px -83px");
+            $("#"+cancel_type+'_'+cancel_id).prev().find(".js-qa-tr-num").css("display", "inline");
+        });
+      //点击收起评论
+        $('.qa-total-reply span.qa-tr-up').live('click',function(){
+            var cancel_id = $(this).attr('cancel_id');
+            var ctype = $(this).attr('type');
+            $("#"+ctype+"_"+cancel_id).hide();
+
+            $(this).css("display", "none");
+            $(this).siblings(".qa-total-reply .qa-icon").css("background-position","-25px -83px");
+            $(this).siblings(".js-qa-tr-num").css("display", "inline");
+        });
+
+
+      //显示评论
+      $('.qa-total-reply .js-qa-tr-num').live('click',function(){
+    	  if(MID ==0){
+    		  reg_login();
+    		  return;
+    	  }
+          $(this).css("display", "none"); //隐藏js-qa-tr-num
+          $(this).siblings(".qa-icon").css("background-position","-25px -107px"); //显示js-qa-tr-num同级的qa-icon  hover事件
+          $(this).siblings(".qa-tr-up").css({"display":"inline","color":"#333333"}); //显示js-qa-tr-num同级的qa-tr-up
+          var show_id = $(this).attr('show_id');
+          var stype = $(this).attr('type');
+          eval('var kztype='+stype+'_kztype');  //数据分类 1:课程;2:专辑;
+          eval('var kzid='+stype+'_kzid');  //课程或者专辑ID
+          eval('var type='+stype+'_type');  //分类类型 1:提问,2:点评,3:笔记
+         // eval('var limit='+stype+'_limit');  //查询条数
+          eval('var page='+stype+'_page');  //当前分页
+          $("#"+stype+"_"+show_id).show();
+          $.post("{:U('widget/Resource/getListForId')}",{id:show_id,type:type,limit:6},function(txt){
+              showComment(txt.data,stype,show_id,txt.nowPage,txt.count);
+              
+          },'json');//post
+      });
+
+
+      //显示更多
+      $('.qa-reply-more .loadMore').live('click',function(){
+          var id = $(this).attr('more_id');
+          var moreType = $(this).attr('type');
+          var page = $(this).attr('page');
+          eval('var moreTypes='+moreType+'_type');  //分类类型 1:提问,2:点评,3:笔记
+          eval('var limit='+moreType+'_limit');  //查询条数
+          $.post("{:U('widget/Resource/getListForId')}",{id:id,type:moreTypes,limit:limit,p:page},function(txt){
+              showComment(txt.data,moreType,id,txt.nowPage,txt.count);
+          },'json');
+      });
+      
+
+
+    //@回复
+      $('.qst_reply').live('click',function(){
+          var atype = $(this).attr('type');
+          var reply_id = $(this).attr('reply_uid');
+          var id = $(this).attr('reply_id');
+          var name = $(this).parents('.qa-reply-item-foot').siblings('.username').find('a').text();
+          $('#'+atype+'f_'+id).val('回复@'+name+':');
+          $(this).parents('.qa-reply-c').siblings('.qa-reply-ibox').find('.reply_uid').val(reply_id);
+          //$('#'+atype+'_'+reply_id).val(reply_uid).attr('checktxt','回复@'+name);
+      });
+
+
+    //点评前判断
+      $('.js-reply-ipt-default').live('click',function(){
+          if(id<=0){
+              reg_login();
+              return false;
+          }
+      });
+    //提交评论
+      $('button.js-ipt-submit').live('click',function(){
+          if(id<=0){
+              reg_login();
+              return false;
+          }
+          var sub_id = $(this).attr('sub_id');
+          var stype = $(this).attr('type');
+          var sub_this = $(this);
+          eval('var type='+stype+'_type');  //分类类型 1:提问,2:点评,3:笔记
+          var content = $("#"+stype+'f_'+sub_id).val();
+          //@用户id
+          var reply_uid = parseInt($("#"+stype+'f_'+sub_id).siblings('.reply_uid').val());
+          var checktxt = $("#"+stype+'f_'+sub_id).siblings('.reply_uid').attr('checktxt');
+          content=content.replace(/&nbsp;/ig, "");
+          content = content.replace(/[ ]/g,"");//去除空格
+          content = content.replace(/<[^>].*?>/g,"");//去html标签
+          //@用户验证
+          if(reply_uid != 0){
+              content = content.replace(/^回复@[^:：\s]*[:：\s]*/, '');
+          }
+          if(content == ""){
+              notes('请输入评论!','failure');
+              return false;
+          }
+          for(var i=0; i<arr.length; i++)
+          {
+              if(content.indexOf(arr[i])>-1)
+              {
+                  notes('评论不得包含敏感词!','failure');
+                  return false;
+              }
+          }
+          $.post("{:U('classroom/Index/dowrite')}",{rid:sub_id,content:content,type:type,rep_uid:reply_uid},function(txt){
+              if(txt.status == 1){
+                  var  html = '';
+                  html += '<div class="qa-reply-item">';
+                  html += '<a class="qa-reply-item-author" href="'+txt.data.user_src+'" title="'+txt.data.username+'"><img width="40" height="40" src="'+txt.data.userface+'"></a>';
+                  html += '<div class="qa-reply-item-inner">';
+                  html += '<p class="username"> <a href="'+txt.data.user_src+'" class="qa-reply-nick">'+txt.data.username+'</a> : </p>';
+                  html += '<p class="q-reply-item-c">'+txt.data.description+' </p>';
+                  html += '<div class="qa-reply-item-foot clearfix"> <span class="reply-item-index r">#</span> <span>'+txt.data.strtime+'</span> <span class="qa-reply-item-reply js-reply-item-reply qst_reply" reply_uid="'+txt.data.uid+'" type="'+stype+'" reply_id="'+txt.data.parent_id+'"><i class="qa-icon"></i>回复</span> </div>';
+                  html += '</div>';
+                  html += '</div>';
+                  if($("#"+stype+'_'+sub_id+' .qa-reply-c .qa-reply-item').size() <= 0){
+                      $("#"+stype+'_'+sub_id+' .qa-reply-c').append(html);
+                  }else{
+                      $("#"+stype+'_'+sub_id+' .qa-reply-c .qa-reply-item').first().before(html);
+                  }
+                  //评论条数+1
+                  var com_num = parseInt($("#"+stype+'_'+sub_id).prev().find('span.com_num').text())+1;
+                  $("#"+stype+'_'+sub_id).prev().find('span.com_num').text(com_num);
+                  $("#"+stype+'f_'+sub_id).val('');
+              }else{
+                  notes(txt.info,'xq_transparent');    
+              }
+          },'json');
+      });
+
+
+        //设置首页轮播
+        setInterval("nextBang()",5000);
+
+    });//控制回答别人回复下面的textarea 提交按钮
+
+var nextBang=function(){
+    index = $('.switch-tab .current').index();
+    $(this).attr('class')=='prev'? index-=1 : index+=1;
+    var silder_size = $('.switch-tab a').size();
+    if(index < 0) index = silder_size-1;
+    if(index >=silder_size) index = 0;
+    $('.switch-tab a').removeClass().eq(index).addClass('current');
+    silder(index);
+}
+	
+	//购买操作
+var buyOperat = function(id,type){
+	if(!id || !type){
+		return;
+	}
+	if($(".agree").size() < 1){
+		notes("购买专辑必须同意《收费课程服务协议》",'failure');
+		return;
+	}
+	var id = '<?php echo $_GET["id"]; ?>';
+	$.post(U('classroom/Video/buyOperating'),{id:id},function(txt){
+		if(txt.status == '0'){
+			$(".buyOperating").hide();
+			$(".mask").hide();
+			$("#charge").attr('id','');
+			notes(txt.info,'failure');
+		} else {
+			$(".buyOperating").hide();
+			$("#charge").attr('id','');
+			$(".mask").hide();
+			notes(txt.info,'success');
+			window.location.href = window.location.href;
+		}
+	},'json');
+}
+
+
+  //处理显示评论
+    function showComment(data,type,id,nowPage,count){
+        var html = '';
+        $.each(data,function(i,k){
+            html += '<div class="qa-reply-item">';
+            html += '<a class="qa-reply-item-author" href="'+k.user_src+'" title="&#12288;"><img width="40" height="40" src="'+k.userface+'"></a>';
+            html += '<div class="qa-reply-item-inner">';
+            html += '<p class="username"> <a href="'+k.user_src+'" class="qa-reply-nick">'+k.username+'</a> : </p>';
+            if(k.reply_user != ''){
+                html += '<p class="q-reply-item-c">回复@<span class="user-reply">'+k.reply_user+'</span>:'+k.content+' </p>';
+            }else{
+                    html += '<p class="q-reply-item-c">'+k.content+' </p>';
+            }
+            html += '<div class="qa-reply-item-foot clearfix"> <span class="reply-item-index r">#</span> <span>'+k.strtime+'</span> <span class="qa-reply-item-reply js-reply-item-reply qst_reply" reply_uid="'+k.uid+'" type="'+type+'" reply_id="'+k.parent_id+'"><i class="qa-icon"></i>回复</span> </div>';
+            html += '</div>';
+            html += '</div>';
+        });
+        html += '<div class="qa-reply-more"><a page="'+(parseInt(nowPage)+1)+'" class="loadMore" type="'+type+'" more_id="'+id+'" href="javascript:;">击显示更多</a></div>';
+        if(nowPage <= 1){
+            $("#"+type+"_"+id).find('.qa-reply-c').html('');
+        }
+        $("#"+type+"_"+id).find('.qa-reply-c').append(html);
+        $("#"+type+"_"+id).show();
+        if(count <= $("#"+type+"_"+id).find('.qa-reply-item').size()){
+            $("#"+type+"_"+id).find('div.qa-reply-more').hide();
+        }
+     }
+function switchnav(obj , id){
+	$('li').removeClass('on');
+	$(obj).parent().addClass('on');
+	if( id == 'video_info') {
+		$('#video_info').css('display','block');
+		$('#video_question').css('display','none');
+		$('#video_note').css('display','none');
+		$('#video_comment').css('display','none');
+	}
+	if( id == 'video_question') {
+		$('#video_question').css('display','block');
+		$('#video_note').css('display','none');
+		$('#video_comment').css('display','none');
+		$('#video_info').css('display','none');
+	}
+	if( id == 'video_note') {
+		$('#video_note').css('display','block');
+		$('#video_question').css('display','none');
+		$('#video_comment').css('display','none');
+		$('#video_info').css('display','none');
+	}
+	if( id == 'video_comment') {
+		$('#video_comment').css('display','block');
+		$('#video_question').css('display','none');
+		$('#video_note').css('display','none');
+		$('#video_info').css('display','none');
+	}
+}
+  
+  
+</script>
+<!--footer-->
+<include file="__THEME__/public_footer" />

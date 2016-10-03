@@ -1,0 +1,276 @@
+<include file="__THEME__/public_header" />
+
+<style>
+.sk_main {width:1030px;background:#FFF;margin:20px auto 0;}
+.sk_cl {clear:both;}
+.sk_heading {width:986px;height:186px;padding:20px 22px;}
+.sk_heading .pic {width:186px;height:186px;float:left;padding-right:25px;}
+.sk_heading .pic img {width:186px;height:186px;}
+.sk_heading h1 {font-size:16px;font-weight:100;}
+.sk_heading .sk_dig {height:42px;line-height:30px;font-size:12px;color:#ddd;}
+.sk_heading p {line-height:26px;font-size:14px;color:#999;}
+.sk_heading .sk_btnbox {padding-top:8px;}
+.sk_heading .sk_btnbox .btn {float:left;margin-right:15px;display:block;width:81px;height:28px;line-height:28px;border:1px solid #cce4f4;text-align:center;color:#65addd;}
+.sk_heading .sk_btnbox .btn:hover,.sk_heading .sk_btnbox .s {width:83px;height:30px;background:#65addd;border:0;color:#FFF;}
+.sk_main .sk_l2 {float:left;width:656px;min-height:600px;padding-left:20px;border-right:1px solid #eee;}
+.sk_main .sk_l2 .sk_ttl {height:40px;line-height:63px;font-size:12px;color:#999;}
+.sk_main .sk_l2 .sk_sub {float:right;width:196px;}
+.sk_main .sk_l2 .sk_sub span,.sk_main .sk_l2 .sk_sub span a {color:#8db800;font-weight:bold;}
+.sk_main .sk_l2 .sk_sub span a:hover,.sk_main .sk_l2 .sk_sub span .s {color:#000;}
+.sk_main .sk_l2 ul {margin:0;padding:0;list-style:none;}
+.sk_main .sk_l2 ul li {height:90px;margin-right:23px;border-bottom:1px solid #E5E5E5;}
+.sk_main .sk_l2 ul li h2 {position:relative;font-size:14px;padding-top:18px;}
+.sk_main .sk_l2 ul li h2 span {position:absolute;right:0;color:#DDD;font-size:12px;font-weight:100;}
+.sk_main .sk_l2 ul li p {padding-top:3px;font-size:12px;color:#999;}
+.sk_main .sk_l2 ul li p span {float:right}
+.sk_main .sk_l2 ul li .sk_top {color:#fb8700;}
+.sk_main .sk_l2 ul li .sk_elite {color:#00a251;}
+.sk_main .sk_r2 {float:left;width:286px;padding:26px 23px 30px 20px;}
+.sk_main .sk_r2 .sk_anc {line-height:26px;padding-bottom:60px;font-size:12px;color:#999;}
+.sk_main .sk_r2 .sk_anc h3 {height:28px;line-height:14px;font-size:14px;color:#000;}
+.sk_main .sk_r2 .sk_plist h3{height:30px;line-height:14px;font-size:14px;color:#000;border-bottom:1px solid #EEE;}
+.sk_main .sk_r2 .sk_plist ul {margin:0;padding:0;list-style:none}
+.sk_main .sk_r2 .sk_plist ul li {height:55px;padding-top:20px;border-bottom:1px solid #edf0f2;}
+.sk_main .sk_r2 .sk_plist ul li .pic {float:left;width:40px;height:40px;padding-right:10px;}
+.sk_main .sk_r2 .sk_plist ul li img {width:40px;height:40px;border-radius:100px;}
+.sk_main .sk_r2 .sk_plist ul li h4 {font-size:14px;line-height:14px;}
+.sk_main .sk_r2 .sk_plist ul li p {color:#777;font-size:12px;}
+</style>
+<div class="breadcrumb"> <a href="{:U('group')}">小组首页</a>&gt;<a href="{:U('group/Topic/index',array('gid'=>$gid))}">{$groupinfo.name}</a>
+
+<div class="sk_main">
+<div class="sk_heading">
+
+  <include file="../Public/top" />
+<div class="sk_btnbox">
+ <php>$level = getLevel($GLOBALS['ts']['mid'], $gid);</php>
+<php>if($level===null){</php>
+	            <a href="javascript:joingroup('{$gid}');"  class="btn s">加入该群</a>
+	            <php>} else if($level==='0'){</php>
+	               <a class="btn s">等待审核</a>
+	            <php>} else if($level==1 || $level==2){</php>
+	            <a href="{:U('group/Manage/index',array('gid'=>$gid))}" class="btn s">管理该群</a>
+	            <php>} else if($level==3){</php>
+	               <a class="btn s">	该群成员</a>
+	            <php>}</php>
+
+
+<a href="javascript:;" onclick="addPost({$gid})" class="btn" style="color:#fff">发帖子</a></div>
+</div>
+<div class="newpost">
+<a href="{:U('group/Topic/index', array('gid'=>$gid))}"  class="quealltab <php>if(!$cid){</php>onactive<php>}</php>">全部</a>
+<a href="{:U('group/Topic/index', array('gid'=>$gid,'cid'=>'my'))}" class="quealltab <php>if ('my' === $cid) {</php>quealltab<php>}</php>">我的帖子</a>
+<a href="{:U('group/Topic/index', array('gid'=>$gid,'cid'=>'dist'))}" class="quealltab <php>if ('dist' === $cid) {</php>quealltab<php>}</php>">精华帖子</a>
+
+</div>
+<div class="sk_l2">
+
+
+
+                     <php>if($ismember || $groupinfo['brower_level'] != 1){</php>
+                         {:W('GroupFeedList',array('gid'=>$gid,'feed_type'=>$feed_type,'feed_key'=>$feed_key,'tpl'=>'GroupFeedList.html'))}
+						<php>}else{</php>
+						<div style="margin:10px auto;">该群组是私密群组内容不可见！</div>
+						<php>}</php>
+
+	
+</div><div class="sk_r2">
+	<div class="sk_anc">
+    <h3>公告</h3>
+    {$groupinfo['announce']}
+    </div>
+    <div class="sk_plist">
+    <h3>圈主</h3>
+    <ul>
+    <volist name="adminlist" id="v">
+        <li>
+             <space uid='v.uid' class="pic">{uavatar}</space>
+            <h4><a href="{:U('classroom/UserShow/index',array('uid'=>$v[uid]))}" style="color:#333">{$v.uname}</a></h4>
+            <p>{$v.intro|getShort=###,15,'...'}</p>
+        </li>
+    </volist>
+    </ul>
+    </div>
+</div>
+<div class="sk_cl"></div>
+
+</div>
+
+
+
+
+
+<script type="text/javascript">
+
+// 加入群组
+function joingroup(gid) {
+    if(MID=='0'){
+        reg_login();
+        return;
+    }
+    ui.box.load(U('group/Group/joinGroup')+'&gid='+gid,'加入群组');
+}
+// 删除群组
+function delgroup(gid) {
+    ui.box.load(U('group/Group/delGroupDialog')+'&gid='+gid,'解散群组');
+}
+// 退出群组
+function quitgroup(gid) {
+    ui.box.load(U('group/Group/quitGroupDialog')+'&gid='+gid,'脱离群组');
+}
+function addPost(gid){
+    if(MID=='0'){
+        reg_login()
+        return false;
+    }
+    window.location="{:U('group/Topic/add',array('gid'=>""))}"+gid;
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="__APP__/group.css" rel="stylesheet" type="text/css" />
+<div id="page-wrap" style="display:none">
+     <div id="main-wrap">
+         <div class="boxShadow"> 
+           <include file="../Public/_mainNav" />
+
+             <div class="mb10 clearfix content-bg">
+              
+                <include file="../Public/_groupInfo" />
+                 
+                 <div id="col5" class="st-index-main">
+                    <div class="extend-foot">
+                        <!--  简单头部 -->
+                          <include file="../Public/top" />
+                        <!--  简单头部结束  --> 
+                        
+                        <!--发布框-->
+                         {:W('SendGroupWeibo',array('title'=>$title, 'topicHtml'=>$initHtml, 'gid'=>$gid))}
+                         <div class="mod-feed-tab" id="mod-feed-tab">
+                             <ul class="inner-feed-nav">
+                                <li <eq name='feed_type' value=''>class="current"</eq>>
+                                <a href="{:U('group/Group/index',array('gid'=>$gid,'type'=>$type,'feed_type'=>''))}">{:L('PUBLIC_ALL_STREAM')}</a></li>
+                                <li <eq name='feed_type' value='post'>class="current"</eq>>
+                                <a href="{:U('group/Group/index',array('gid'=>$gid,'type'=>$type,'feed_type'=>'post'))}">{:L('PUBLIC_ORIGINAL_STREAM')}</a></li>
+                                <li <eq name='feed_type' value='repost'>class="current"</eq>>
+                                <a href="{:U('group/Group/index',array('gid'=>$gid,'type'=>$type,'feed_type'=>'repost'))}">转发</a></li>
+                                <li <eq name='feed_type' value='postimage'>class="current"</eq>>
+                                <a href="{:U('group/Group/index',array('gid'=>$gid,'type'=>$type,'feed_type'=>'postimage'))}">{:L('PUBLIC_IMAGE_STREAM')}</a></li>
+                                <li <eq name='feed_type' value='postvideo'>class="current"</eq>>
+                                <a href="{:U('group/Group/index',array('gid'=>$gid,'type'=>$type,'feed_type'=>'postvideo'))}">视频</a></li>
+                                <li <eq name='feed_type' value='postfile'>class="current"</eq>>
+                                <a href="{:U('group/Group/index',array('gid'=>$gid,'type'=>$type,'feed_type'=>'postfile'))}">附件</a></li>
+                            </ul>
+                       </div>
+
+                      <!--  <div class="mod-feed-tab" id="mod-feed-tab">
+                             <ul class="inner-feed-nav">
+                                <li <eq name='feed_type' value=''>class="current"</eq>>
+                                <a href="{:U('public/Index/index',array('type'=>$type,'feed_type'=>''))}">所有成员</a></li>
+                                <li <eq name='feed_type' value='post'>class="current"</eq>>
+                                <a href="{:U('public/Index/index',array('type'=>$type,'feed_type'=>'post'))}">最新加入成员</a></li>
+                                <li <eq name='feed_type' value='postimage'>class="current"</eq>>
+                                <a href="{:U('public/Index/index',array('type'=>$type,'feed_type'=>'postimage'))}">最近来访成员</a></li>
+                            </ul>
+                       </div> -->
+                         <!--feed list-->
+                     
+
+　　　　　　　　　　　　<!-- <div class="sperson-feedlist">
+                            <dl class="feed_list">
+                                <dt class="face"><a href=""><img src="{$weiba_detail['logo']}" width="50" height="50" /></a></dt>
+                                <dd class="person-info">
+                                    <div class="info-right right">
+                                        <span class="right"><a href="" class="btn-att-white"><span><b class="ico-already"></b>已关注</span></a></span>
+                                    </div>
+                                    <div class="info-left">
+                                       <p class="hd"><a href="">aoao</a></p>
+                                       <p class="area f9">最近微博：<a href="">先聊聊#网页跳出率#，你有什么想法，可以分享下！</a></p>
+                                       <p class="action f9">最近访问：2012-07-04 11:18</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl class="feed_list">
+                                <dt class="face"><a href=""><img src="{$weiba_detail['logo']}" width="50" height="50" /></a></dt>
+                                <dd class="person-info">
+                                    <div class="info-right right">
+                                        <span class="right"><a href="" class="btn-att-white"><span><b class="ico-connect"></b>相互关注</span></a></span>
+                                    </div>
+                                    <div class="info-left">
+                                       <p class="hd"><a href="">aoao</a></p>
+                                       <p class="area f9">最近微博：<a href="">先聊聊#网页跳出率#，你有什么想法，可以分享下！</a></p>
+                                       <p class="action f9">最近访问：2012-07-04 11:18</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl class="feed_list">
+                                <dt class="face"><a href=""><img src="{$weiba_detail['logo']}" width="50" height="50" /></a></dt>
+                                <dd class="person-info">
+                                    <div class="info-right right">
+                                        <span class="right"><a href="" class="btn-att-white"><span><b class="ico-already"></b>已关注</span></a></span>
+                                    </div>
+                                    <div class="info-left">
+                                       <p class="hd"><a href="">aoao</a></p>
+                                       <p class="area f9">最近微博：<a href="">先聊聊#网页跳出率#，你有什么想法，可以分享下！</a></p>
+                                       <p class="action f9">最近访问：2012-07-04 11:18</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl class="feed_list">
+                                <dt class="face"><a href=""><img src="{$weiba_detail['logo']}" width="50" height="50" /></a></dt>
+                                <dd class="person-info">
+                                    <div class="info-right right">
+                                        <span class="right"><a href="" class="btn-att-white"><span><b class="ico-connect"></b>相互关注</span></a></span>
+                                    </div>
+                                    <div class="info-left">
+                                       <p class="hd"><a href="">aoao</a></p>
+                                       <p class="area f9">最近微博：<a href="">先聊聊#网页跳出率#，你有什么想法，可以分享下！</a></p>
+                                       <p class="action f9">最近访问：2012-07-04 11:18</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl class="feed_list">
+                                <dt class="face"><a href=""><img src="{$weiba_detail['logo']}" width="50" height="50" /></a></dt>
+                                <dd class="person-info">
+                                    <div class="info-right right">
+                                        <span class="right"><a href="" class="btn-att-white"><span><b class="ico-connect"></b>相互关注</span></a></span>
+                                    </div>
+                                    <div class="info-left">
+                                       <p class="hd"><a href="">aoao</a></p>
+                                       <p class="area f9">最近微博：<a href="">先聊聊#网页跳出率#，你有什么想法，可以分享下！</a></p>
+                                       <p class="action f9">最近访问：2012-07-04 11:18</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div> -->
+                     </div>
+                 </div>
+             </div>
+         </div>    
+     </div>
+</div>
+<script type="text/javascript" src="__APP__/group.js"></script> 
+<include file="__THEME__/public_footer" />
+<script type="text/javascript" src="__THEME__/js/module.weibo.js"></script> 

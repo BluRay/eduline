@@ -1,0 +1,8 @@
+<ul class="wenda-tab wenda-absolute">
+    <li><a href="{:U('wenda/Index/index')}" <php>if($_GET['wdtype']==0 &&ACTION_NAME!='question'){echo "class='active'";}</php>>全部问答</a></li>
+
+    <li><a href="{:U('wenda/Index/index',array('wdtype'=>1))}" <php>if($_GET['wdtype']==1){echo "class='active'";}</php>>技术问答</a></li>
+    <li><a href="{:U('wenda/Index/index',array('wdtype'=>2))}" <php>if($_GET['wdtype']==2){echo "class='active'";}</php>>技术分享</a></li>
+    <li><a href="{:U('wenda/Index/index',array('wdtype'=>3))}" <php>if($_GET['wdtype']==3){echo "class='active'";}</php>>活动建议</a></li>
+    <li><a href="{:U('wenda/Index/question')} "<php>if(ACTION_NAME=='question'){echo "class='active'";}</php> >课程问答</a></li>
+</ul>

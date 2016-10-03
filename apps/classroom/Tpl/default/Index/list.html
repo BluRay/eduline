@@ -1,0 +1,64 @@
+<volist name="mylist" id="vo">
+    <div class="box_mainb fl w276">
+    	<?php if(isBuyVideo(intval($mid), $vo['id'])):?><p class="sj_l">已支付</p><?php endif;?>
+        <!--谁出品-->
+        <?php if($vo['is_offical'] == 1):?>
+        <div class="tag_box">
+            <div class="w90 fl"><img src="__THEME__/images/logo_m.png"></div>
+            <span class="spa fl">出品</span>
+            <?php
+                $trueUid = $vo['uid'];
+                if($uid>0 && $uid != $trueUid):
+                $isFollow = in_array($trueUid, $fids);
+            ?>
+            <a href="javascript:;" class="bg_lv gz_a color_bai sel_w fr follow_uid_{$trueUid}" data-uid="{$trueUid}" data-status="{$isFollow?1:0}">{$isFollow?'取消关注':'＋关注'}</a>
+            <?php endif;?>
+        </div>
+        <?php else:?>
+        <div class="tag_box">
+            <div class="daren_pic_aa">
+                <img src="{:getUserFace($vo['uid']);}">
+            </div>
+            <em class="lan_txt w55 fl lh30 ml5 ov_h">{:getUserName($vo['uid'])}</em>
+            <span class="spa fl">出品</span>
+            <?php
+                $trueUid = $vo['uid'];
+                if($mid>0 && $mid != $trueUid):
+                $isFollow = in_array($trueUid, $fids);
+            ?>
+            <a href="javascript:;" class="bg_lv gz_a color_bai sel_w fr follow_uid_{$trueUid}" data-uid="{$trueUid}" data-status="{$isFollow?1:0}">{$isFollow?'取消关注':'＋关注'}</a>
+            <?php endif;?>
+        </div>
+        <?php endif;?>
+        <!--//谁出品-->
+        <a href="{$vo.href}" target="_blank">
+            <span class="img_zz"></span>
+            <if condition=" $vo.type == 2 ">
+            <p class="sj_r">专辑</p>
+            </if>
+            <img src="{$vo.middle_ids|getAttachUrlByAttachId=###}" width="276" height="137">
+        </a>
+        <div class="txt_box_index">
+            <if condition=" $vo.category "><em class="yellow">{$vo.category}</em></if>
+            <h4><a href="{$vo.href}" target="_blank">{$vo.title}</a></h4>
+            <p style="height:44px;overflow:hidden;line-height:22px;"><a href="{$vo.href}" target="_blank">{$vo.intro}</a></p>
+            <div class="star_box mt22 clearfix">
+                <div class="fl">
+                    <ul class="clearfix">
+                        <li title="评分1" class="<if condition=" $vo.score GT 0 ">star<else />star_down</if>">star</li> 
+                        <li title="评分2" class="<if condition=" $vo.score GT 1 ">star<else />star_down</if>">star</li>
+                        <li title="评分3" class="<if condition=" $vo.score GT 2 ">star<else />star_down</if>">star</li>
+                        <li title="评分4" class="<if condition=" $vo.score GT 3 ">star<else />star_down</if>">star</li>
+                        <li title="评分5" class="<if condition=" $vo.score GT 4 ">star<else />star_down</if>">star</li>           
+                    </ul>
+                    <div class="go_onmousebtn clearfix mt10">
+                        <a href="javascript:;" class="<if condition=" $vo['isGetResource']['upload'] ">book1<else />book</if>"><span class="talk">含上传附件</span></a> 
+                        <a href="javascript:;" class="<if condition=" $vo['isGetResource']['note'] ">light1<else />light</if>"><span class="talk">含开放笔记</span></a>
+                        <a href="javascript:;" class="<if condition=" $vo['isGetResource']['question'] ">discuss1<else />discuss</if>"><span class="talk">含开放提问</span></a>
+                    </div>
+                </div>
+                <a class="fr look mt10" href="{$vo.href}" target="_blank"><if condition=" $vo.type == 2 ">查看专辑<else />查看课程</if></a>
+            </div>
+        </div>
+    </div>
+</volist> 

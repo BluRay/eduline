@@ -1,0 +1,37 @@
+<script>
+    var p="{$p}";//定义页码
+    var cateId="{$cateId}";//定义分类
+    var tagId="{$tagId}";//定义标签
+</script>
+<php>if($listData){</php>
+<volist name="listData" id="vo">
+	<li>
+	    <div class="pic">
+	     	<a href="{:U('classroom/Album/view',array('id'=>$vo['id']))}">
+	      	<img src="{:getCover($vo['cover'],266,170)}" class="lazyloading" />
+	      	<div class="bg">{$vo.album_title}</div>
+	        </a>
+	     </div>
+	     <div class="info">
+	         <div class="tit"><a href="{:U('classroom/Album/view',array('id'=>$vo['id']))}">{:limitNumber($vo['album_intro'],54)}</a></div>
+	         <div class="con">
+	             <div class="price"><php>if($vo['mzprice']['overplus'] > 0){</php>{$vo.mzprice.overplus}学币<php>}else{echo '免费';}</php></div>
+	             <div class="star">评分：
+	             <if condition="$vo['score'] GT 0 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$vo['score'] GT 1 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$vo['score'] GT 2 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$vo['score'] GT 3 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             <if condition="$vo['score'] GT 4 "> <span></span>
+	             <else /><span class="no"></span></if>
+	             </div>
+	         </div>
+	     </div>
+ 	</li>
+</volist>
+<php>}else{</php>
+	<span>暂无此分类专辑~</span>
+<php>}</php>

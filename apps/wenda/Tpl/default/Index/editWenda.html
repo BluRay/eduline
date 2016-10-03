@@ -1,0 +1,118 @@
+<include file="__THEME__/public_header" />
+<style>
+.quesdetail textarea{padding:5px;border:1px solid #eee;width: 700px;height: 100px;}
+</style>
+<!--main-->
+<div  class="wenda position-rt">
+    <!--左边-->
+    <div class="sucesspage" style="">
+        <h2>发问题</h2>
+        <div class="inputques">
+            <div class="quesdetail mbot"> <span class="ques-label">分类：</span>
+                <a  href="javascript:;" onclick="setType(this,1)" <php>if($data['type']==1){echo "class='onactive'";}</php> >技术问答</a>
+                <a  href="javascript:;" onclick="setType(this,2)" <php>if($data['type']==2){echo "class='onactive'";}</php>>技术分享</a>
+                <a  href="javascript:;" onclick="setType(this,3)" <php>if($data['type']==3){echo "class='onactive'";}</php>>活动建议</a>
+            </div>
+
+            <div class="quesdetail mbottom" > <span class="ques-label fl">内容：</span>
+            	<textarea rows="" cols="" id="content" value="{$data['wd_description']}" placeholder="简单描述下你的问题吧">{$data['wd_description']}</textarea>
+            </div>
+        </div>
+        <div class="publishbtn-worap"> <a class="publishbtn" href="javascript:;" onclick="subWenda()">发布</a>
+            <p class="global-errortip js-global-error"></p>
+        </div>
+    </div>
+    <!--右边-->
+    <div class="fr bbs-slide">
+        <div class="bbs-sendques">
+            <h1> 您想发问题 还是发问题还是想发问题？ </h1>
+            <dl>
+                <dt>上面没有写错，是您看错啦。</dt>
+                <dd>1、您是想来吐槽的吧，没事，随便发吧。有人会跟你一起吐槽的。</dd>
+                <dd>2、您是来解决问题？请先搜索是否已经有同类问题吧。这样您就省心少打字。</dd>
+                <dd>3、没找到是么？就在发问题时精确描述你的问题，不要写与问题无关的内容哟；</dd>
+                <dd>4、慕课讨论更热衷于解达您想要的答案。能引起思考和讨论的知识性问题；</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    var wdtype=1;//分类id
+    function setType(cate,id){
+        wdtype=id;
+        // $("#wdType").removeClass("onactive");
+        //$(cate).addClass("onactive");
+        $(cate).addClass("onactive").siblings().removeClass("onactive");
+    }
+    function setTag(cate,id){
+        if($("#tagcontent").children().length>2){
+            notes("对不起，最多只能选择3个标签","failure");
+            return;
+        }
+        if($("#"+id).length>0){
+            notes("已选择此标签，请勿重复选择！","failure");
+            return;
+        }
+        $("#label-default").text("");
+        var tagtxt=$(cate).text();//获得标签名
+        tagtxt+="×";
+        var taghtml= "<a  id="+id+" onclick='removeThis(this)' class=\"list-tag\">"+tagtxt+"</a>";//获得html内容
+
+        $("#tagcontent").append(taghtml);
+    }
+    /**
+     * 删除选中标签
+     * @param cate
+     */
+    function removeThis(cate){
+        $(cate).remove();
+    }
+    /**
+     * 提交发布
+     */
+    function subWenda(){
+        var tagids="";
+        if(MID==0){
+            reg_login();
+            return;
+        }
+        var count = $.trim($("#content").val());//获取标题
+        if(count==""){
+            notes("对不起，内容不能为空","failure");
+            return;
+        }
+        if(count.length<3){
+            notes("对不起，内容最少为3个字符","failure");
+            return;
+        }
+
+        $("#tagcontent").children().each(function(i,n){
+            var obj=$(n).attr("id");
+            tagids+=obj+",";
+        });
+        $(".publishbtn").text("发布中...");
+        $(".publishbtn").attr('disabled',"true");
+        $.ajax({
+            type: "POST",
+            url:"{:U('wenda/Index/doEditWenda')}",
+            data:"typeid="+wdtype+"&content="+count+"&wid={$data.id}",
+            dataType:"text",
+            success:function(data){
+                if(isNaN(data)){
+                    notes(data,"failure");
+                }else{
+                    notes("恭喜，修改成功！","success");
+                    location.href="{:U('wenda/Index/detail',array('id'=>$data['id']))}";
+                }
+                $(".publishbtn").text("发布");
+                $(".publishbtn").removeAttr("disabled");
+            }
+        });
+
+    }
+
+
+</script>
+<!--footer-->
+<include file="__THEME__/public_footer" />

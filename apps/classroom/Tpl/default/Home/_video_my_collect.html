@@ -1,0 +1,13 @@
+<foreach name="data" item="l">
+    <li>
+        <div class="position-rt">
+            <div class="Operation-list"> <a href="javascript:;" onclick="delalbum(this,{$l.cid})">删除 <span></span></a></div>
+            <a href="{:U('classroom/Video/view',array('id'=>$l['id']))}" class="img"><img src="{:getCover($l['cover'] , 222,144)}"></a></div>
+        <h2><a href="{:U('classroom/Video/view',array('id'=>$l['id']))}">{$l.video_title}</a></h2>
+        <div class="user-imglistbt">
+            <em class="fl"><a href="{:U('classroom/Video/view',array('id'=>$l['id']))}">{:limitNumber($l['video_intro'],10)}</a></em>
+            <span class="Price fr">{$l.money}学币</span>
+            <a <php>if(in_array($l['id'],$buyVideos)){</php>type="isBuy" class="text_true fr"<php>}else{</php> class="text_<?php echo in_array($l['id'], $vms)?'true':'wrong';?> fr"<php>}</php> href="javascript:;" data-id="{$l['id']}"></a>
+        </div>
+    </li>
+</foreach>

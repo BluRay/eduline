@@ -1,0 +1,224 @@
+<include file="__THEME__/public_header" />
+<script type="text/javascript" src="__APP__/Js/common.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.form.js"></script>
+<link href="__APP__/group.css" rel="stylesheet" type="text/css" />
+<style>
+
+.sk_ttl {height:40px;line-height:13px;font-size:12px;color:#999;zoom: 1;overflow: hidden;}
+.sk_ttl::after{clear: both;display: block;height: 0;visibility: visible;content: "";}
+.sk_ttl span.pointNum{float: left;}
+.sk_sub {float:right;}
+.sk_top {color:#fb8700;}
+.sk_elite {color:#00a251;}
+.sk_sub span a {color:#000;font-weight:bold;}
+.date{font-size:12px;}
+.sk_sub span a.s {color:#8db800;}
+</style>
+
+<!--content start-->
+<div class="picbox" style="background:#32363a url(__THEME__/images/x1.jpg) center 0 no-repeat;">
+	<div class="wrap page">
+    	<div class="picbox-wrap">
+        	<div class="pic"><img src="{$groupinfo['logourl']}" class="lazyloading"></div>
+            <div class="info">
+            	<div class="tit">
+            		<h2>{$groupinfo['name']}</h2>
+                    <span><i class="icon-ppl"></i>{$threadcount}</span>
+                    <span><i class="icon-pll"></i>{$groupinfo.membercount}</span>
+                </div>
+                <div class="txt">{:limitNumber($groupinfo['intro'],150)}</div>
+            </div>
+            <div class="ebtn">
+            <php>$level = getLevel($GLOBALS['ts']['mid'], $gid);</php>
+            <php>if($level === null){</php>
+			     <a href="javascript:;" onclick="joingroup('{$gid}');">加入该小组</a>
+			<php>}</php>
+			<php>if($level === '0'){</php>
+			     <a href="javascript:;">等待审核</a>
+			<php>}</php>
+			<php>if($level == 1 || $level==2){</php>
+			     <a href="{:U('group/Manage/index',array('gid'=>$gid))}">管理该小组</a>
+			<php>}</php>
+			<php>if($level == 2 || $level == 3){</php>
+			     <a href="javascript:;" onclick="quitgroup({$gid})" >退出该小组</a>
+			<php>}</php>
+            </div>
+        </div>
+    </div>
+</div>
+<!--content start-->
+<div class="content">
+	<div class="wrap page">
+        <div class="content-con">
+        	<div class="content-main">
+            	<ul class="content-lei">
+                    <li class="<php>if(!$cid){</php>active<php>}</php>" ><a href="{:U('group/Topic/index', array('gid'=>$gid))}" >全部</a></li>
+                    <?php if($mid && intval($level) > 0){ ?>
+			        	<li class="<php>if ($cid=='my' && $cid) {</php> active <php>}</php>" ><a href="{:U('group/Topic/index', array('gid'=>$gid,'cid'=>'my'))}" >我的帖子</a></li>
+			        <?php } ?>
+			        <li class="<php>if ($cid=='dist' && $cid) {</php>active<php>}</php>" ><a href="{:U('group/Topic/index', array('gid'=>$gid,'cid'=>'dist'))}" >精华帖子</a></li>
+                </ul>
+                <div class="sk_ttl">
+                <span class="pointNum">共有{$threadcount}个帖子</span><php>if($threadcount > 0){</php><span class="sk_sub">排序方式：<span><a href="{:U('group/Topic/index',array('gid'=>$gid,'cid'=>$cid))}" <php>if(!$_GET[order]){</php>class="s"<php>}</php>>回复时间</a> | <a href="{:U('group/Topic/index',array('gid'=>$gid,'cid'=>$cid,'order'=>1))}" <php>if($_GET[order]){</php>class="s"<php>}</php>>发帖时间</a></span></span><php>}</php></div>
+                <ul class="tiezi-list" id="posts_list">
+                	<volist name="topiclist['data']" id="list">
+	                	<li>
+	                    	<h3>
+	                    		<if condition="$isadmin">
+			                    	<input name="topic_id[]" type="checkbox" value="{$list.id}" class="checkbox" />
+			                    </if>
+			                    <a href="{:U('/Topic/topic',array('gid'=>$gid,'tid'=>$list['id']))}">
+			                    	<php>if($list['dist']){</php><strong class="sk_elite">[精华]</strong><php>}</php>
+			                        <php>if($list['lock']){</php> <strong class="sk_top">[锁定]</strong><php>}</php>
+			                        <php>if($list['top']){</php> <strong class="sk_top">[置顶]</strong><php>}</php>
+			                   		{$list['title']|getShort=###, 25-get_str_length($list['ctitle']), '...'}
+			                   	</a>
+			                </h3>
+	                        <div class="info">
+	                            <div class="fr"><span class="icon-pl"></span>{$list['replycount']}</div>
+	                            <div class="name"><space uid="list['uid']" class="fn" target="_blank">{uname}</space></div>
+	                            <div class="date">发布于：{$list['addtime']|friendlyDate}</div>
+	                        </div>
+	                    </li>
+                    </volist>
+                    
+                </ul>
+                <if condition="$isadmin">
+             		<php>if($threadcount > 0){</php>
+                    <li style="margin-top:20px;list-style:none;">
+                      <label><input type="checkbox" value="" onclick="check_all_post(this)" class="checkbox" style="_vertical-align:3px;*margin:0 2px 0 0;" />全选</label>&nbsp;&nbsp;
+                      <a href="javascript:;" onclick="admin_set('del');">删除</a>&nbsp;&nbsp;
+                      <a href="javascript:;" onclick="admin_set('top');">置顶</a> /
+                      <a href="javascript:;" onclick="admin_set('untop');">取消置顶</a>&nbsp;&nbsp;
+                      <a href="javascript:;" onclick="admin_set('dist');">设置精华</a> /
+                      <a href="javascript:;" onclick="admin_set('undist');">取消精华</a>&nbsp;&nbsp;
+                      <a href="javascript:;" onclick="admin_set('lock');">锁定</a> /
+                      <a href="javascript:;" onclick="admin_set('unlock');">取消锁定</a>
+                    </li>
+                    <php>}</php>
+             </if>
+                <div class="pagebox">
+                	 {$topiclist.html}
+                </div>
+            </div>
+            <div class="content-sider">
+            	<php>if($level > 0){</php>
+            		<div class="sider-top"><a href="javascript:;" onclick="addPost({$gid})"><span class="icon-fatie"></span>发帖</a></div>
+            	<php>}</php>
+                <div class="page-tit">
+                    <div class="page-tit-box"><div class="fl">推荐帖子</div></div>
+                </div>
+                <ul class="sider-question">
+                	<volist name="recommend_post" id="vo">
+                		<li><a href="{:U('/Topic/topic',array('gid'=>$vo['gid'],'tid'=>$vo['id']))}">{:limitNumber($vo['title'] , 25)}</a></li>
+                	</volist>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+var get_checked_id = function()
+{
+    var ids = new Array();
+    $.each($('#posts_list input:checked'), function(i, n){
+        var id = $(n).val();
+        if (id > 0) {
+            ids.push( id );
+        }
+    });
+    return ids;
+}
+
+var check_all_post = function(e)
+{
+	var $post_list_input = $('#posts_list input[name="topic_id[]"]');
+	if( e.checked == true ){
+		$post_list_input.attr('checked','true');
+    }else{
+    	$post_list_input.removeAttr('checked');
+    }
+}
+
+var admin_set = function(op)
+{
+	var tids = get_checked_id();
+	if (tids == '') {
+		ui.error('请选择帖子');
+		return false;
+	}
+	if (op == 'del' && !confirm('删除后无法恢复, 确认删除?'))
+		return false;
+
+	$.ajax({
+		type: "POST",
+		url:  "__URL__&{:C('VAR_ACTION')}="+op,
+		data: 'gid=<?php echo $gid; ?>&tid=' + tids + '&type=thread&ajax=1',
+		dataType:"json",
+		success: function(data)
+		{
+			// 取消勾选
+			$.each($('#posts_list input:checked'), function(i, n){
+		        $(n).removeAttr('checked');
+		    });
+
+			if (data.flag == 1) {
+				ui.success(data.msg);
+				tids = tids.toString().split(',');
+				switch (op) {
+					case 'del':
+						for (i = 0 ; i < tids.length ; i++) {
+							$('#posts_list input[name="topic_id[]"][value="' + tids[i] + '"]').parent().parent().remove();
+						}
+						break;
+					default:
+						setTimeout(function(){location.reload();},1000);
+						break;
+				}
+			} else {
+				ui.error(data.msg);
+			}
+		}
+	});
+}
+// 帖子分类操作
+function addCategoryTab(action){
+	var $form = $('#addcategory');
+	if(action == 'close'){
+		$("input", $form).css('display','none');
+		$("a", $form).css('display','inline');
+	}else{
+		$("input", $form).css('display','inline');
+		$("a", $form).css('display','none');
+	}
+}
+function add_category(){
+	var $form = $('#addcategory');
+	var title = $("input[name='title']", $form).val();
+	if(title.length == 0){
+		ui.error('请输入分类标题！');
+	}else if(getLength(title) > 10){
+		ui.error('分类标题字数不能超过10个字符！');
+	}else{
+		var options = {
+				success: function(txt) {
+					if(txt == -2){
+						ui.error('分类名不能为空');
+					}else if(txt == -1){
+						ui.error('该分类已经存在！');
+					}else if(txt > 0){
+						ui.success('创建分类成功');
+						setTimeout("location.reload()",500);
+					}else{
+						ui.error('创建分类失败！');
+					}
+				}
+			};
+		$form.ajaxSubmit(options);
+	}
+	return false;
+}
+</script>
+
+<include file="__THEME__/public_footer" />

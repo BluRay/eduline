@@ -100,11 +100,14 @@
 	                </li>
                 </volist>
                 <li>
-                    <div class="ind-box">
+                    <div class="ind-box t-center">
                         <dl>
+                        	<span></span>
+                          <p class="big">精选专辑</p>
+                          <p>查看更多</p>
                         	<volist name="br_list.title_list" id="vo" offset="0" length="6">
                         		<dd><a href="{:U('classroom/Album/view',array('id'=>$vo['id']))}">{$vo['album_title']}</a></dd>
-				            </volist>
+				            			</volist>
                         </dl>
                     </div>
                 </li>

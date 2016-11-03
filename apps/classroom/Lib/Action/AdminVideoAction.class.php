@@ -137,8 +137,9 @@ class AdminVideoAction extends AdministratorAction
 		} else {
 			$video_address="http://".getAppConfig('qiniu_Domain','qiniuyun')."/".$videokey;
 		}
-
+		//echo "---->video_address = ".$video_address;
 		$data['qiniu_key']=$videokey;
+		
 		$data['is_activity'] 	 	 = 1;
 		$data['video_title'] 		 = t($post['video_title']); //课程名称
 		$data['video_intro'] 		 = t($post['video_intro']); //课程简介
@@ -149,7 +150,7 @@ class AdminVideoAction extends AdministratorAction
 		$data['endtime'] 			 = $post['endtime'] ? strtotime($post['endtime']) : 0; //限时结束时间
 		$data['limit_discount'] 	 = isset($post['is_tlimit']) && ($post['limit_discount'] <= 1 && $post['limit_discount'] >= 0) ? $post['limit_discount'] : 1; //限时折扣
 		$data['teacher_id']          = intval($_POST['trid']);//获取讲师
-		$data['video_address']       = $video_address;//正确的视频地址
+		if($video_address!="")$data['video_address']       = $video_address;//正确的视频地址
 		$data['cover'] 			 	 = intval($post['cover_ids']); //封面
 		$data['videofile_ids'] 		 = isset($post['videofile_ids']) ? intval($post['videofile_ids']) : 0; //课件id
 		$data['is_best']      		 = isset($post['is_best']) ? intval($post['best_recommend']) : 0; //编辑精选
@@ -160,6 +161,8 @@ class AdminVideoAction extends AdministratorAction
 		if($post['id']){
 			$data['utime'] = time();
 			$result = M('zy_video')->where('id = '.$post['id'])->data($data)->save();
+			//echo "---->result = ".$result;
+			//print_r($data);
 		} else {
 			$data['ctime'] = time();
 			$data['utime'] = time();

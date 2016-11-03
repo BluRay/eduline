@@ -14,7 +14,7 @@ $time_include_start = microtime(TRUE);
 $mem_include_start = memory_get_usage();
 
 //设置全局变量ts
-$ts['_debug']	=	false;		//调试模式
+$ts['_debug']	=	TRUE;		//调试模式
 $ts['_define']	=	array();	//全局常量
 $ts['_config']	=	array();	//全局配置
 $ts['_access']	=	array();	//访问配置

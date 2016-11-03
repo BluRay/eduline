@@ -21,6 +21,7 @@ class IndexAction extends CommonAction {
         $ad_list = M('ad')->where($ad_map)->order('display_order DESC')->find();
         //序列化广告内容
         $ad_list = unserialize($ad_list['content']);
+        //print_r($ad_list);
         //获取精选专辑
         $best_recommend_list = D('ZyAlbum')->getBestRecommend();
         //格式化精选专辑 3条带封面 其余标题连接

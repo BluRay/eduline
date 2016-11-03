@@ -11,10 +11,11 @@
     <div class="bd">
         <ul>
         	<volist name="ad_list" id="vo">
-	            <li style="background:url({:getAttachUrlByAttachId($vo['banner'])}) center 0 no-repeat;">
-	                <div class="siteWidth"><a target="_blank" href="{$vo.bannerurl}"></a></div>
+	            <!-- <li style="background:url({:getAttachUrlByAttachId($vo['banner'])}) center 0 no-repeat;"> -->
+	            <li style="background:url('apps/index/_static/images/banner{$vo['banner']}.jpg') center 0 no-repeat;">
+	                <div class="siteWidth"><a target="_blank" href="/eduline{$vo.bannerurl}"></a></div>
 	            </li>
-            </volist>
+          </volist>
         </ul>
     </div>
 	<div class="hd"><ul></ul></div>
